@@ -40,5 +40,5 @@ public class AppBuilder {
     final UserFactory userFactory = new UserFactory();
     final ViewManagerModel viewManagerModel = new ViewMAnagerModel();
     viewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
+fzz
 }
