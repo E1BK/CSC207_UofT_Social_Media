@@ -82,3 +82,5 @@ Use Case 6: View Peoples Profiles
 - Alternate Flow:
   - filler
 
+# Minimum Viable Product Table:
+
