@@ -50,7 +50,7 @@ Use Case 2: Landing Page
   - User sees 3 random posts
   - User sees a "Make Post" Button to start a new post
 - Alternate Flow:
-  - 
+  - filler
 
 Use Case 3: See and Update Your Own Profile
 - Main Flow:
@@ -58,13 +58,13 @@ Use Case 3: See and Update Your Own Profile
   - User sets his/her Name
   - User sets his/her Bio
 - Alternate Flow:
-  - 
+  - filler
 
 Use Case 4: Making Posts
 - Main Flow:
-  - 
+  - filler
 - Alternate Flow:
-  - 
+  - filler
 
 Use Case 5: Search for People
 - Main Flow:
@@ -74,11 +74,11 @@ Use Case 5: Search for People
   - List of users whose name matches or partially matches the name searched
   - User clicks on a user and is sent to their profile page
 - Alternate Flow:
-  - 
+  - filler
 
 Use Case 6: View Peoples Profiles
 - Main Flow:
-  - 
+  - filler
 - Alternate Flow:
-  - 
+  - filler
 
