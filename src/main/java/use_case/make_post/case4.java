@@ -1,1 +1,1 @@
-package main.java.use_case.case4;
+package use_case.make_post;

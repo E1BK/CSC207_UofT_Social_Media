@@ -1,1 +1,1 @@
-package main.java.use_case.case2;
+package use_case.landing;

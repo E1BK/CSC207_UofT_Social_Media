@@ -1,1 +1,1 @@
-package main.java.use_case.case6;
+package use_case.view_profile;

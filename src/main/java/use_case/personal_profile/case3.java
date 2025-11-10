@@ -1,1 +1,1 @@
-package main.java.use_case.case3;
+package use_case.personal_profile;
