@@ -84,3 +84,66 @@ Use Case 6: View Peoples Profiles
 
 # Minimum Viable Product Table:
 
+
+# API Specification
+
+We will be using the Grade API (http://vm003.teach.cs.toronto.edu:20112/user) for permanent storage of User data.
+
+In the Grade API, the `info` field allows for any arbitrary JSON to be stored, the base format JSON looks like:
+
+```json
+{
+    "username": "yourdesiredusername2", 
+    "password": "newpassword",
+    "info": {
+        
+    }
+}
+```
+
+To store extra information we need, such as the bio or posts, we add into the info field, as such:
+
+```json
+{
+    "username": "yourdesiredusername2", 
+    "password": "newpassword",
+    "info": {
+        "bio": "this is a bio",
+        "email": "someone.someone@mail.utoronto.ca",
+        "posts": {
+          "post_id_1": {
+            "title": "this is a title",
+            "body": "this is the body"
+          },
+          "post_id_2": {
+            "title":"this is a title",
+            "body": "this is the body"
+          }
+        }
+    }
+}
+```
+
+# Entities
+
+## User
+
+### Fields
+
+username: String, username of user
+
+password: String, password of user
+
+email: String, email of user, must end with @mail.utoronto.ca
+
+posts: Map<String, Post>, list of posts of user
+
+## Post
+
+### Fields
+
+post_id: String, id of post
+
+title: String, title of post
+
+body: String, body of post
