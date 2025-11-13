@@ -84,6 +84,14 @@ Use Case 6: View Peoples Profiles
 
 # Minimum Viable Product Table:
 
+Use Case | User Story | Lead Developer
+---|---|---
+Login, Signup, Signout | User Story 1 and 2 | Mike
+Landing Page | User Story 3 | Hasan
+Update Profile and Bio | User Story 4 | Julian
+Make a Post | User Story 5 | Hayden
+Search system for people | User Story 6 | Russell
+View Peoples Pages | User Story 7 and 8 | Ioane
 
 # API Specification
 
