@@ -111,27 +111,65 @@ In the Grade API, the `info` field allows for any arbitrary JSON to be stored, t
 }
 ```
 
-To store extra information we need, such as the bio or posts, we add into the info field, as such:
+To store extra information we need, such as the bio or posts, we add into the `info` field, as such:
 
 ```json
 {
-    "username": "yourdesiredusername2", 
-    "password": "newpassword",
+    "username": "uoft_student_1", 
+    "password": "somepassword",
     "info": {
         "bio": "this is a bio",
         "email": "someone.someone@mail.utoronto.ca",
-        "posts": {
-          "post_id_1": {
-            "title": "this is a title",
-            "body": "this is the body"
-          },
-          "post_id_2": {
-            "title":"this is a title",
-            "body": "this is the body"
-          }
-        }
+        "posts": [
+            {
+                "post_id": 1,
+                "title": "this is a title",
+                "body": "this is the body",
+                "comments": [
+                    {
+                        "comment_id": 1,
+                        "comment_body": "this is a comment",
+                        "likes": 124
+                    }
+                ]
+            },
+            {
+                "post_id": 2,
+                "title":"this is a title",
+                "body": "this is the body",
+                "comments": [
+                    {
+                        "comment_id": 1,
+                        "comment_body": "this is another comment",
+                        "likes": 4566
+                    }
+                ]
+            }
+        ]
     }
 }
+```
+
+Additionally, we also need a "*repository*" user to store all the users that currently exist, we define a permanent `user` entity in the DB, and store usernames inside `info`, as such:
+
+```json
+{
+    "username": "user_repository_CTG3",
+    "password": "CTG3CTG3",
+    "info": {
+        "users": [
+            {
+                "user_id": 1,
+                "user_name": "username1"
+            },
+            {
+                "user_id": 2,
+                "user_name": "username2"
+            }
+        ]
+    }
+}
+
 ```
 
 # Entities
@@ -146,7 +184,7 @@ password: String, password of user
 
 email: String, email of user, must end with @mail.utoronto.ca
 
-posts: Map<String, Post>, list of posts of user
+posts: ArrayList\<Post>, list of posts of user
 
 ## Post
 
