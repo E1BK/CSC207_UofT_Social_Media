@@ -54,7 +54,7 @@ Use Case 2: Landing Page
 - Alternate Flow:
   - filler
 
-Use Case 3: See and Update Your Own Profile
+Use Case 3: Profile and Bio
 - Main Flow:
   - User clicks on the “me” button in landing page
   - User sets his/her Name
@@ -78,7 +78,7 @@ Use Case 5: Search for People
 - Alternate Flow:
   - filler
 
-Use Case 6: View Posts/Comment
+Use Case 6: View Post/Comment
 - Main Flow:
   - filler
 - Alternate Flow:
@@ -86,14 +86,14 @@ Use Case 6: View Posts/Comment
 
 # Minimum Viable Product Table:
 
-Use Case | User Story          | Lead Developer
----|---------------------|---
-Login, Signup, Signout | User Story 1 and 2  | Mike
-Landing Page | User Story 3        | Hasan
-Update Profile and Bio | User Story 4        | Julian
-Make a Post | User Story 5        | Hayden
-Search system for people | User Story 6        | Russell
-View Post/Comment | User Story 9 and 10 | Ioane
+| Use Case                 | User Story          | Lead Developer |
+|--------------------------|---------------------|----------------|
+| Login, Signup, Sign out  | User Story 1 and 2  | Mike           |
+| Landing Page             | User Story 3        | Hasan          |
+| Profile and Bio          | User Story 4 and 8  | Julian         |
+| Make a Post              | User Story 5        | Hayden         |
+| Search system for people | User Story 6 and 7  | Russell        |
+| View Post/Comment        | User Story 9 and 10 | Ioane          |
 
 # API Specification
 
