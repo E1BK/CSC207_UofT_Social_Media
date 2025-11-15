@@ -2,7 +2,7 @@
 
 package View;
 
-import interface_adapter.LandingViewModel;
+import interface_adapter.landing.LandingViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,6 +18,26 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     public LandingView(LandingViewModel landingViewModel) {
         final JLabel welcome = new JLabel("Welcome, User!");
+
+        final JPanel buttons = new JPanel();
+        JButton me = new JButton("Me");
+        buttons.add(me);
+
+        me.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(me)) {
+//                            final LoginState currentState = loginViewModel.getState();
+//
+//                            loginController.execute(
+//                                    currentState.getUsername(),
+//                                    currentState.getPassword()
+//                            );
+                            System.out.println("CLICKED 'ME'!");
+                        }
+                    }
+                }
+        );
     }
 
     public String getViewName() {
@@ -25,8 +45,8 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
     }
 
     @Override
