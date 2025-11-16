@@ -37,61 +37,6 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         this.landingViewModel = landingViewModel;
         landingViewModel.addPropertyChangeListener(this);
 
-//        title = new JLabel(LandingViewModel.TITLE_LABEL);
-//        title.setFont(new Font("Helvetica", Font.BOLD, 40));
-//        postBodyPrompt = new JLabel("What's happening at UofT today?");
-//        postBodyPrompt.setFont(new Font("Helvetica", Font.PLAIN, 25));
-//        postBody = new JTextField();
-//        postBody.setFont(new Font("Helvetica", Font.PLAIN, 12));
-//        postBody.setMinimumSize(new Dimension(300, 200));
-//        postBody.setMaximumSize(new Dimension(300, 200));
-//        makePost = new JButton(LandingViewModel.MAKE_POST_BUTTON_LABEL);
-//        makePost.setFont(new Font("Helvetica", Font.PLAIN, 15));
-//        me = new JButton(LandingViewModel.ME_BUTTON_LABEL);
-//        me.setFont(new Font("Helvetica", Font.PLAIN, 15));
-//        people = new JButton(LandingViewModel.PEOPLE_BUTTON_LABEL);
-//        people.setFont(new Font("Helvetica", Font.PLAIN, 15));
-//        posts = new JButton(LandingViewModel.POSTS_BUTTON_LABEL);
-//        posts.setFont(new Font("Helvetica", Font.PLAIN, 15));
-//
-//        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        postBodyPrompt.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        postBody.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        makePost.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-//        me.setMargin(new Insets(10, 20, 10, 20));
-//        makePost.setMargin(new Insets(10, 20, 10, 20));
-//        people.setMargin(new Insets(10, 20, 10, 20));
-//        posts.setMargin(new Insets(10, 20, 10, 20));
-//
-//        JPanel postPanel = new JPanel();
-//        postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
-//        postPanel.add(postBodyPrompt);
-//
-//        postPanel.add(postBody);
-//        postPanel.add(makePost);
-//
-//
-//        JPanel buttonsPanel = new JPanel();
-//        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-//        buttonsPanel.add(posts);
-//        buttonsPanel.add(people);
-//        buttonsPanel.add(me);
-//        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(100, 0, 10, 0));
-//
-//        JPanel bottomPanel = new JPanel();
-//        bottomPanel.add(buttonsPanel);
-//
-//        this.setLayout(new BorderLayout());
-//
-//        JPanel titlePanel = new JPanel();
-//        titlePanel.add(title);
-//        titlePanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
-//
-//        this.add(titlePanel, BorderLayout.NORTH);
-//        this.add(postPanel, BorderLayout.CENTER);
-//        this.add(bottomPanel, BorderLayout.SOUTH);
-
         // top panel
         JLabel name = new JLabel("UofTeam");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));

@@ -1,8 +1,14 @@
+// hasan
 package app;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This is a "helper" class used to make
+ * panels with gradient backgrounds.
+ * This is frequently used in the View layer.
+ */
 public class GradientPanel extends JPanel {
 
     @Override
