@@ -1,5 +1,7 @@
 package View;
 
+import entity.Comment;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,15 +22,19 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
     // Comment input
     private final JTextField commentInput;
-    private final JButton postCommentButton;
+    private final JButton addCommentButton;
 
-    // Labels for 3 random comments
+    // Labels + Like buttons for 3 random comments
     private final JLabel commentLabel1;
     private final JLabel commentLabel2;
     private final JLabel commentLabel3;
 
-    // All comments (view will pick 3 random)
-    private List<String> allComments = new ArrayList<>();
+    private final JButton likeButton1;
+    private final JButton likeButton2;
+    private final JButton likeButton3;
+
+    // Comments currently displayed in the 3 slots
+    private List<Comment> displayedComments = new ArrayList<>();
 
     public PostView() {
         // ----- TOP: Home + "Post" -----
@@ -56,22 +62,41 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         final JPanel commentInputPanel = new JPanel();
         final JLabel commentInfo = new JLabel("Comment: ");
         commentInput = new JTextField(20);
-        postCommentButton = new JButton("Post Comment");
+        addCommentButton = new JButton("Add Comment");
         commentInputPanel.add(commentInfo);
         commentInputPanel.add(commentInput);
-        commentInputPanel.add(postCommentButton);
+        commentInputPanel.add(addCommentButton);
 
-        // ----- 3 COMMENTS DISPLAY -----
+        // ----- 3 COMMENTS + LIKE BUTTONS -----
         final JPanel commentsPanel = new JPanel();
         commentsPanel.setLayout(new BoxLayout(commentsPanel, BoxLayout.Y_AXIS));
         final JLabel commentsTitle = new JLabel("Comments:");
+
+        // Row 1
+        final JPanel row1 = new JPanel();
         commentLabel1 = new JLabel("");
+        likeButton1 = new JButton("Like");
+        row1.add(commentLabel1);
+        row1.add(likeButton1);
+
+        // Row 2
+        final JPanel row2 = new JPanel();
         commentLabel2 = new JLabel("");
+        likeButton2 = new JButton("Like");
+        row2.add(commentLabel2);
+        row2.add(likeButton2);
+
+        // Row 3
+        final JPanel row3 = new JPanel();
         commentLabel3 = new JLabel("");
+        likeButton3 = new JButton("Like");
+        row3.add(commentLabel3);
+        row3.add(likeButton3);
+
         commentsPanel.add(commentsTitle);
-        commentsPanel.add(commentLabel1);
-        commentsPanel.add(commentLabel2);
-        commentsPanel.add(commentLabel3);
+        commentsPanel.add(row1);
+        commentsPanel.add(row2);
+        commentsPanel.add(row3);
 
         // ----- MAIN LAYOUT -----
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -82,7 +107,7 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         add(commentsPanel);
     }
 
-    // For quick testing
+    // For quick testing (optional)
     public static void main(String[] args) {
         JFrame frame = new JFrame("Post View");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -90,11 +115,11 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         PostView view = new PostView();
         view.setPost("Hello UofT", "Welcome to our social media app!");
 
-        List<String> comments = new ArrayList<>();
-        comments.add("Nice post!");
-        comments.add("Cool idea.");
-        comments.add("Love this!");
-        comments.add("Fourth comment here.");
+        List<Comment> comments = new ArrayList<>();
+        comments.add(new Comment(1, "Nice post!", 3));
+        comments.add(new Comment(2, "Cool idea.", 5));
+        comments.add(new Comment(3, "Love this!", 2));
+        comments.add(new Comment(4, "Another comment here.", 10));
         view.setComments(comments);
 
         frame.add(view);
@@ -109,10 +134,45 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         postBody.setText(body);
     }
 
-    /** Presenter calls this with ALL comments; view shows 3 random ones. */
-    public void setComments(List<String> comments) {
-        allComments = new ArrayList<>(comments);
-        showThreeRandomComments();
+    /**
+     * Presenter calls this with ALL comments for the post.
+     * The view will randomly pick up to 3 and display them with likes.
+     */
+    public void setComments(List<Comment> allComments) {
+        // Pick up to 3 random comments
+        List<Comment> copy = new ArrayList<>(allComments);
+        Collections.shuffle(copy);
+
+        displayedComments = new ArrayList<>();
+        for (int i = 0; i < 3 && i < copy.size(); i++) {
+            displayedComments.add(copy.get(i));
+        }
+
+        // Clear all first
+        commentLabel1.setText("");
+        commentLabel2.setText("");
+        commentLabel3.setText("");
+
+        likeButton1.setEnabled(false);
+        likeButton2.setEnabled(false);
+        likeButton3.setEnabled(false);
+
+        // Fill in according to how many we have
+        if (displayedComments.size() > 0) {
+            Comment c = displayedComments.get(0);
+            commentLabel1.setText(c.getBody() + " (likes: " + c.getLikes() + ")");
+            likeButton1.setEnabled(true);
+        }
+        if (displayedComments.size() > 1) {
+            Comment c = displayedComments.get(1);
+            commentLabel2.setText(c.getBody() + " (likes: " + c.getLikes() + ")");
+            likeButton2.setEnabled(true);
+        }
+        if (displayedComments.size() > 2) {
+            Comment c = displayedComments.get(2);
+            commentLabel3.setText(c.getBody() + " (likes: " + c.getLikes() + ")");
+            likeButton3.setEnabled(true);
+        }
     }
 
     public String getCommentInputText() {
@@ -127,39 +187,42 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         return homeButton;
     }
 
-    public JButton getPostCommentButton() {
-        return postCommentButton;
+    public JButton getAddCommentButton() {
+        return addCommentButton;
     }
 
-    // ===== Internal: choose 3 random comments and show them =====
+    public JButton getLikeButton1() {
+        return likeButton1;
+    }
 
-    private void showThreeRandomComments() {
-        // Clear labels first
-        commentLabel1.setText("");
-        commentLabel2.setText("");
-        commentLabel3.setText("");
+    public JButton getLikeButton2() {
+        return likeButton2;
+    }
 
-        if (allComments.isEmpty()) {
-            return;
+    public JButton getLikeButton3() {
+        return likeButton3;
+    }
+
+    /**
+     * Returns the comment_id of the comment currently displayed
+     * in slot index 0, 1, or 2. Use this with LikeCommentController.
+     */
+    public int getCommentIdAtIndex(int index) {
+        if (index < 0 || index >= displayedComments.size()) {
+            return -1;
         }
-
-        List<String> copy = new ArrayList<>(allComments);
-        Collections.shuffle(copy);
-
-        if (copy.size() > 0) commentLabel1.setText(copy.get(0));
-        if (copy.size() > 1) commentLabel2.setText(copy.get(1));
-        if (copy.size() > 2) commentLabel3.setText(copy.get(2));
+        return displayedComments.get(index).getComment_id();
     }
 
     // ===== Required by interfaces =====
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // to implement: connect buttons to controllers if needed
+        // optional: you can wire actions here instead of outside
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // to implement: update from ViewModel if you use one
+        // optional: if you use a ViewModel, update here
     }
 }
