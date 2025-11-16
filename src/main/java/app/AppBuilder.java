@@ -29,7 +29,7 @@ import interface_adapter.ViewManagerModel;
 //import view.LoggedInView;
 //import view.LoginView;
 //import view.SignupView;
-import view.ViewManager;
+import View.ViewManager;
 
 import view.ProfileView;
 import interface_adapter.profile.ProfileViewModel;
