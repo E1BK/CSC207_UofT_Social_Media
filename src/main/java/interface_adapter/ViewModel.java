@@ -1,3 +1,4 @@
+// Hasan / Julian
 package interface_adapter;
 
 import java.beans.PropertyChangeListener;
@@ -11,7 +12,6 @@ import java.beans.PropertyChangeSupport;
  * @param <T> The type of state object contained in the model.
  */
 public class ViewModel<T> {
-
     private final String viewName;
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -40,6 +40,7 @@ public class ViewModel<T> {
     public void firePropertyChange() {
         this.support.firePropertyChange("state", null, this.state);
     }
+
 
     /**
      * Fires a property changed event for the state of this ViewModel, which

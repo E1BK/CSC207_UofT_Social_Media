@@ -4,5 +4,4 @@ import entity.User;
 
 public interface MakePostUserDataAccessInterface {
 
-    void makePost(User user);
 }
