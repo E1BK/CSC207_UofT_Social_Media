@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import interface_adapter.make_post.PostController;
 import interface_adapter.profile.ProfileController;
@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
  */
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     // Variables
+    private String viewName = "profile";
     private ProfileController profileController;
     private SearchController searchController;
     private PostController postController;
@@ -60,6 +61,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         buttons.add(searchButton);
         buttons.add(profileButton);
 
+        back.addActionListener(this);
+
         postsButton.addActionListener(this);
         searchButton.addActionListener(this);
         profileButton.addActionListener(this);
@@ -96,5 +99,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         // to implement
+    }
+
+    public String getViewName() {
+        return viewName;
     }
 }

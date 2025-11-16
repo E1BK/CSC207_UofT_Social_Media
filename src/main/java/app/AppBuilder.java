@@ -1,8 +1,8 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
-//import entity.UserFactory;
-//import interface_adapter.ViewManagerModel;
+import entity.UserFactory;
+import interface_adapter.ViewManagerModel;
 //import interface_adapter.logged_in.ChangePasswordController;
 //import interface_adapter.logged_in.ChangePasswordPresenter;
 //import interface_adapter.logged_in.LoggedInViewModel;
@@ -29,21 +29,32 @@ package app;
 //import view.LoggedInView;
 //import view.LoginView;
 //import view.SignupView;
-//import view.ViewManager;
+import view.ViewManager;
+
+import view.ProfileView;
+import interface_adapter.profile.ProfileViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AppBuilder {
-//    private final JPanel cardPanel = new JPanel();
-//    private final CardLayout cardLayout = new CardLayout();
-//    final UserFactory userFactory = new UserFactory();
-//    final ViewManagerModel viewManagerModel = new ViewMAnagerModel();
-//    viewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
+    private final JPanel cardPanel = new JPanel();
+    private final CardLayout cardLayout = new CardLayout();
+    final UserFactory userFactory = new UserFactory();
+    final ViewManagerModel viewManagerModel = new ViewManagerModel();
+    ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
+
+    // Add View Models
+    private ProfileView profileView;
+    private ProfileViewModel profileViewModel;
+
 //
 //    public AppBuilder() { cardPanel.setLayout(cardLayout); }
 //
-//    public AppBuilder addProfileView() {
-//        return this;
-//    }
+    public AppBuilder addProfileView() {
+        profileViewModel = new ProfileViewModel();
+        profileView = new ProfileView();
+        cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
 }
