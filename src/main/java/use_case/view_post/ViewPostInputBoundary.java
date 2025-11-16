@@ -1,4 +1,4 @@
-package use_case.view_post_comment;
+package use_case.view_post;
 
 public interface ViewPostInputBoundary {
 }
