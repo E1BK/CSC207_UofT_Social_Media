@@ -1,16 +1,22 @@
 package app;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
+
         AppBuilder appBuilder = new AppBuilder();
 
-        "Under JFrame application we initiate the GUI page i.e. .addLoginView()"
         JFrame application = appBuilder
-
+                .addLandingView()
+                .addSearchUserView()
+                .addMakePostUseCase()
+                .addSearchUserUseCase()
+                .build();
 
         application.pack();
+        application.setSize(1200, 800);
         application.setLocationRelativeTo(null);
         application.setVisible(true);
     }

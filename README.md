@@ -14,6 +14,8 @@ A social media app for the UofT community that allows students to login, make po
 6. By clicking the “People” button on the Landing Page, I would like to be taken to a Find People page, where I can search for users by their username.
 7. On the Find People Page, I would like to search for a user: if the user exists, I would like to see their profile; otherwise, I would like to see a “User Not Found” display.
 8. If I click on a user’s profile after searching for them, I would like to see all their posts and their bio.
+9. By clicking on a post I would like to view that post and the comments under it.
+10. I would like to leave comments on the post and like other comments.
 
 # Use Cases:
 
@@ -52,7 +54,7 @@ Use Case 2: Landing Page
 - Alternate Flow:
   - filler
 
-Use Case 3: See and Update Your Own Profile
+Use Case 3: Profile and Bio
 - Main Flow:
   - User clicks on the “me” button in landing page
   - User sets his/her Name
@@ -76,7 +78,7 @@ Use Case 5: Search for People
 - Alternate Flow:
   - filler
 
-Use Case 6: View Peoples Profiles
+Use Case 6: View Post/Comment
 - Main Flow:
   - filler
 - Alternate Flow:
@@ -84,6 +86,14 @@ Use Case 6: View Peoples Profiles
 
 # Minimum Viable Product Table:
 
+| Use Case                 | User Story          | Lead Developer |
+|--------------------------|---------------------|----------------|
+| Login, Signup, Sign out  | User Story 1 and 2  | Mike           |
+| Landing Page             | User Story 3        | Hasan          |
+| Profile and Bio          | User Story 4 and 8  | Julian         |
+| Make a Post              | User Story 5        | Hayden         |
+| Search system for people | User Story 6 and 7  | Russell        |
+| View Post/Comment        | User Story 9 and 10 | Ioane          |
 
 # API Specification
 

@@ -12,11 +12,12 @@ import org.json.JSONArray;
 import entity.User;
 import entity.UserFactory;
 import use_case.make_post.MakePostUserDataAccessInterface;
+import use_case.search_user.SearchUserDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DBUserDataAccessObject implements MakePostUserDataAccessInterface {
+public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, SearchUserDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
@@ -96,4 +97,9 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface {
         }
     }
 
+    // This method needs to be implemented
+    @Override
+    public User findUserByUsername(String username) {
+        return null;
+    }
 }
