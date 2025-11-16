@@ -2,8 +2,9 @@
 
 package View;
 
-import interface_adapter.landing.LandingViewModel;
+import interface_adapter.landing.LandingState;
 import interface_adapter.landing.MakePostController;
+import interface_adapter.landing.LandingViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     private final String viewName = "landing";
     private LandingViewModel landingViewModel;
+    private MakePostController makePostController = null;
 
     private final JLabel title;
     private final JLabel postBodyPrompt;
@@ -94,6 +96,18 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        people.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(people)) {
+                            System.out.println("CLICKED 'PEOPLE'!");
+                            makePostController.switchToPeopleView();
+
+                        }
+                    }
+                }
+        );
+
 
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
@@ -139,6 +153,10 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        final LandingState state = (LandingState) evt.getNewValue();
+    }
 
+    public void setMakePostController(MakePostController controller) {
+        this.makePostController = controller;
     }
 }

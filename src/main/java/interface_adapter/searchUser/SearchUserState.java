@@ -1,27 +1,23 @@
-package interface_adapter.landing;
+package interface_adapter.searchUser;
 
-import entity.Post;
+import entity.User;
 
 import java.util.ArrayList;
 
-/**
- * The State information representing the logged-in user.
- */
-public class LandingState {
-
+public class SearchUserState {
     private String username = "";
     private String password = "";
-    private ArrayList<Post> posts = new ArrayList<Post>();
+    private ArrayList<User> people = new ArrayList<User>();
 
     // the default no-arg constructor:
-    public LandingState() {
+    public SearchUserState() {
     }
 
     // the second constructor:
-    public LandingState(LandingState copy) {
+    public SearchUserState(SearchUserState copy) {
         username = copy.username;
         password = copy.password;
-        posts = copy.posts;
+        people = copy.people;
     }
 
     public String getUsername() {
@@ -40,14 +36,11 @@ public class LandingState {
         this.password = password;
     }
 
-    public ArrayList<Post> getPosts() {return posts;}
+    public ArrayList<User> getPeople() {return people;}
 
-    public void setPosts(ArrayList<Post> newPosts) {
-        posts.clear();
-        posts.addAll(newPosts);
+    public void setPeople(ArrayList<User> newPeople) {
+        people.clear();
+        people.addAll(newPeople);
     }
 
-//    public void addNewPost(Post p) {
-//        posts.add(p);
-//    }
 }

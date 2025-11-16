@@ -1,10 +1,8 @@
-// hasan
-package interface_adapter.landing;
+package interface_adapter.searchUser;
 
-import View.LandingView;
 import interface_adapter.ViewModel;
 
-public class LandingViewModel extends ViewModel<LandingState> {
+public class SearchUserViewModel extends ViewModel<SearchUserState> {
 
     public static final String TITLE_LABEL = "Welcome, user!";
 
@@ -14,9 +12,8 @@ public class LandingViewModel extends ViewModel<LandingState> {
     public static final String POSTS_BUTTON_LABEL = "Home"; // i.e. the landing page!
 
 
-    public LandingViewModel() {
-        super("landing");
-        setState(new LandingState());
+    public SearchUserViewModel() {
+        super("searchUser");
+        setState(new SearchUserState());
     }
-
 }

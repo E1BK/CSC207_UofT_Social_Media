@@ -1,7 +1,10 @@
 package app;
 
+import View.SearchUserView;
 import View.ViewManager;
 //import data_access.FileUserDataAccessObject;
+import data_access.DBUserDataAccessObject;
+import entity.PostFactory;
 import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
@@ -20,6 +23,12 @@ import interface_adapter.ViewManagerModel;
 //import use_case.change_password.ChangePasswordInteractor;
 //import use_case.change_password.ChangePasswordOutputBoundary;
 import View.LandingView;
+import interface_adapter.landing.MakePostController;
+import interface_adapter.landing.MakePostPresenter;
+import interface_adapter.searchUser.SearchUserViewModel;
+import use_case.make_post.MakePostInputBoundary;
+import use_case.make_post.MakePostInteractor;
+import use_case.make_post.MakePostOutputBoundary;
 //import use_case.login.LoginInputBoundary;
 //import use_case.login.LoginInteractor;
 //import use_case.login.LoginOutputBoundary;
@@ -41,13 +50,18 @@ public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
     final UserFactory userFactory = new UserFactory();
+    final PostFactory postFactory = new PostFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     public ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
 
+    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
     private LandingView landingView;
     private LandingViewModel landingViewModel;
+
+    private SearchUserView searchUserView;
+    private SearchUserViewModel searchUserViewModel;
 
 
     public AppBuilder() {
@@ -58,6 +72,25 @@ public class AppBuilder {
         landingViewModel = new LandingViewModel();
         landingView = new LandingView(landingViewModel);
         cardPanel.add(landingView, landingView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addSearchUserView() {
+        searchUserViewModel = new SearchUserViewModel();
+        searchUserView = new SearchUserView(searchUserViewModel);
+        cardPanel.add(searchUserView, searchUserView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addMakePostUseCase() {
+        final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
+                landingViewModel, searchUserViewModel);
+        System.out.println("HERE: " + searchUserViewModel.getViewName());
+        final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
+                userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
+
+        MakePostController makePostController = new MakePostController(makePostInteractor);
+        landingView.setMakePostController(makePostController);
         return this;
     }
 

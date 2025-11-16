@@ -6,17 +6,12 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
 
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        String[] fonts = ge.getAvailableFontFamilyNames();
-        for (String f : fonts) {
-            System.out.println(f);
-        }
-
-
         AppBuilder appBuilder = new AppBuilder();
 
         JFrame application = appBuilder
                 .addLandingView()
+                .addSearchUserView()
+                .addMakePostUseCase()
                 .build();
 
         application.pack();

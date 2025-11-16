@@ -2,6 +2,7 @@
 package interface_adapter.landing;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.searchUser.SearchUserViewModel;
 import use_case.make_post.MakePostInputBoundary;
 import use_case.make_post.MakePostOutputBoundary;
 import use_case.make_post.MakePostOutputData;
@@ -13,13 +14,16 @@ import use_case.make_post.MakePostOutputData;
 public class MakePostPresenter implements MakePostOutputBoundary {
 
     private final LandingViewModel landingViewModel;
+    private final SearchUserViewModel searchUserViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public MakePostPresenter(ViewManagerModel viewManagerModel,
-                             LandingViewModel landingViewModel) {
+                             LandingViewModel landingViewModel,
+                             SearchUserViewModel searchUserViewModel) {
 
         this.landingViewModel = landingViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.searchUserViewModel = searchUserViewModel;
 
     }
 
@@ -33,5 +37,12 @@ public class MakePostPresenter implements MakePostOutputBoundary {
     @Override
     public void prepareFailView(String errorMessage) {
         landingViewModel.firePropertyChange();
+    }
+
+    public void switchToPeopleView() {
+        System.out.println("surprise");
+        viewManagerModel.setState(searchUserViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
+        System.out.println("done");
     }
 }

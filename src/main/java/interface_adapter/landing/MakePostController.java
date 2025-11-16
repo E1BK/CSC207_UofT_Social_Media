@@ -3,6 +3,7 @@ package interface_adapter.landing;
 import entity.Post;
 import use_case.make_post.MakePostInputBoundary;
 import use_case.make_post.MakePostInputData;
+import use_case.make_post.MakePostInteractor;
 
 public class MakePostController {
 
@@ -21,5 +22,11 @@ public class MakePostController {
         final MakePostInputData makePostInputData = new MakePostInputData(p.getUsername(), p.getTitle(), p.getBody());
 
         makePostInteractor.execute(makePostInputData);
+    }
+
+    public void switchToPeopleView() {
+        System.out.println("hi");
+        MakePostInteractor temp = (MakePostInteractor) makePostInteractor;
+        temp.switchToPeopleView();
     }
 }
