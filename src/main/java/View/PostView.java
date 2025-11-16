@@ -22,36 +22,37 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
     private final JTextField commentInput;
     private final JButton postCommentButton;
 
-    // Comments (3 random)
+    // Labels for 3 random comments
     private final JLabel commentLabel1;
     private final JLabel commentLabel2;
     private final JLabel commentLabel3;
 
-    // Store all comments so we can choose 3 random
+    // All comments (view will pick 3 random)
     private List<String> allComments = new ArrayList<>();
 
     public PostView() {
-        // Top: Home + "Post"
+        // ----- TOP: Home + "Post" -----
         final JPanel titlePanel = new JPanel();
         homeButton = new JButton("Home");
         final JLabel titleInfo = new JLabel("Post");
         titlePanel.add(homeButton);
         titlePanel.add(titleInfo);
 
-        // Post title and body
-        final JPanel postPanel = new JPanel();
+        // ----- POST TITLE -----
+        final JPanel postTitlePanel = new JPanel();
         final JLabel postTitleInfo = new JLabel("Title: ");
         postTitle = new JLabel("Post Title");
-        postPanel.add(postTitleInfo);
-        postPanel.add(postTitle);
+        postTitlePanel.add(postTitleInfo);
+        postTitlePanel.add(postTitle);
 
-        final JPanel bodyPanel = new JPanel();
-        final JLabel bodyInfo = new JLabel("Body: ");
+        // ----- POST BODY -----
+        final JPanel postBodyPanel = new JPanel();
+        final JLabel postBodyInfo = new JLabel("Body: ");
         postBody = new JLabel("Post body goes here");
-        bodyPanel.add(bodyInfo);
-        bodyPanel.add(postBody);
+        postBodyPanel.add(postBodyInfo);
+        postBodyPanel.add(postBody);
 
-        // Comment input
+        // ----- COMMENT INPUT -----
         final JPanel commentInputPanel = new JPanel();
         final JLabel commentInfo = new JLabel("Comment: ");
         commentInput = new JTextField(20);
@@ -60,7 +61,7 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         commentInputPanel.add(commentInput);
         commentInputPanel.add(postCommentButton);
 
-        // 3 comment labels
+        // ----- 3 COMMENTS DISPLAY -----
         final JPanel commentsPanel = new JPanel();
         commentsPanel.setLayout(new BoxLayout(commentsPanel, BoxLayout.Y_AXIS));
         final JLabel commentsTitle = new JLabel("Comments:");
@@ -72,11 +73,11 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         commentsPanel.add(commentLabel2);
         commentsPanel.add(commentLabel3);
 
-        // Main layout
+        // ----- MAIN LAYOUT -----
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(titlePanel);
-        add(postPanel);
-        add(bodyPanel);
+        add(postTitlePanel);
+        add(postBodyPanel);
         add(commentInputPanel);
         add(commentsPanel);
     }
@@ -91,9 +92,9 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
         List<String> comments = new ArrayList<>();
         comments.add("Nice post!");
-        comments.add("Cool!");
-        comments.add("Love this.");
-        comments.add("This is another comment.");
+        comments.add("Cool idea.");
+        comments.add("Love this!");
+        comments.add("Fourth comment here.");
         view.setComments(comments);
 
         frame.add(view);
@@ -101,14 +102,14 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         frame.setVisible(true);
     }
 
-    // -------- Methods for presenter / controller --------
+    // ===== Methods for presenter / controller =====
 
     public void setPost(String title, String body) {
         postTitle.setText(title);
         postBody.setText(body);
     }
 
-    /** Presenter calls this with ALL comments for the post. */
+    /** Presenter calls this with ALL comments; view shows 3 random ones. */
     public void setComments(List<String> comments) {
         allComments = new ArrayList<>(comments);
         showThreeRandomComments();
@@ -130,7 +131,7 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         return postCommentButton;
     }
 
-    // -------- Internal: choose 3 random comments and show them --------
+    // ===== Internal: choose 3 random comments and show them =====
 
     private void showThreeRandomComments() {
         // Clear labels first
@@ -150,7 +151,7 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         if (copy.size() > 2) commentLabel3.setText(copy.get(2));
     }
 
-    // -------- Required by interfaces (can wire later) --------
+    // ===== Required by interfaces =====
 
     @Override
     public void actionPerformed(ActionEvent e) {

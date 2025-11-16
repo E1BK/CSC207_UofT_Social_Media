@@ -6,6 +6,7 @@ import entity.Comment;
 import java.util.List;
 
 public class ViewPostInteractor implements ViewPostInputBoundary {
+
     private final ViewPostDataAccessInterface viewPostDataAccess;
     private final ViewPostOutputBoundary viewPostPresenter;
 
