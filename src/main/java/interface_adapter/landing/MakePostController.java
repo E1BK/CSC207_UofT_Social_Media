@@ -25,7 +25,6 @@ public class MakePostController {
     }
 
     public void switchToPeopleView() {
-        System.out.println("hi");
         MakePostInteractor temp = (MakePostInteractor) makePostInteractor;
         temp.switchToPeopleView();
     }

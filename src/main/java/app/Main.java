@@ -12,6 +12,7 @@ public class Main {
                 .addLandingView()
                 .addSearchUserView()
                 .addMakePostUseCase()
+                .addSearchUserUseCase()
                 .build();
 
         application.pack();

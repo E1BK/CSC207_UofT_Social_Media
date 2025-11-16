@@ -1,6 +1,7 @@
 package use_case.search_user;
 
 import entity.User;
+import interface_adapter.searchUser.SearchUserPresenter;
 
 public class SearchUserInteractor implements SearchUserInputBoundary{
 
@@ -23,6 +24,11 @@ public class SearchUserInteractor implements SearchUserInputBoundary{
         else {
             searchUserPresenter.prepareSuccessView(foundUser);
         }
+    }
+
+    public void switchToLandingView() {
+        SearchUserPresenter temp = (SearchUserPresenter) searchUserPresenter;
+        temp.switchToLandingView();
     }
 
 }

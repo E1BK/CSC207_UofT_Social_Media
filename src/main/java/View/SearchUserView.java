@@ -21,14 +21,14 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
 
     private final JButton me;
     private final JButton people;
-    private final JButton posts;
+    private final JButton home;
 
     public SearchUserView(SearchUserViewModel searchUserViewModel) {
         this.searchUserViewModel = searchUserViewModel;
         this.searchUserViewModel.addPropertyChangeListener(this);
 
         // top panel
-        JLabel name = new JLabel("UofTeam");
+        JLabel name = new JLabel("UofTeam > People");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
         topPanel.add(name);
@@ -40,9 +40,9 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
 
         JLabel title = new JLabel("Find your friends here!");
         JPanel titlePanel = new JPanel();
+        title.setFont(new Font("Helvetica", Font.BOLD, 40));
         titlePanel.add(title);
 
-        title.setFont(new Font("Helvetica", Font.BOLD, 40));
         JTextField searchBar = new JTextField(20);
         JLabel searchPrompt = new JLabel("Your friend's username:");
         searchPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -68,16 +68,16 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         me.setFont(new Font("Helvetica", Font.BOLD, 15));
         people = new JButton(LandingViewModel.PEOPLE_BUTTON_LABEL);
         people.setFont(new Font("Helvetica", Font.BOLD, 15));
-        posts = new JButton(LandingViewModel.POSTS_BUTTON_LABEL);
-        posts.setFont(new Font("Helvetica", Font.BOLD, 15));
+        home = new JButton(LandingViewModel.POSTS_BUTTON_LABEL);
+        home.setFont(new Font("Helvetica", Font.BOLD, 15));
 
         me.setMargin(new Insets(10, 20, 10, 20));
-        posts.setMargin(new Insets(10, 20, 10, 20));
+        home.setMargin(new Insets(10, 20, 10, 20));
         people.setMargin(new Insets(10, 20, 10, 20));
         searchButton.setMargin(new Insets(6, 20, 6, 20));
         searchBar.setMargin(new Insets(10, 20, 10, 20));
 
-        bottomPanel.add(posts);
+        bottomPanel.add(home);
         bottomPanel.add(people);
         bottomPanel.add(me);
         bottomPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
@@ -86,16 +86,22 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         this.add(topPanel, BorderLayout.NORTH);
         this.add(middlePanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
+
+        // action listeners:
+
+        home.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(home)) {
+                            System.out.println("CLICKED 'HOME'!");
+                            searchUserController.switchToLandingView();
+
+                        }
+                    }
+                }
+        );
+
     }
-
-
-//    public void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        Graphics2D g2d = (Graphics2D) g;
-//        GradientPaint gradientPaint = new GradientPaint(0, 0, new Color(0x80ffdb), getWidth(), getHeight(), Color.CYAN);
-//        g2d.setPaint(gradientPaint);
-//        g2d.fillRect(0, 0, getWidth(), getHeight());
-//    };
 
 
     public String getViewName() {

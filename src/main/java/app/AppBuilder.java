@@ -25,10 +25,15 @@ import interface_adapter.ViewManagerModel;
 import View.LandingView;
 import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
+import interface_adapter.searchUser.SearchUserController;
+import interface_adapter.searchUser.SearchUserPresenter;
 import interface_adapter.searchUser.SearchUserViewModel;
 import use_case.make_post.MakePostInputBoundary;
 import use_case.make_post.MakePostInteractor;
 import use_case.make_post.MakePostOutputBoundary;
+import use_case.search_user.SearchUserInputBoundary;
+import use_case.search_user.SearchUserInteractor;
+import use_case.search_user.SearchUserOutputBoundary;
 //import use_case.login.LoginInputBoundary;
 //import use_case.login.LoginInteractor;
 //import use_case.login.LoginOutputBoundary;
@@ -85,12 +90,22 @@ public class AppBuilder {
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
                 landingViewModel, searchUserViewModel);
-        System.out.println("HERE: " + searchUserViewModel.getViewName());
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 
         MakePostController makePostController = new MakePostController(makePostInteractor);
         landingView.setMakePostController(makePostController);
+        return this;
+    }
+
+    public AppBuilder addSearchUserUseCase() {
+        final SearchUserOutputBoundary searchUserOutputBoundary =  new SearchUserPresenter(viewManagerModel,
+                landingViewModel, searchUserViewModel);
+        final SearchUserInputBoundary searchUserInteractor = new SearchUserInteractor(
+                userDataAccessObject, searchUserOutputBoundary);
+
+        SearchUserController searchUserController = new SearchUserController(searchUserInteractor);
+        searchUserView.setSearchUserController(searchUserController);
         return this;
     }
 

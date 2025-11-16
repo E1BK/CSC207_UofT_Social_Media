@@ -30,7 +30,7 @@ public class MakePostPresenter implements MakePostOutputBoundary {
     @Override
     public void prepareSuccessView(MakePostOutputData makePostOutputData) {
         // ????
-        // landingViewModel.getState().addNewPost(p);
+        // landingViewModel.getState().addNewPost(p); ???
         landingViewModel.firePropertyChange();
     }
 
@@ -40,9 +40,7 @@ public class MakePostPresenter implements MakePostOutputBoundary {
     }
 
     public void switchToPeopleView() {
-        System.out.println("surprise");
         viewManagerModel.setState(searchUserViewModel.getViewName());
         viewManagerModel.firePropertyChange();
-        System.out.println("done");
     }
 }
