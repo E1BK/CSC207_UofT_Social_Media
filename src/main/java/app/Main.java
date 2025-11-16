@@ -8,7 +8,13 @@ public class Main {
 
         
         JFrame application = appBuilder;
-
+                .addLoginView()
+                .addSignupView()
+                .addLoggedInView()
+                .addSignupUseCase()
+                .addLoginUseCase()
+                .addChangePasswordUseCase()
+                .build();
 
         application.pack();
         application.setLocationRelativeTo(null);
