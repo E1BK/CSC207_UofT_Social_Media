@@ -1,12 +1,10 @@
-//Ioane Bekurishvili
-
 package interface_adapter.view_post;
 
+import View.PostView;
 import entity.Comment;
 import entity.Post;
 import use_case.view_post.ViewPostOutputBoundary;
 import use_case.view_post.ViewPostOutputData;
-import View.PostView;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -23,26 +21,23 @@ public class ViewPostPresenter implements ViewPostOutputBoundary {
     @Override
     public void prepareSuccessView(ViewPostOutputData outputData) {
         Post post = outputData.getPost();
-        List<Comment> comments = outputData.getComments();
+        List<Comment> commentEntities = outputData.getComments();
 
-        // Set post title & body on the GUI
+        // Set post title and body in the GUI
         postView.setPost(post.getTitle(), post.getBody());
 
-        // Convert Comment entities to plain strings for the view
-        List<String> commentStrings = new ArrayList<>();
-        for (Comment c : comments) {
-            // You can include likes if you want, e.g. "body (likes: X)"
-            commentStrings.add(c.getBody());
+        // Convert Comment entities to Strings for the view
+        List<String> commentsAsText = new ArrayList<>();
+        for (Comment c : commentEntities) {
+            commentsAsText.add(c.getBody());
         }
 
-        // The PostView will randomly pick 3 to show
-        postView.setComments(commentStrings);
+        // PostView will pick 3 random comments to show
+        postView.setComments(commentsAsText);
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        // For now you might show a dialog, or set some label.
-        // Example:
         JOptionPane.showMessageDialog(null, errorMessage);
     }
 }
