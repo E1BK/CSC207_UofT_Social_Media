@@ -64,6 +64,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface {
 
         JSONObject JSONInfo = new JSONObject()
                 .put("bio", user.getBio())
+                .put("email", user.getEmail())
                 .put("posts", JSONPostArray);
 
         final JSONObject requestBody = new JSONObject()
