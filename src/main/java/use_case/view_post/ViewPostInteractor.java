@@ -7,28 +7,27 @@ import java.util.List;
 
 public class ViewPostInteractor implements ViewPostInputBoundary {
 
-    private final ViewPostDataAccessInterface viewPostDataAccess;
-    private final ViewPostOutputBoundary viewPostPresenter;
+    private final ViewPostDataAccessInterface dataAccess;
+    private final ViewPostOutputBoundary presenter;
 
-    public ViewPostInteractor(ViewPostDataAccessInterface viewPostDataAccess,
-                              ViewPostOutputBoundary viewPostPresenter) {
-        this.viewPostDataAccess = viewPostDataAccess;
-        this.viewPostPresenter = viewPostPresenter;
+    public ViewPostInteractor(ViewPostDataAccessInterface dataAccess,
+                              ViewPostOutputBoundary presenter) {
+        this.dataAccess = dataAccess;
+        this.presenter = presenter;
     }
 
     @Override
-    public void execute(ViewPostInputData viewPostInputData) {
-        String postId = viewPostInputData.getPostId();
+    public void execute(ViewPostInputData inputData) {
+        String postId = inputData.getPostId();
 
-        if (!viewPostDataAccess.existsPost(postId)) {
-            viewPostPresenter.prepareFailView("Post not found.");
+        if (!dataAccess.existsPost(postId)) {
+            presenter.prepareFailView("Post not found.");
             return;
         }
 
-        Post post = viewPostDataAccess.getPost(postId);
-        List<Comment> comments = viewPostDataAccess.getCommentsForPost(postId);
+        Post post = dataAccess.getPost(postId);
+        List<Comment> comments = post.getComments();
 
-        ViewPostOutputData outputData = new ViewPostOutputData(post, comments);
-        viewPostPresenter.prepareSuccessView(outputData);
+        presenter.prepareSuccessView(new ViewPostOutputData(post, comments));
     }
 }

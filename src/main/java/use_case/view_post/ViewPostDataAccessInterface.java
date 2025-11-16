@@ -1,26 +1,26 @@
 package use_case.view_post;
 
 import entity.Post;
-import entity.Comment;
 
-import java.util.List;
-
+/**
+ * Data access for viewing a post.
+ *
+ * Typical implementation:
+ * - Reads from Grade API "user_repository_*" user to get all usernames.
+ * - For each username, loads that user's info.posts array.
+ * - Finds the Post with the given postId, constructs an entity.Post
+ *   (and its Comment entities) and returns it.
+ */
 public interface ViewPostDataAccessInterface {
+
     /**
-     * @param postId ID of the post
-     * @return true if the post exists.
+     * Returns true if a post with this ID exists somewhere in the system
+     * (i.e., under any user's info.posts in the Grade API).
      */
     boolean existsPost(String postId);
 
     /**
-     * @param postId ID of the post
-     * @return the Post entity for that ID.
+     * Loads the Post (including its comments) from Grade API via the user repository.
      */
     Post getPost(String postId);
-
-    /**
-     * @param postId ID of the post
-     * @return list of comments for that post.
-     */
-    List<Comment> getCommentsForPost(String postId);
 }
