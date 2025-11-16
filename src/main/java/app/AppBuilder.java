@@ -2,7 +2,13 @@ package app;
 
 //import data_access.FileUserDataAccessObject;
 import View.SearchUserView;
-import View.ViewManager;
+import interface_adapter.profile.ProfilePresenter;
+import interface_adapter.profile.ProfileViewModel;
+import use_case.profile.ProfileInputBoundary;
+import use_case.profile.ProfileInteractor;
+import use_case.profile.ProfileOutputBoundary;
+import view.ProfileView;
+import view.ViewManager;
 //import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.PostFactory;
@@ -10,7 +16,7 @@ import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
 import view.LandingView;
-import interface_adapter.landing.MakePostController;
+import interface_adapter.make_post.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
 import interface_adapter.searchUser.SearchUserController;
 import interface_adapter.searchUser.SearchUserPresenter;
@@ -49,8 +55,11 @@ public class AppBuilder {
 
     final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
+    // Add View Models
     private LandingView landingView;
     private LandingViewModel landingViewModel;
+    private ProfileView profileView;
+    private ProfileViewModel profileViewModel;
 
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
@@ -74,14 +83,32 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addProfileView() {
+        profileViewModel = new ProfileViewModel();
+        profileView = new ProfileView(profileViewModel);
+        cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel);
+                                                                                    landingViewModel,
+                                                                                    searchUserViewModel,
+                                                                                    profileViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
+//        final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel,
+//                                                                                 landingViewModel,
+//                                                                                 searchUserViewModel,
+//                                                                                 profileViewModel);
+//        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
+//                                                                                   profileOutputBoundary,
+//                                                                                   userFactory,
+//                                                                                   postFactory);
 
         MakePostController makePostController = new MakePostController(makePostInteractor);
         landingView.setMakePostController(makePostController);
+//        profileView.setMakePostController(makePostController);
         return this;
     }
 
@@ -102,25 +129,9 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(landingView.getViewName());
+        viewManagerModel.setState(profileView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;
-    }
-    final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
-    // Add View Models
-    private ProfileView profileView;
-    private ProfileViewModel profileViewModel;
-
-//
-//    public AppBuilder() { cardPanel.setLayout(cardLayout); }
-//
-    public AppBuilder addProfileView() {
-        profileViewModel = new ProfileViewModel();
-        profileView = new ProfileView();
-        cardPanel.add(profileView, profileView.getViewName());
-        return this;
     }
 }

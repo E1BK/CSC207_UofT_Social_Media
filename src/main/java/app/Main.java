@@ -13,6 +13,7 @@ public class Main {
                 .addSearchUserView()
                 .addMakePostUseCase()
                 .addSearchUserUseCase()
+                .addProfileView()
                 .build();
 
         application.pack();

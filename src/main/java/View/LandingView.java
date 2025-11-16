@@ -1,11 +1,12 @@
 // hasan
 
-package View;
+package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingState;
-import interface_adapter.landing.MakePostController;
+import interface_adapter.make_post.MakePostController;
 import interface_adapter.landing.LandingViewModel;
+import interface_adapter.profile.ProfileController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -22,12 +23,13 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final String viewName = "landing";
     private LandingViewModel landingViewModel;
     private MakePostController makePostController = null;
+    private ProfileController profileController = null;
 
 //    private final JTextField postBody;
     private final JTextArea postBody;
     private final JButton makePost;
 
-    private final JButton me;
+    private final JButton profile;
     private final JButton people;
     private final JButton home;
 
@@ -77,21 +79,21 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
         // bottom panel
         GradientPanel bottomPanel = new GradientPanel();
-        me = new JButton(LandingViewModel.ME_BUTTON_LABEL);
-        me.setFont(new Font("Helvetica", Font.BOLD, 15));
+        profile = new JButton(LandingViewModel.ME_BUTTON_LABEL);
+        profile.setFont(new Font("Helvetica", Font.BOLD, 15));
         people = new JButton(LandingViewModel.PEOPLE_BUTTON_LABEL);
         people.setFont(new Font("Helvetica", Font.BOLD, 15));
         home = new JButton(LandingViewModel.POSTS_BUTTON_LABEL);
         home.setFont(new Font("Helvetica", Font.BOLD, 15));
 
-        me.setMargin(new Insets(10, 20, 10, 20));
+        profile.setMargin(new Insets(10, 20, 10, 20));
         home.setMargin(new Insets(10, 20, 10, 20));
         people.setMargin(new Insets(10, 20, 10, 20));
 
 
         bottomPanel.add(home);
         bottomPanel.add(people);
-        bottomPanel.add(me);
+        bottomPanel.add(profile);
         bottomPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
         //
@@ -103,11 +105,12 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
 
         // action listeners:
-        me.addActionListener(
+        profile.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(me)) {
+                        if (evt.getSource().equals(profile)) {
                             System.out.println("CLICKED 'ME'!");
+                            profileController.switchToProfileView();
                         }
                     }
                 }
@@ -119,13 +122,10 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                         if (evt.getSource().equals(people)) {
                             System.out.println("CLICKED 'PEOPLE'!");
                             makePostController.switchToPeopleView();
-
                         }
                     }
                 }
         );
-
-
     }
 
     public String getViewName() {

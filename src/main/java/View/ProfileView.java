@@ -1,8 +1,10 @@
 // Julian
 package view;
 
-import interface_adapter.make_post.PostController;
+import interface_adapter.landing.LandingViewModel;
+import interface_adapter.make_post.MakePostController;
 import interface_adapter.profile.ProfileController;
+import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.user_search.SearchController;
 
 import javax.swing.*;
@@ -16,10 +18,11 @@ import java.beans.PropertyChangeListener;
  */
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     // Variables
+    private ProfileViewModel profileViewModel;
     private String viewName = "profile";
     private ProfileController profileController;
     private SearchController searchController;
-    private PostController postController;
+    private MakePostController makePostController;
 
     // Labels
     private final JLabel username;
@@ -31,7 +34,10 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JButton searchButton;
     private final JButton profileButton;
 
-    public ProfileView() {
+    public ProfileView(ProfileViewModel profileViewModel) {
+        this.profileViewModel = profileViewModel;
+        profileViewModel.addPropertyChangeListener(this);
+
         // Add page title
         final JPanel title = new JPanel();
         final JLabel titleInfo = new JLabel("Profiles");
@@ -82,7 +88,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         JFrame frame = new JFrame("Profile View");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        frame.add(new ProfileView());
+        frame.add(new ProfileView(new ProfileViewModel()));
 
         frame.pack();
         frame.setVisible(true);
@@ -92,9 +98,11 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
 
-        if (e.getSource().equals(postsButton)) { postController.execute(); }
-        else if (e.getSource().equals(searchButton)){ searchController.execute(); }
-        else if (e.getSource().equals(profileButton)){ profileController.execute(); }
+        if (e.getSource().equals(postsButton)) {  }
+        else if (e.getSource().equals(searchButton)) {
+            makePostController.switchToPeopleView();
+            }
+        //else if (e.getSource().equals(profileButton)){ profileController.execute(); }
     }
 
     @Override
@@ -105,4 +113,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public String getViewName() {
         return viewName;
     }
+
+    public void setMakePostController(interface_adapter.make_post.MakePostController controller) {
+        this.makePostController = controller;
+    }
 }
+
