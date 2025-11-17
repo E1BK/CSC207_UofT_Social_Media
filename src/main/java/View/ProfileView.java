@@ -69,6 +69,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         buttons.add(searchButton);
         buttons.add(profileButton);
 
+        // Adds functionality to the buttons
         back.addActionListener(
                 new ActionListener() {
                     @Override
@@ -78,9 +79,32 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
-        postsButton.addActionListener(this);
-        searchButton.addActionListener(this);
-        profileButton.addActionListener(this);
+        postsButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    profileController.switchToPostView();
+                }
+            }
+        );
+
+        searchButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    profileController.switchToSearchView();
+                }
+            }
+        );
+
+        profileButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    profileController.switchToMyProfileView();
+                }
+            }
+        );
 
         // Creates frame
         this.setLayout( new BoxLayout(this, BoxLayout.Y_AXIS) );

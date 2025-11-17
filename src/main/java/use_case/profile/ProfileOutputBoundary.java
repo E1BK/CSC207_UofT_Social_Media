@@ -5,4 +5,7 @@ public interface ProfileOutputBoundary {
     void prepareFailView(String errorMessage);
 
     void switchToLandingView();
+    void switchToSearchView();
+    void switchToPostView();
+    void switchToMyProfileView();
 }

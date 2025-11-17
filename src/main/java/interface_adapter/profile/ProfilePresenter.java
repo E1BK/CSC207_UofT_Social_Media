@@ -10,6 +10,9 @@ public class ProfilePresenter implements ProfileOutputBoundary {
 
     private final ProfileViewModel profileViewModel;
     private final SearchUserViewModel searchUserViewModel;
+    // To implement
+//    private final PostViewModel postViewModel;
+//    private final MyProfileModel myProfileModel;
     private final ViewManagerModel viewManagerModel;
     private final LandingViewModel landingViewModel;
 
@@ -34,9 +37,21 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         viewManagerModel.firePropertyChange();
     }
 
-    public void switchToSearchUserView() {
+    public void switchToSearchView() {
         viewManagerModel.setState(searchUserViewModel.getViewName());
         viewManagerModel.firePropertyChange();
+    }
+
+    @Override
+    public void switchToPostView() {
+//        viewManagerModel.setState(postViewModel.getViewName());
+//        viewManagerModel.firePropertyChange();
+    }
+
+    @Override
+    public void switchToMyProfileView() {
+//        viewManagerModel.setState(myProfileModel.getViewName());
+//        viewManagerModel.firePropertyChange();
     }
 
     public void switchToLandingView() {

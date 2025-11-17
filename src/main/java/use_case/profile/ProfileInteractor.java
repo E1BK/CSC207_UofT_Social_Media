@@ -30,8 +30,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
 
     }
 
-    // hasan: this method must be here, because "making a post" and
-    // "switching to People view" occur on the same screen (i.e. on the Landing Page!)
+    // Switches between views
     public void switchToProfileView() {
         ProfilePresenter temp = (ProfilePresenter) profilePresenter;
         System.out.println("bye");
@@ -40,5 +39,17 @@ public class ProfileInteractor implements ProfileInputBoundary {
 
     public void switchToLandingView() {
         profilePresenter.switchToLandingView();
+    }
+
+    public void switchToSearchView() {
+        profilePresenter.switchToSearchView();
+    }
+
+    public void switchToPostView() {
+        profilePresenter.switchToPostView();
+    }
+
+    public void switchToMyProfileView() {
+        profilePresenter.switchToMyProfileView();
     }
 }

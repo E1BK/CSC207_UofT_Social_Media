@@ -32,4 +32,7 @@ public class ProfileController {
     }
 
     public void switchToLandingView() { profileInteractor.switchToLandingView(); }
+    public void switchToSearchView() { profileInteractor.switchToSearchView(); }
+    public void switchToPostView() { profileInteractor.switchToPostView(); }
+    public void switchToMyProfileView() { profileInteractor.switchToMyProfileView(); }
 }
