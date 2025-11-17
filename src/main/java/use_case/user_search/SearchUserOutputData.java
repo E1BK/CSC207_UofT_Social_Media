@@ -2,7 +2,7 @@ package use_case.user_search;
 
 import java.util.List;
 
-// 存匹配到的用户名列表 holds the list of matched usernames
+// holds the list of matched usernames
 public class SearchUserOutputData {
 
     private final List<String> matchedUsernames; // 匹配到的用户名. matched usernames

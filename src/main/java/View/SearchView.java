@@ -64,7 +64,6 @@ public class SearchView extends JPanel implements ActionListener, PropertyChange
         searchButton.addActionListener(this);
     }
 
-    // 方便单独测试界面, for quick UI test
     public static void main(String[] args) {
         JFrame frame = new JFrame("Search View");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
