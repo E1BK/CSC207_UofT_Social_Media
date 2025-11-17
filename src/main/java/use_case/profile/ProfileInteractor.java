@@ -37,4 +37,8 @@ public class ProfileInteractor implements ProfileInputBoundary {
         System.out.println("bye");
         temp.switchToProfileView();
     }
+
+    public void switchToLandingView() {
+        profilePresenter.switchToLandingView();
+    }
 }

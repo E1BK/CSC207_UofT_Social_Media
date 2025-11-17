@@ -13,7 +13,7 @@ public class ProfileController {
 
     private final ProfileInputBoundary profileInteractor;
 
-    public ProfileController(ProfileInteractor profileInteractor) {
+    public ProfileController(ProfileInputBoundary profileInteractor) {
         this.profileInteractor = profileInteractor;
     }
 
@@ -30,4 +30,6 @@ public class ProfileController {
         ProfileInteractor temp = (ProfileInteractor) profileInteractor;
         temp.switchToProfileView();
     }
+
+    public void switchToLandingView() { profileInteractor.switchToLandingView(); }
 }

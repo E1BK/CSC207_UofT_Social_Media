@@ -14,6 +14,7 @@ public class Main {
                 .addMakePostUseCase()
                 .addSearchUserUseCase()
                 .addProfileView()
+                .addProfileUseCase()
                 .build();
 
         application.pack();

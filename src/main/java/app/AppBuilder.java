@@ -2,6 +2,7 @@ package app;
 
 //import data_access.FileUserDataAccessObject;
 import View.SearchUserView;
+import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
 import use_case.profile.ProfileInputBoundary;
@@ -90,6 +91,21 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addProfileUseCase() {
+        final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel,
+                                                                                 landingViewModel,
+                                                                                 searchUserViewModel,
+                                                                                 profileViewModel);
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
+                                                                                   profileOutputBoundary,
+                                                                                   userFactory,
+                                                                                   postFactory);
+        ProfileController controller = new ProfileController(profileInteractor);
+        profileView.setProfileController(controller);
+        return this;
+
+    }
+
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
                                                                                     landingViewModel,
@@ -97,18 +113,9 @@ public class AppBuilder {
                                                                                     profileViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
-//        final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel,
-//                                                                                 landingViewModel,
-//                                                                                 searchUserViewModel,
-//                                                                                 profileViewModel);
-//        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
-//                                                                                   profileOutputBoundary,
-//                                                                                   userFactory,
-//                                                                                   postFactory);
 
         MakePostController makePostController = new MakePostController(makePostInteractor);
         landingView.setMakePostController(makePostController);
-//        profileView.setMakePostController(makePostController);
         return this;
     }
 

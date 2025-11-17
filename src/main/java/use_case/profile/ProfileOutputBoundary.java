@@ -1,6 +1,8 @@
 package use_case.profile;
 
 public interface ProfileOutputBoundary {
-    public void prepareSuccessView(ProfileOutputData makePostOutputData);
-    public void prepareFailView(String errorMessage);
+    void prepareSuccessView(ProfileOutputData makePostOutputData);
+    void prepareFailView(String errorMessage);
+
+    void switchToLandingView();
 }

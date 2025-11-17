@@ -4,6 +4,7 @@ package view;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.make_post.MakePostController;
 import interface_adapter.profile.ProfileController;
+import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.user_search.SearchController;
 
@@ -68,7 +69,14 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         buttons.add(searchButton);
         buttons.add(profileButton);
 
-        back.addActionListener(this);
+        back.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        profileController.switchToLandingView();
+                    }
+                }
+        );
 
         postsButton.addActionListener(this);
         searchButton.addActionListener(this);
@@ -83,16 +91,16 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         this.add(buttons);
     }
 
-    public static void main(String[] args) {
-        // For testing
-        JFrame frame = new JFrame("Profile View");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        frame.add(new ProfileView(new ProfileViewModel()));
-
-        frame.pack();
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        // For testing
+//        JFrame frame = new JFrame("Profile View");
+//        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//
+//        frame.add(new ProfileView(new ProfileViewModel()));
+//
+//        frame.pack();
+//        frame.setVisible(true);
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -114,8 +122,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         return viewName;
     }
 
-    public void setMakePostController(interface_adapter.make_post.MakePostController controller) {
-        this.makePostController = controller;
-    }
+    public void setProfileController(ProfileController controller) { this.profileController = controller; }
 }
 
