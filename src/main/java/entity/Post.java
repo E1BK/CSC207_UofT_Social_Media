@@ -31,6 +31,16 @@ public class Post{
         this.comments = comments;
     }
 
+
+    public Post(int post_id, String username, String title, String body, String postDate){
+        this.username = username;
+        this.post_id = post_id;
+        this.title = title;
+        this.body = body;
+        this.post_date = postDate;
+        this.comments = new ArrayList<Comment>();
+    }
+
     public int getPost_id() {
         return post_id;
     }

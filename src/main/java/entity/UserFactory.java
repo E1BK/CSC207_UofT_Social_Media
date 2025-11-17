@@ -6,4 +6,8 @@ public class UserFactory{
     public User create(String username, String password, String bio, String email, String name, ArrayList<Post> posts){
         return new User(username, password, bio, email, name, posts);
     }
+
+    public User create(String username, String password, String email, String name){
+        return new User(username, password, email, name);
+    }
 }

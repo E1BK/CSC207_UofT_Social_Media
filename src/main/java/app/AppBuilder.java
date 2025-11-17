@@ -12,6 +12,7 @@ import view.ProfileView;
 import view.ViewManager;
 //import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
+import entity.CommentFactory;
 import entity.PostFactory;
 import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
@@ -50,11 +51,12 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     final UserFactory userFactory = new UserFactory();
     final PostFactory postFactory = new PostFactory();
+    final CommentFactory commentFactory = new CommentFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     public ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
 
-    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory);
 
     // Add View Models
     private LandingView landingView;
