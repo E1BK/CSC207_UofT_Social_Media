@@ -9,6 +9,8 @@ import interface_adapter.landing.LandingViewModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +26,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private MakePostController makePostController = null;
 
 //    private final JTextField postBody;
+    private final JTextField postTitle;
     private final JTextArea postBody;
     private final JButton makePost;
 
@@ -54,6 +57,11 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         titlePanel.add(title);
         titlePanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
+        postTitle = new JTextField();
+        postTitle.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        postTitle.setMaximumSize(new Dimension(300, 40));
+        postTitle.setPreferredSize(new Dimension(300, 40));
+
         postBody = new JTextArea();
         postBody.setFont(new Font("Helvetica", Font.PLAIN, 20));
         postBody.setMinimumSize(new Dimension(300, 200));
@@ -63,11 +71,13 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         makePost = new JButton(LandingViewModel.MAKE_POST_BUTTON_LABEL);
         makePost.setFont(new Font("Helvetica", Font.BOLD, 20));
         makePost.setMargin(new Insets(10, 20, 10, 20));
+        postTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         postBody.setAlignmentX(Component.CENTER_ALIGNMENT);
         makePost.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
+        postPanel.add(postTitle);
         postPanel.add(postBody);
         postPanel.add(makePost);
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -125,6 +135,66 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        makePost.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(makePost)) {
+                            System.out.println("CLICKED 'MAKE POST'!");
+                            final LandingState landingState = landingViewModel.getState();
+                            makePostController.execute(landingState.getUsername(),
+                                                        landingState.getNewpost_title(),
+                                                        landingState.getNewpost_body());
+                        }
+                    }
+                }
+        );
+
+        // Document Listeners
+        postBody.getDocument().addDocumentListener( new DocumentListener() {
+            private void documentListenerHelper() {
+                final LandingState landingState = landingViewModel.getState();
+                landingState.setNewpost_body(postBody.getText());
+                landingViewModel.setState(landingState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+
+        postTitle.getDocument().addDocumentListener( new DocumentListener() {
+            private void documentListenerHelper() {
+                final LandingState landingState = landingViewModel.getState();
+                landingState.setNewpost_title(postTitle.getText());
+                landingViewModel.setState(landingState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
 
     }
 

@@ -18,7 +18,15 @@ public class User {
         this.email = email;
         this.name = name;
         this.posts = posts;
+    }
 
+    public User(String username, String password, String email, String name) {
+        this.username = username;
+        this.password = password;
+        this.bio = "";
+        this.email = email;
+        this.name = name;
+        this.posts = new ArrayList<Post>();
     }
 
     public String getUsername() {
@@ -42,5 +50,9 @@ public class User {
     }
 
     public String getName() { return name; }
+
+    public void addPost(Post post) {
+        posts.add(post);
+    }
 }
 
