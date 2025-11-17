@@ -2,16 +2,20 @@ package app;
 
 import javax.swing.*;
 
+import View.SearchView;
+
 public class Main {
     public static void main(String[] args) {
-        AppBuilder appBuilder = new AppBuilder();
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("UofT Social Media");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        
-        JFrame application = appBuilder;
 
+            frame.setContentPane(new SearchView());
 
-        application.pack();
-        application.setLocationRelativeTo(null);
-        application.setVisible(true);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
 }
