@@ -1,22 +1,25 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
-import View.SearchUserView;
+import interface_adapter.my_profile.MyProfileController;
+import interface_adapter.my_profile.MyProfilePresenter;
+import interface_adapter.my_profile.MyProfileViewModel;
+import use_case.my_profile.MyProfileInputBoundary;
+import use_case.my_profile.MyProfileInteractor;
+import use_case.my_profile.MyProfileOutputBoundary;
+import view.*;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
-import view.ProfileView;
-import view.ViewManager;
 //import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.PostFactory;
 import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
-import view.LandingView;
 import interface_adapter.make_post.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
 import interface_adapter.searchUser.SearchUserController;
@@ -61,7 +64,8 @@ public class AppBuilder {
     private LandingViewModel landingViewModel;
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
-
+    private MyProfileView myProfileView;
+    private MyProfileViewModel myProfileViewModel;
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
 
@@ -106,6 +110,28 @@ public class AppBuilder {
 
     }
 
+    public AppBuilder addMyProfileView() {
+        myProfileViewModel = new MyProfileViewModel();
+        myProfileView = new MyProfileView(myProfileViewModel);
+        cardPanel.add(myProfileView, myProfileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addMyProfileUseCase() {
+        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(viewManagerModel,
+                                                                                       landingViewModel,
+                                                                                       searchUserViewModel,
+                                                                                       myProfileViewModel);
+        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(userDataAccessObject,
+                                                                                   myProfileOutputBoundary,
+                                                                                   userFactory,
+                                                                                   postFactory);
+        MyProfileController controller = new MyProfileController(myProfileInteractor);
+        myProfileView.setProfileController(controller);
+        return this;
+
+    }
+
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
                                                                                     landingViewModel,
@@ -136,7 +162,7 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(profileView.getViewName());
+        viewManagerModel.setState(myProfileView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;

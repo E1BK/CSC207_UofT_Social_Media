@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import entity.User;
 import entity.UserFactory;
 import use_case.make_post.MakePostUserDataAccessInterface;
+import use_case.my_profile.MyProfileUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 
@@ -20,7 +21,8 @@ import java.util.ArrayList;
 
 public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                                                SearchUserDataAccessInterface,
-                                               ProfileUserDataAccessInterface {
+                                               ProfileUserDataAccessInterface,
+                                               MyProfileUserDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;

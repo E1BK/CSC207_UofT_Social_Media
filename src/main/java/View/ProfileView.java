@@ -1,7 +1,6 @@
 // Julian
 package view;
 
-import interface_adapter.landing.LandingViewModel;
 import interface_adapter.make_post.MakePostController;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
@@ -22,8 +21,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private ProfileViewModel profileViewModel;
     private String viewName = "profile";
     private ProfileController profileController;
-    private SearchController searchController;
-    private MakePostController makePostController;
 
     // Labels
     private final JLabel username;
@@ -41,7 +38,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         // Add page title
         final JPanel title = new JPanel();
-        final JLabel titleInfo = new JLabel("Profiles");
+        final JLabel titleInfo = new JLabel("Profile");
         back = new JButton ("Back");
         title.add(back);
         title.add(titleInfo);
@@ -129,12 +126,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
-
-        if (e.getSource().equals(postsButton)) {  }
-        else if (e.getSource().equals(searchButton)) {
-            makePostController.switchToPeopleView();
-            }
-        //else if (e.getSource().equals(profileButton)){ profileController.execute(); }
     }
 
     @Override
