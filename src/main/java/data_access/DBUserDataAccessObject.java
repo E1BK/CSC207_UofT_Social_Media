@@ -26,8 +26,13 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, 
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String POST_ID = "post_id";
-    private static final String POST_TITLE = "title";
-    private static final String POST_BODY = "body";
+    private static final String POST_TITLE = "post_title";
+    private static final String POST_BODY = "post_body";
+    private static final String POST_DATE = "post_date";
+    private static final String COMMENT_LIKES = "comment_likes";
+    private static final String COMMENT_ID = "comment_id";
+    private static final String COMMENT_BODY = "comment_body";
+    private static final String COMMENT_DATE = "comment_date";
     private static final String MESSAGE = "message";
 
 
@@ -37,7 +42,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, 
         this.userFactory = userFactory;
     }
 
-    public void makePost(User user){
+    public void save(User user){
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
 
@@ -49,9 +54,10 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, 
             ArrayList<Comment> comments = post.getComments();
             for (Comment comment : comments) {
                 JSONObject JSONCommentObject = new JSONObject()
-                        .put("comment_id", comment.getComment_id())
-                        .put("comment_body", comment.getBody())
-                        .put("likes", comment.getLikes());
+                        .put(COMMENT_ID, comment.getComment_id())
+                        .put(COMMENT_BODY, comment.getComment_body())
+                        .put(COMMENT_DATE, comment.getComment_date())
+                        .put(COMMENT_LIKES, comment.getLikes());
                 JSONCommentArray.put(JSONCommentObject);
             }
 
@@ -59,6 +65,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, 
                     .put(POST_ID, post.getPost_id())
                     .put(POST_TITLE, post.getTitle())
                     .put(POST_BODY, post.getBody())
+                    .put(POST_DATE, post.getPost_date())
                     .put("comments", JSONCommentArray);
             JSONPostArray.put(JSONPost);
         }
@@ -66,6 +73,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, 
         JSONObject JSONInfo = new JSONObject()
                 .put("bio", user.getBio())
                 .put("email", user.getEmail())
+                .put("name", user.getName())
                 .put("posts", JSONPostArray);
 
         final JSONObject requestBody = new JSONObject()

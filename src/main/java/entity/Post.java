@@ -8,6 +8,7 @@ public class Post{
     private final int post_id;
     private final String title;
     private final String body;
+    private final String post_date;
     private final ArrayList<Comment> comments;
     // other attributes that should be added later:
     // createdAt
@@ -21,11 +22,12 @@ public class Post{
      * @param body the body of content
      * @param comments any comments that this post has
      */
-    public Post(int post_id, String username, String title, String body, ArrayList<Comment> comments){
+    public Post(int post_id, String username, String title, String body, String postDate, ArrayList<Comment> comments){
         this.post_id = post_id;
         this.username = username;
         this.title = title;
         this.body = body;
+        this.post_date = postDate;
         this.comments = comments;
     }
 
@@ -41,6 +43,10 @@ public class Post{
 
     public String getTitle() {
         return title;
+    }
+
+    public String getPost_date() {
+        return post_date;
     }
 
     public ArrayList<Comment> getComments() {
