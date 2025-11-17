@@ -8,14 +8,17 @@ public class User {
     private final String password;
     private final String bio;
     private final String email;
+    private final String name;
     private final ArrayList<Post> posts;
 
-    public User(String username, String password, String bio, String email, ArrayList<Post> posts){
+    public User(String username, String password, String bio, String email, String name, ArrayList<Post> posts) {
         this.username = username;
         this.password = password;
         this.bio = bio;
         this.email = email;
+        this.name = name;
         this.posts = posts;
+
     }
 
     public String getUsername() {
@@ -37,5 +40,7 @@ public class User {
     public ArrayList<Post> getPosts() {
         return posts;
     }
+
+    public String getName() { return name; }
 }
 
