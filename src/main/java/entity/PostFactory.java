@@ -9,8 +9,9 @@ public class PostFactory{
             int post_id,
             String title,
             String body,
+            String post_date,
             ArrayList<Comment> comments) {
 
-        return new Post(post_id, username, title, body, comments);
+        return new Post(post_id, username, title, body, post_date, comments);
     }
 }
