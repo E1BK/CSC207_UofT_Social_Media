@@ -3,8 +3,8 @@ package interface_adapter.signup;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
-import use_case.signup.SignupOutputBoundary;
-import use_case.signup.SignupOutputData;
+import use_case.login_signup.signup.SignupOutputBoundary;
+import use_case.login_signup.signup.SignupOutputData;
 
 /**
  * The Presenter for the Signup Use Case.
@@ -37,7 +37,22 @@ public class SignupPresenter implements SignupOutputBoundary {
     @Override
     public void prepareFailView(String error) {
         final SignupState signupState = signupViewModel.getState();
-        signupState.setUsernameError(error);
+        signupState.setUsernameError(null);
+        signupState.setEmailError(null);
+        signupState.setNameError(null);
+        signupState.setPasswordError(null);
+
+        if (error.contains("email")) {
+            signupState.setEmailError(error);
+        } else if (error.contains("username")) {
+            signupState.setUsernameError(error);
+        } else if (error.contains("name")) {
+            signupState.setNameError(error);
+        } else if (error.contains("password")) {
+            signupState.setPasswordError(error);
+        } else {
+            signupState.setUsernameError(error);
+        }
         signupViewModel.firePropertyChange();
     }
 

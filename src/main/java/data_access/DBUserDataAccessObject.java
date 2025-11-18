@@ -22,6 +22,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     private static final int SUCCESS_CODE = 200;
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
+    private static final String EMAIL = "email";
+    private static final String NAME = "name";
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String POST_ID = "post_id";
