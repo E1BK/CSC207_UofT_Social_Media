@@ -66,7 +66,7 @@ public class AppBuilder {
     private ProfileViewModel profileViewModel;
     private MyProfileView myProfileView;
     private MyProfileViewModel myProfileViewModel;
-    private SearchUserView searchUserView;
+    private view.SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
 
 
