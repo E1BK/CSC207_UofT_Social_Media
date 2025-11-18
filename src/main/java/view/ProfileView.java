@@ -2,7 +2,7 @@
 package view;
 
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.make_post.MakePostController;
+import interface_adapter.landing.MakePostController;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;

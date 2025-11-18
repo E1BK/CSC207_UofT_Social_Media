@@ -1,7 +1,7 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
-import View.SearchUserView;
+import view.SearchUserView;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
@@ -18,7 +18,7 @@ import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
 import view.LandingView;
-import interface_adapter.make_post.MakePostController;
+import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
 import interface_adapter.searchUser.SearchUserController;
 import interface_adapter.searchUser.SearchUserPresenter;
@@ -138,7 +138,7 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(profileView.getViewName());
+        viewManagerModel.setState(landingView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;

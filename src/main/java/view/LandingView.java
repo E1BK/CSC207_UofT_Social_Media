@@ -4,8 +4,8 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingState;
-import interface_adapter.make_post.MakePostController;
 import interface_adapter.landing.LandingViewModel;
+import interface_adapter.landing.MakePostController;
 import interface_adapter.profile.ProfileController;
 
 import javax.swing.*;
