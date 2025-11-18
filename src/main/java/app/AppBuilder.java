@@ -92,7 +92,7 @@ public class AppBuilder {
 
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel);
+                landingViewModel, searchUserViewModel, seeProfileViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 
@@ -103,7 +103,7 @@ public class AppBuilder {
 
     public AppBuilder addSearchUserUseCase() {
         final SearchUserOutputBoundary searchUserOutputBoundary =  new SearchUserPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel);
+                landingViewModel, searchUserViewModel, seeProfileViewModel);
         final SearchUserInputBoundary searchUserInteractor = new SearchUserInteractor(
                 userDataAccessObject, searchUserOutputBoundary);
 
@@ -129,7 +129,7 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(seeProfileView.getViewName()); // sets the landingView to be the initial view
+        viewManagerModel.setState(landingView.getViewName()); // sets the landingView to be the initial view
         viewManagerModel.firePropertyChange();
 
         return application;

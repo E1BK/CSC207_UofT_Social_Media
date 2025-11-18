@@ -29,4 +29,14 @@ public class SeeProfilePresenter implements SeeProfileOutputBoundary {
     public void prepareFailView(String errorMessage) {
         seeProfileViewModel.firePropertyChange();
     }
+
+    public void switchToHomeView() {
+        viewManagerModel.setState(landingViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
+    }
+
+    public void switchToPeopleView() {
+        viewManagerModel.setState(searchUserViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
+    }
 }

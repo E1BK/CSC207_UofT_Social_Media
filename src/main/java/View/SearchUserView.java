@@ -103,6 +103,19 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                 }
         );
 
+        me.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(me)) {
+                            System.out.println("CLICKED 'ME'!");
+                            searchUserController.switchToMeView();
+                        }
+                    }
+                }
+        );
+
+
+
     }
 
 

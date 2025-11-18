@@ -18,7 +18,7 @@ public class SeeProfileView extends JPanel implements ActionListener, PropertyCh
 
     private final String viewName = "profile";
     private SeeProfileViewModel profileViewModel;
-    private SeeProfileController profileController = null;
+    private SeeProfileController seeProfileController = null;
 
     public SeeProfileView(SeeProfileViewModel profileViewModel) {
         this.profileViewModel = profileViewModel;
@@ -40,7 +40,7 @@ public class SeeProfileView extends JPanel implements ActionListener, PropertyCh
         JPanel titlePanel = new JPanel();
         title.setFont(new Font("Helvetica", Font.BOLD, 40));
         titlePanel.add(title);
-
+        titlePanel.setBorder(new EmptyBorder(5, 0, 5, 0));
         //
 
         JLabel bioLabel = new JLabel("Bio:");
@@ -137,6 +137,32 @@ public class SeeProfileView extends JPanel implements ActionListener, PropertyCh
         this.add(middlePanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
+        // action listeners:
+
+        home.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(home)) {
+                            System.out.println("CLICKED 'HOME'!");
+                            seeProfileController.switchToHomeView();
+
+                        }
+                    }
+                }
+        );
+
+        people.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(people)) {
+                            System.out.println("CLICKED 'PEOPLE'!");
+                            seeProfileController.switchToPeopleView();
+
+                        }
+                    }
+                }
+        );
+
     }
 
 
@@ -210,7 +236,7 @@ public class SeeProfileView extends JPanel implements ActionListener, PropertyCh
         final SeeProfileState state = (SeeProfileState) evt.getNewValue();
     }
 
-    public void setSeeProfileController(SeeProfileController profileController) {this.profileController = profileController;}
+    public void setSeeProfileController(SeeProfileController profileController) {this.seeProfileController = profileController;}
 
 
 

@@ -1,14 +1,17 @@
 package use_case.see_profile;
 
+import interface_adapter.searchUser.SearchUserPresenter;
+import interface_adapter.see_profile.SeeProfilePresenter;
+
 public class SeeProfileInteractor implements SeeProfileInputBoundary {
 
-    private final SeeProfileUserDataAccessInterface profileUserDataAccessInterface;
-    private final SeeProfileOutputBoundary profileOutputBoundary;
+    private final SeeProfileUserDataAccessInterface seeProfileUserDataAccessInterface;
+    private final SeeProfileOutputBoundary seeProfilePresenter;
 
-    public SeeProfileInteractor(SeeProfileUserDataAccessInterface profileUserDataAccessInterface,
-                                SeeProfileOutputBoundary profileOutputBoundary) {
-        this.profileUserDataAccessInterface = profileUserDataAccessInterface;
-        this.profileOutputBoundary = profileOutputBoundary;
+    public SeeProfileInteractor(SeeProfileUserDataAccessInterface seeProfileUserDataAccessInterface,
+                                SeeProfileOutputBoundary seeProfilePresenter) {
+        this.seeProfileUserDataAccessInterface = seeProfileUserDataAccessInterface;
+        this.seeProfilePresenter = seeProfilePresenter;
     }
 
 
@@ -21,5 +24,15 @@ public class SeeProfileInteractor implements SeeProfileInputBoundary {
     @Override
     public void execute(SeeProfileInputData profileInputData) {
 
+    }
+
+    public void switchToHomeView() {
+        SeeProfilePresenter temp = (SeeProfilePresenter) seeProfilePresenter;
+        temp.switchToHomeView();
+    }
+
+    public void switchToPeopleView() {
+        SeeProfilePresenter temp = (SeeProfilePresenter) seeProfilePresenter;
+        temp.switchToPeopleView();
     }
 }
