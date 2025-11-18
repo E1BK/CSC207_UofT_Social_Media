@@ -1,5 +1,6 @@
 package app;
 
+import View.SeeProfileView;
 import View.SearchUserView;
 import View.ViewManager;
 //import data_access.FileUserDataAccessObject;
@@ -11,6 +12,9 @@ import interface_adapter.ViewManagerModel;
 import View.LandingView;
 import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
+import interface_adapter.see_profile.SeeProfileController;
+import interface_adapter.see_profile.SeeProfilePresenter;
+import interface_adapter.see_profile.SeeProfileViewModel;
 import interface_adapter.searchUser.SearchUserController;
 import interface_adapter.searchUser.SearchUserPresenter;
 import interface_adapter.searchUser.SearchUserViewModel;
@@ -20,6 +24,9 @@ import use_case.make_post.MakePostOutputBoundary;
 import use_case.search_user.SearchUserInputBoundary;
 import use_case.search_user.SearchUserInteractor;
 import use_case.search_user.SearchUserOutputBoundary;
+import use_case.see_profile.SeeProfileInputBoundary;
+import use_case.see_profile.SeeProfileInteractor;
+import use_case.see_profile.SeeProfileOutputBoundary;
 //import use_case.login.LoginInputBoundary;
 //import use_case.login.LoginInteractor;
 //import use_case.login.LoginOutputBoundary;
@@ -54,6 +61,9 @@ public class AppBuilder {
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
 
+    private SeeProfileView seeProfileView;
+    private SeeProfileViewModel seeProfileViewModel;
+
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -70,6 +80,13 @@ public class AppBuilder {
         searchUserViewModel = new SearchUserViewModel();
         searchUserView = new SearchUserView(searchUserViewModel);
         cardPanel.add(searchUserView, searchUserView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addSeeProfileView() {
+        seeProfileViewModel = new SeeProfileViewModel();
+        seeProfileView = new SeeProfileView(seeProfileViewModel);
+        cardPanel.add(seeProfileView, seeProfileView.getViewName());
         return this;
     }
 
@@ -95,13 +112,24 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addSeeProfileUseCase() {
+        final SeeProfileOutputBoundary seeProfileOutputBoundary = new SeeProfilePresenter(
+                landingViewModel, searchUserViewModel, viewManagerModel, seeProfileViewModel);
+        final SeeProfileInputBoundary seeProfileInteractor = new SeeProfileInteractor(
+                userDataAccessObject, seeProfileOutputBoundary);
+
+        SeeProfileController seeProfileController = new SeeProfileController(seeProfileInteractor);
+        seeProfileView.setSeeProfileController(seeProfileController);
+        return this;
+    }
+
     public JFrame build() {
-        final JFrame application = new JFrame("UofT Social Media App");
+        final JFrame application = new JFrame("ChatUofT");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(landingView.getViewName());
+        viewManagerModel.setState(seeProfileView.getViewName()); // sets the landingView to be the initial view
         viewManagerModel.firePropertyChange();
 
         return application;

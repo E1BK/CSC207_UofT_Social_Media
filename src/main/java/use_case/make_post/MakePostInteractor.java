@@ -21,6 +21,11 @@ public class MakePostInteractor implements MakePostInputBoundary{
         this.postFactory = postFactory;
     }
 
+    /**
+     * This method makes a post using the <title>, <body>, etc
+     * from <makePostInputData>.
+     * @param makePostInputData
+     */
     @Override
     public void execute(MakePostInputData makePostInputData) {
 

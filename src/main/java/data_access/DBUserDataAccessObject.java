@@ -13,11 +13,13 @@ import entity.User;
 import entity.UserFactory;
 import use_case.make_post.MakePostUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
+import use_case.see_profile.SeeProfileInputBoundary;
+import use_case.see_profile.SeeProfileUserDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, SearchUserDataAccessInterface {
+public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, SearchUserDataAccessInterface, SeeProfileUserDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
