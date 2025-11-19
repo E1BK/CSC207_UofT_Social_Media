@@ -17,8 +17,6 @@ public class Main {
                 .addMyProfileUseCase()
                 .addMakePostUseCase()
                 .addSearchUserUseCase()
-                .addSeeProfileView()
-                .addSeeProfileUseCase()
                 .build();
 
         application.pack();

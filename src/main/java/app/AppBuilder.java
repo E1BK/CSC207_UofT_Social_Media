@@ -20,9 +20,6 @@ import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
-import interface_adapter.see_profile.SeeProfileController;
-import interface_adapter.see_profile.SeeProfilePresenter;
-import interface_adapter.see_profile.SeeProfileViewModel;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserPresenter;
 import interface_adapter.search_user.SearchUserViewModel;
@@ -32,9 +29,6 @@ import use_case.make_post.MakePostOutputBoundary;
 import use_case.search_user.SearchUserInputBoundary;
 import use_case.search_user.SearchUserInteractor;
 import use_case.search_user.SearchUserOutputBoundary;
-import use_case.see_profile.SeeProfileInputBoundary;
-import use_case.see_profile.SeeProfileInteractor;
-import use_case.see_profile.SeeProfileOutputBoundary;
 //import use_case.login.LoginInputBoundary;
 //import use_case.login.LoginInteractor;
 //import use_case.login.LoginOutputBoundary;
@@ -67,16 +61,15 @@ public class AppBuilder {
     // Add View Models
     private LandingView landingView;
     private LandingViewModel landingViewModel;
+
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
+
     private MyProfileView myProfileView;
     private MyProfileViewModel myProfileViewModel;
 
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
-
-    private SeeProfileView seeProfileView;
-    private SeeProfileViewModel seeProfileViewModel;
 
 
     public AppBuilder() {
@@ -145,7 +138,7 @@ public class AppBuilder {
 
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel, seeProfileViewModel);
+                landingViewModel, searchUserViewModel, myProfileViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 
@@ -156,30 +149,12 @@ public class AppBuilder {
 
     public AppBuilder addSearchUserUseCase() {
         final SearchUserOutputBoundary searchUserOutputBoundary =  new SearchUserPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel, seeProfileViewModel);
+                landingViewModel, searchUserViewModel);
         final SearchUserInputBoundary searchUserInteractor = new SearchUserInteractor(
                 userDataAccessObject, searchUserOutputBoundary);
 
         SearchUserController searchUserController = new SearchUserController(searchUserInteractor);
         searchUserView.setSearchUserController(searchUserController);
-        return this;
-    }
-
-    public AppBuilder addSeeProfileView() {
-        seeProfileViewModel = new SeeProfileViewModel();
-        seeProfileView = new SeeProfileView(seeProfileViewModel);
-        cardPanel.add(seeProfileView, seeProfileView.getViewName());
-        return this;
-    }
-
-    public AppBuilder addSeeProfileUseCase() {
-        final SeeProfileOutputBoundary seeProfileOutputBoundary = new SeeProfilePresenter(
-                landingViewModel, searchUserViewModel, viewManagerModel, seeProfileViewModel);
-        final SeeProfileInputBoundary seeProfileInteractor = new SeeProfileInteractor(
-                userDataAccessObject, seeProfileOutputBoundary);
-
-        SeeProfileController seeProfileController = new SeeProfileController(seeProfileInteractor);
-        seeProfileView.setSeeProfileController(seeProfileController);
         return this;
     }
 
