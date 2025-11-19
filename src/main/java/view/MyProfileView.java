@@ -19,7 +19,7 @@ import java.util.List;
 public class MyProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     // Variables
     private MyProfileViewModel myProfileViewModel;
-    private String viewName = "myProfile";
+    private String viewName = "my profile";
     private MyProfileController myProfileController;
     private int numOfLabels;
 
@@ -28,6 +28,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     // Labels
     private final JLabel username;
+    private final JLabel utorID;
     private final JPanel postContainer;
 
     // Buttons
@@ -39,14 +40,14 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     public MyProfileView(MyProfileViewModel myProfileViewModel) {
         this.myProfileViewModel = myProfileViewModel;
-        myProfileViewModel.addPropertyChangeListener(this);
+        this.myProfileViewModel.addPropertyChangeListener(this);
 
         // Page Title
-        JLabel name = new JLabel("UofTeam > " + "My Profile");
+        JLabel name = new JLabel("ChatUofT > My Profile");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
         back = new JButton (ProfileViewModel.BACK_BUTTON_LABEL);
-        back.setMargin(new Insets(10, 20, 10, 20));
+        back.setMargin(new Insets(8, 20, 8, 20));
         topPanel.add(back, BorderLayout.WEST);
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(name, BorderLayout.CENTER);
@@ -54,22 +55,38 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
         // Page Body
         final JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new BorderLayout());
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
+        middlePanel.setMaximumSize(new Dimension(400, 100));
+        middlePanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
         // Add username
         final JPanel usernamePanel = new JPanel();
         final JLabel usernameInfo = new JLabel("Profile: ");
+        usernameInfo.setFont(new Font("Helvetica", Font.BOLD, 40));
         username = new JLabel("Me!");
+        username.setFont(new Font("Helvetica", Font.BOLD, 40));
         usernamePanel.add(usernameInfo);
         usernamePanel.add(username);
 
         // Add Bio Editor
         final JPanel bioPanel = new JPanel();
         bioConfirm = new JButton("Confirm");
-        final LabelTextPanel bioInfo = new LabelTextPanel(new JLabel("Bio: "),
-                                                               bioInputField,
-                                                               bioConfirm);
+        final JLabel bioLabel = new JLabel("Bio: ");
+        bioLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        final LabelTextPanel bioInfo = new LabelTextPanel(bioLabel,
+                                                          bioInputField,
+                                                          bioConfirm);
+
         bioPanel.add(bioInfo);
+
+        // Add ID
+        final JPanel idPanel = new JPanel();
+        final JLabel idInfo = new JLabel("utorID: ");
+        idInfo.setFont(new Font("Helvetica", Font.BOLD, 20));
+        utorID = new JLabel("JIMMY123");
+        utorID.setFont(new Font("Helvetica", Font.BOLD, 20));
+        idPanel.add(idInfo);
+        idPanel.add(utorID);
 
         // Display Posts
         final JPanel postsPanel = new JPanel();
@@ -87,9 +104,10 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         postsPanel.setVisible(true);
 
         // Add to middle Panel
-        middlePanel.add(usernamePanel, BorderLayout.NORTH);
-        middlePanel.add(bioPanel, BorderLayout.CENTER);
-        middlePanel.add(postsPanel, BorderLayout.SOUTH);
+        middlePanel.add(usernamePanel);
+        middlePanel.add(bioPanel);
+        middlePanel.add(idPanel);
+        middlePanel.add(postsPanel);
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
@@ -155,11 +173,15 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         );
 
         //Creates Frame
-        this.setLayout( new BoxLayout(this, BoxLayout.Y_AXIS) );
+        this.setLayout( new BorderLayout() );
 
-        this.add(topPanel);
-        this.add(middlePanel);
-        this.add(bottomPanel);
+        this.add(topPanel,  BorderLayout.NORTH);
+        JPanel bodyPanel = new JPanel();
+        bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS));
+        bodyPanel.add(middlePanel);
+        bodyPanel.add(postsPanel);
+        this.add(bodyPanel,  BorderLayout.CENTER);
+        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     @Override
@@ -169,7 +191,11 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        if (evt.getPropertyName().equals("state")) {
+            final ProfileState state = (ProfileState) evt.getNewValue();
+            username.setText(state.getUsername());
+            System.out.println("hello");
+        }
     }
 
     private void addPosts(List<Post> postList) {
@@ -201,5 +227,5 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     public String getViewName() { return viewName; }
 
-    public void setProfileController(MyProfileController controller) {this.myProfileController = controller;}
+    public void setMyProfileController(MyProfileController controller) {this.myProfileController = controller;}
 }

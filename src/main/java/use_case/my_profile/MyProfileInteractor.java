@@ -48,8 +48,4 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
     public void switchToPostView() {
         myProfilePresenter.switchToPostView();
     }
-
-    public void switchToMyMyProfileView() {
-        myProfilePresenter.switchToMyProfileView();
-    }
 }

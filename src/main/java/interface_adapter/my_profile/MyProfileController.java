@@ -3,14 +3,13 @@ package interface_adapter.my_profile;
 import entity.User;
 import use_case.my_profile.MyProfileInputBoundary;
 import use_case.my_profile.MyProfileInputData;
-import use_case.my_profile.MyProfileInteractor;
 
 public class MyProfileController {
 
-    private final MyProfileInputBoundary myMyProfileInteractor;
+    private final MyProfileInputBoundary myProfileInteractor;
 
-    public MyProfileController(MyProfileInputBoundary myMyProfileInteractor) {
-        this.myMyProfileInteractor = myMyProfileInteractor;
+    public MyProfileController(MyProfileInputBoundary myProfileInteractor) {
+        this.myProfileInteractor = myProfileInteractor;
     }
 
     public void execute(User user) {
@@ -19,11 +18,11 @@ public class MyProfileController {
                 user.getBio(),
                 user.getPosts());
 
-        myMyProfileInteractor.execute(myMyProfileInputData);
+        myProfileInteractor.execute(myMyProfileInputData);
     }
 
-    public void switchToLandingView() { myMyProfileInteractor.switchToLandingView(); }
-    public void switchToSearchView() { myMyProfileInteractor.switchToSearchView(); }
-    public void switchToPostView() { myMyProfileInteractor.switchToPostView(); }
-    public void switchToMyProfileView() { myMyProfileInteractor.switchToMyProfileView(); }
+    public void switchToLandingView() { myProfileInteractor.switchToLandingView(); }
+    public void switchToSearchView() { myProfileInteractor.switchToSearchView(); }
+    public void switchToPostView() { myProfileInteractor.switchToPostView(); }
+    public void switchToMyProfileView() { myProfileInteractor.switchToMyProfileView(); }
 }

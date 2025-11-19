@@ -27,6 +27,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     // Labels
     private final JLabel username;
     private final JLabel bio;
+    private final JLabel utorID;
     private final JPanel postContainer;
 
     // Buttons
@@ -37,14 +38,14 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     public ProfileView(ProfileViewModel profileViewModel) {
         this.profileViewModel = profileViewModel;
-        profileViewModel.addPropertyChangeListener(this);
+        this.profileViewModel.addPropertyChangeListener(this);
 
         // Page Title
-        JLabel name = new JLabel("UofTeam > Profile");
+        JLabel name = new JLabel("ChatUofT > Profile");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
         back = new JButton (ProfileViewModel.BACK_BUTTON_LABEL);
-        back.setMargin(new Insets(10, 20, 10, 20));
+        back.setMargin(new Insets(8, 20, 8, 20));
         topPanel.add(back, BorderLayout.WEST);
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(name, BorderLayout.CENTER);
@@ -52,21 +53,36 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         // Page Body
         final JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new BorderLayout());
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
+        middlePanel.setMaximumSize(new Dimension(400, 100));
+        middlePanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
         // Add User
         final JPanel usernamePanel = new JPanel();
         final JLabel usernameInfo = new JLabel("Profile: ");
+        usernameInfo.setFont(new Font("Helvetica", Font.BOLD, 40));
         username = new JLabel("SorEgo");
+        username.setFont(new Font("Helvetica", Font.BOLD, 40));
         usernamePanel.add(usernameInfo);
         usernamePanel.add(username);
 
         // Add Bio
         final JPanel bioPanel = new JPanel();
-        final JLabel bioInfo = new JLabel("Bio:");
+        final JLabel bioInfo = new JLabel("Bio: ");
+        bioInfo.setFont(new Font("Helvetica", Font.BOLD, 20));
         bio = new JLabel("Feeling SorE");
+        bio.setFont(new Font("Helvetica", Font.BOLD, 20));
         bioPanel.add(bioInfo);
         bioPanel.add(bio);
+
+        // Add ID
+        final JPanel idPanel = new JPanel();
+        final JLabel idInfo = new JLabel("utorID: ");
+        idInfo.setFont(new Font("Helvetica", Font.BOLD, 20));
+        utorID = new JLabel("JIMMY123");
+        utorID.setFont(new Font("Helvetica", Font.BOLD, 20));
+        idPanel.add(idInfo);
+        idPanel.add(utorID);
 
         // Display Posts
         final JPanel postsPanel = new JPanel();
@@ -105,9 +121,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         postsPanel.setVisible(true);
 
         // Add to middle Panel
-        middlePanel.add(usernamePanel, BorderLayout.NORTH);
-        middlePanel.add(bioPanel, BorderLayout.CENTER);
-        middlePanel.add(postsPanel, BorderLayout.SOUTH);
+        middlePanel.add(usernamePanel/*, BorderLayout.NORTH*/);
+        middlePanel.add(bioPanel/*, BorderLayout.CENTER*/);
+        middlePanel.add(idPanel/*, BorderLayout.SOUTH*/);
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
@@ -164,10 +180,14 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         );
 
         // Creates frame
-        this.setLayout( new BoxLayout(this, BoxLayout.Y_AXIS) );
+        this.setLayout( new BorderLayout() );
 
         this.add(topPanel,  BorderLayout.NORTH);
-        this.add(middlePanel,  BorderLayout.CENTER);
+        JPanel bodyPanel = new JPanel();
+        bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS));
+        bodyPanel.add(middlePanel);
+        bodyPanel.add(postsPanel);
+        this.add(bodyPanel,  BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 

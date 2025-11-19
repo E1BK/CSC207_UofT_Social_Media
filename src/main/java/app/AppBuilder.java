@@ -1,17 +1,16 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
-import view.SearchUserView;
+import interface_adapter.my_profile.*;
+import use_case.my_profile.*;
+import view.*;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
-import view.ProfileView;
-import view.SeeProfileView;
 import view.SearchUserView;
-import view.ViewManager;
 //import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommentFactory;
@@ -19,7 +18,6 @@ import entity.PostFactory;
 import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
-import view.LandingView;
 import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
 import interface_adapter.see_profile.SeeProfileController;
@@ -71,6 +69,8 @@ public class AppBuilder {
     private LandingViewModel landingViewModel;
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
+    private MyProfileView myProfileView;
+    private MyProfileViewModel myProfileViewModel;
 
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
@@ -115,7 +115,30 @@ public class AppBuilder {
                                                                                    postFactory);
         ProfileController controller = new ProfileController(profileInteractor);
         profileView.setProfileController(controller);
-        landingView.setProfileController(controller);
+        // Change to my profile
+        return this;
+
+    }
+
+    public AppBuilder addMyProfileView() {
+        myProfileViewModel = new MyProfileViewModel();
+        myProfileView = new MyProfileView(myProfileViewModel);
+        cardPanel.add(myProfileView, myProfileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addMyProfileUseCase() {
+        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(viewManagerModel,
+                landingViewModel,
+                searchUserViewModel,
+                myProfileViewModel);
+        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(userDataAccessObject,
+                myProfileOutputBoundary,
+                userFactory,
+                postFactory);
+        MyProfileController controller = new MyProfileController(myProfileInteractor);
+        myProfileView.setMyProfileController(controller);
+        landingView.setMyProfileController(controller);
         return this;
 
     }

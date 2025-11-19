@@ -6,8 +6,7 @@ import app.GradientPanel;
 import interface_adapter.landing.LandingState;
 import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.landing.MakePostController;
-import interface_adapter.profile.ProfileController;
+import interface_adapter.my_profile.MyProfileController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -26,7 +25,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final String viewName = "landing";
     private LandingViewModel landingViewModel;
     private MakePostController makePostController = null;
-    private ProfileController profileController = null;
+    private MyProfileController myProfileController = null;
 
 //    private final JTextField postBody;
     private final JTextField postTitle;
@@ -127,7 +126,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
                             System.out.println("CLICKED 'ME'!");
-                            profileController.switchToProfileView();
+                            myProfileController.switchToMyProfileView();
                         }
                     }
                 }
@@ -222,5 +221,5 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     public void setMakePostController(MakePostController controller) {
         this.makePostController = controller;
     }
-    public void setProfileController(ProfileController controller) { this.profileController = controller; }
+    public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
 }

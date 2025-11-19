@@ -16,7 +16,7 @@ import java.beans.PropertyChangeListener;
 
 public class SeeProfileView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    private final String viewName = "profile";
+    private final String viewName = "altprofile";
     private SeeProfileViewModel profileViewModel;
     private SeeProfileController seeProfileController = null;
 

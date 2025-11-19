@@ -21,7 +21,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
                             SearchUserViewModel searchUserViewModel,
                             ProfileViewModel profileViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.profileViewModel = profileViewModel;
+        this.profileViewModel = profileViewModel; //TODO change this to myprofile
         this.searchUserViewModel = searchUserViewModel;
         this.landingViewModel = landingViewModel;
     }
@@ -50,8 +50,8 @@ public class ProfilePresenter implements ProfileOutputBoundary {
 
     @Override
     public void switchToMyProfileView() {
-//        viewManagerModel.setState(myProfileModel.getViewName());
-//        viewManagerModel.firePropertyChange();
+        viewManagerModel.setState(profileViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
     }
 
     public void switchToLandingView() {

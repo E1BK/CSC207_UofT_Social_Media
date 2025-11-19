@@ -8,6 +8,7 @@ import org.json.JSONArray;
 
 
 import use_case.make_post.MakePostUserDataAccessInterface;
+import use_case.my_profile.MyProfileUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.see_profile.SeeProfileInputBoundary;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                                                SearchUserDataAccessInterface,
                                                ProfileUserDataAccessInterface,
+                                               MyProfileUserDataAccessInterface,
                                                SeeProfileUserDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
