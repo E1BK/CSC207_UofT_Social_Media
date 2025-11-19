@@ -1,8 +1,13 @@
 package use_case.make_post;
 
+import entity.Post;
 import entity.PostFactory;
+import entity.User;
 import entity.UserFactory;
 import interface_adapter.landing.MakePostPresenter;
+
+import java.time.Instant;
+import java.util.ArrayList;
 
 public class MakePostInteractor implements MakePostInputBoundary{
     private final MakePostUserDataAccessInterface makePostUserDataAccess;
@@ -28,7 +33,48 @@ public class MakePostInteractor implements MakePostInputBoundary{
      */
     @Override
     public void execute(MakePostInputData makePostInputData) {
+        String username = makePostInputData.getUsername();
+        String title = makePostInputData.getTitle();
+        String body = makePostInputData.getBody();
+        String time = Instant.now().toString();
 
+        User user;
+
+        try {
+            user = makePostUserDataAccess.getUserInfo(username);
+            if (user == null) {
+                makePostPresenter.prepareFailView("User not found.");
+                return;
+            }
+        } catch (Exception e) {
+            makePostPresenter.prepareFailView("Failed to load user: " + e.getMessage());
+            return;
+        }
+
+        int maxId = 0;
+        ArrayList<Post> posts = user.getPosts();
+        for (Post post : posts) {
+            if (post.getPost_id() > maxId) {
+                maxId = post.getPost_id();
+            }
+        }
+
+        Post newPost = postFactory.create(username, maxId+1, title, body, time);
+        user.addPost(newPost);
+
+        try {
+            makePostUserDataAccess.save(user);   // or modifyUser
+        } catch (Exception e) {
+            makePostPresenter.prepareFailView("Failed to save user: " + e.getMessage());
+            return;
+        }
+
+        MakePostOutputData output = new MakePostOutputData(newPost.getPost_id(),
+                                                            newPost.getUsername(),
+                                                            newPost.getTitle(),
+                                                            newPost.getBody(),
+                                                            newPost.getPost_date());
+        makePostPresenter.prepareSuccessView(output);
     }
 
     // hasan: this method must be here, because "making a post" and

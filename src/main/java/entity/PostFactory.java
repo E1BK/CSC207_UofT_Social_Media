@@ -14,4 +14,14 @@ public class PostFactory{
 
         return new Post(post_id, username, title, body, post_date, comments);
     }
+
+    public Post create(
+            String username,
+            int post_id,
+            String title,
+            String body,
+            String post_date) {
+
+        return new Post(post_id, username, title, body, post_date);
+    }
 }

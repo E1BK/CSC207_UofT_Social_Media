@@ -1,16 +1,26 @@
 package app;
 
+//import data_access.FileUserDataAccessObject;
+import view.SearchUserView;
+import interface_adapter.profile.ProfileController;
+import interface_adapter.profile.ProfilePresenter;
+import interface_adapter.profile.ProfileViewModel;
+import use_case.profile.ProfileInputBoundary;
+import use_case.profile.ProfileInteractor;
+import use_case.profile.ProfileOutputBoundary;
+import view.ProfileView;
 import view.SeeProfileView;
 import view.SearchUserView;
 import view.ViewManager;
 //import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
+import entity.CommentFactory;
 import entity.PostFactory;
 import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
 import view.LandingView;
-import interface_adapter.make_post.MakePostController;
+import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
 import interface_adapter.see_profile.SeeProfileController;
 import interface_adapter.see_profile.SeeProfilePresenter;
@@ -49,14 +59,18 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     final UserFactory userFactory = new UserFactory();
     final PostFactory postFactory = new PostFactory();
+    final CommentFactory commentFactory = new CommentFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     public ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
 
-    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory);
 
+    // Add View Models
     private LandingView landingView;
     private LandingViewModel landingViewModel;
+    private ProfileView profileView;
+    private ProfileViewModel profileViewModel;
 
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
@@ -83,11 +97,27 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addSeeProfileView() {
-        seeProfileViewModel = new SeeProfileViewModel();
-        seeProfileView = new SeeProfileView(seeProfileViewModel);
-        cardPanel.add(seeProfileView, seeProfileView.getViewName());
+    public AppBuilder addProfileView() {
+        profileViewModel = new ProfileViewModel();
+        profileView = new ProfileView(profileViewModel);
+        cardPanel.add(profileView, profileView.getViewName());
         return this;
+    }
+
+    public AppBuilder addProfileUseCase() {
+        final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel,
+                                                                                 landingViewModel,
+                                                                                 searchUserViewModel,
+                                                                                 profileViewModel);
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
+                                                                                   profileOutputBoundary,
+                                                                                   userFactory,
+                                                                                   postFactory);
+        ProfileController controller = new ProfileController(profileInteractor);
+        profileView.setProfileController(controller);
+        landingView.setProfileController(controller);
+        return this;
+
     }
 
     public AppBuilder addMakePostUseCase() {
@@ -112,6 +142,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addSeeProfileView() {
+        seeProfileViewModel = new SeeProfileViewModel();
+        seeProfileView = new SeeProfileView(seeProfileViewModel);
+        cardPanel.add(seeProfileView, seeProfileView.getViewName());
+        return this;
+    }
+
     public AppBuilder addSeeProfileUseCase() {
         final SeeProfileOutputBoundary seeProfileOutputBoundary = new SeeProfilePresenter(
                 landingViewModel, searchUserViewModel, viewManagerModel, seeProfileViewModel);
@@ -124,15 +161,14 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        final JFrame application = new JFrame("ChatUofT");
+        final JFrame application = new JFrame("UofT Social Media App");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(landingView.getViewName()); // sets the landingView to be the initial view
+        viewManagerModel.setState(landingView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;
     }
-
 }

@@ -4,12 +4,15 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingState;
-import interface_adapter.make_post.MakePostController;
+import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.LandingViewModel;
+import interface_adapter.landing.MakePostController;
 import interface_adapter.profile.ProfileController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +29,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private ProfileController profileController = null;
 
 //    private final JTextField postBody;
+    private final JTextField postTitle;
     private final JTextArea postBody;
     private final JButton makePost;
 
@@ -56,7 +60,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         titlePanel.add(title);
         titlePanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-        JTextField postTitle = new JTextField(20);
+        postTitle = new JTextField(20);
         postTitle.setFont(new Font("Helvetica", Font.PLAIN, 20));
         postTitle.setMargin(new Insets(10, 20, 10, 20));
         postTitle.setMaximumSize(new Dimension(300, 30));
@@ -71,6 +75,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         makePost = new JButton(LandingViewModel.MAKE_POST_BUTTON_LABEL);
         makePost.setFont(new Font("Helvetica", Font.BOLD, 20));
         makePost.setMargin(new Insets(10, 20, 10, 20));
+        postTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         postBody.setAlignmentX(Component.CENTER_ALIGNMENT);
         makePost.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -138,6 +143,68 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     }
                 }
         );
+
+        makePost.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(makePost)) {
+                            System.out.println("CLICKED 'MAKE POST'!");
+                            final LandingState landingState = landingViewModel.getState();
+                            makePostController.execute(landingState.getUsername(),
+                                                        landingState.getNewpost_title(),
+                                                        landingState.getNewpost_body());
+                        }
+                    }
+                }
+        );
+
+        // Document Listeners
+        postBody.getDocument().addDocumentListener( new DocumentListener() {
+            private void documentListenerHelper() {
+                final LandingState landingState = landingViewModel.getState();
+                landingState.setNewpost_body(postBody.getText());
+                landingViewModel.setState(landingState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+
+        postTitle.getDocument().addDocumentListener( new DocumentListener() {
+            private void documentListenerHelper() {
+                final LandingState landingState = landingViewModel.getState();
+                landingState.setNewpost_title(postTitle.getText());
+                landingViewModel.setState(landingState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+
     }
 
     public String getViewName() {
@@ -155,4 +222,5 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     public void setMakePostController(MakePostController controller) {
         this.makePostController = controller;
     }
+    public void setProfileController(ProfileController controller) { this.profileController = controller; }
 }

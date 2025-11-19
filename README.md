@@ -78,7 +78,7 @@ Use Case 5: Search for People
 - Alternate Flow:
   - filler
 
-Use Case 6: View Post/Comment
+Use Case 6: view Post/Comment
 - Main Flow:
   - filler
 - Alternate Flow:
@@ -93,7 +93,7 @@ Use Case 6: View Post/Comment
 | Profile and Bio          | User Story 4 and 8  | Julian         |
 | Make a Post              | User Story 5        | Hayden         |
 | Search system for people | User Story 6 and 7  | Russell        |
-| View Post/Comment        | User Story 9 and 10 | Ioane          |
+| view Post/Comment        | User Story 9 and 10 | Ioane          |
 
 # API Specification
 
