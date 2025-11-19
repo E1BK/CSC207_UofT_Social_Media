@@ -29,4 +29,9 @@ public class SearchUserController {
         SearchUserInteractor temp = (SearchUserInteractor) searchUserInteractor;
         temp.switchToLandingView();
     }
+
+    public void switchToMeView() {
+        SearchUserInteractor temp = (SearchUserInteractor) searchUserInteractor;
+        temp.switchToMeView();
+    }
 }

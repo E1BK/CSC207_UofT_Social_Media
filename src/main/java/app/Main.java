@@ -11,12 +11,10 @@ public class Main {
         JFrame application = appBuilder
                 .addLandingView()
                 .addSearchUserView()
+                .addSeeProfileView()
                 .addMakePostUseCase()
                 .addSearchUserUseCase()
-                .addProfileView()
-                .addProfileUseCase()
-                .addMyProfileView()
-                .addMyProfileUseCase()
+                .addSeeProfileUseCase()
                 .build();
 
         application.pack();

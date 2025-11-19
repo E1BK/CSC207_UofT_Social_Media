@@ -32,4 +32,9 @@ public class SearchUserInteractor implements SearchUserInputBoundary{
         temp.switchToLandingView();
     }
 
+    public void switchToMeView() {
+        SearchUserPresenter temp = (SearchUserPresenter) searchUserPresenter;
+        temp.switchToMeView();
+    }
+
 }

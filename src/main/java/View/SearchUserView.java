@@ -29,7 +29,7 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         this.searchUserViewModel.addPropertyChangeListener(this);
 
         // top panel
-        JLabel name = new JLabel("UofTeam > People");
+        JLabel name = new JLabel("ChatUofT > People");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
         topPanel.add(name);
@@ -58,6 +58,7 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         middlePanel.add(titlePanel, BorderLayout.NORTH);
         middlePanel.add(searchBarPanel, BorderLayout.CENTER);
 
+        // IMPORTANT:
         // middlePanel.add(displayResultPanel, BorderLayout.SOUTH)
         // NOTE: when the searching functionality has been implemented.
         // then use the displayResultPanel to display the resulting posts
@@ -101,6 +102,19 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                     }
                 }
         );
+
+        me.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(me)) {
+                            System.out.println("CLICKED 'ME'!");
+                            searchUserController.switchToMeView();
+                        }
+                    }
+                }
+        );
+
+
 
     }
 
