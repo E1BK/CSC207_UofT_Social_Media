@@ -8,3 +8,7 @@
 /dataSources.local.xml
 # macOS
 .DS_Store
+
+/target/
+
+/.idea/

@@ -3,8 +3,7 @@ package interface_adapter.landing;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.profile.ProfileViewModel;
-import interface_adapter.searchUser.SearchUserViewModel;
-import use_case.make_post.MakePostInputBoundary;
+import interface_adapter.search_user.SearchUserViewModel;
 import use_case.make_post.MakePostOutputBoundary;
 import use_case.make_post.MakePostOutputData;
 

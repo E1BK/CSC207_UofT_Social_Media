@@ -138,9 +138,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        final LandingState state = (LandingState) evt.getNewValue();
-    }
+    public void propertyChange(PropertyChangeEvent evt) { final LandingState state = (LandingState) evt.getNewValue(); }
 
     public void setMakePostController(MakePostController controller) {
         this.makePostController = controller;

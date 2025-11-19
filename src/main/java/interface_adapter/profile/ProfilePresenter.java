@@ -2,7 +2,7 @@ package interface_adapter.profile;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.searchUser.SearchUserViewModel;
+import interface_adapter.search_user.SearchUserViewModel;
 import use_case.profile.ProfileOutputBoundary;
 import use_case.profile.ProfileOutputData;
 

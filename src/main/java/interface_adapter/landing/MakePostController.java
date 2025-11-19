@@ -17,10 +17,10 @@ public class MakePostController {
 
     /**
      * Executes the Make Post Use Case.
-     * @param p the post
+     * @param
      */
-    public void execute(Post p) {
-        final MakePostInputData makePostInputData = new MakePostInputData(p.getUsername(), p.getTitle(), p.getBody());
+    public void execute(String username, String post_title, String post_body) {
+        final MakePostInputData makePostInputData = new MakePostInputData(username, post_title, post_body);
 
         makePostInteractor.execute(makePostInputData);
     }

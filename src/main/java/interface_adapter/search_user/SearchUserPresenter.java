@@ -1,5 +1,5 @@
 // hasan
-package interface_adapter.searchUser;
+package interface_adapter.search_user;
 
 import entity.User;
 import interface_adapter.ViewManagerModel;
