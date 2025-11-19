@@ -52,7 +52,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface, 
             for (Comment comment : comments) {
                 JSONObject JSONCommentObject = new JSONObject()
                         .put("comment_id", comment.getComment_id())
-                        .put("comment_body", comment.getBody())
+                        .put("comment_body", comment.getComment_body())
                         .put("likes", comment.getLikes());
                 JSONCommentArray.put(JSONCommentObject);
             }

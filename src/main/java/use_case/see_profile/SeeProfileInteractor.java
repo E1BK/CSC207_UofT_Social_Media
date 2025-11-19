@@ -1,6 +1,6 @@
 package use_case.see_profile;
 
-import interface_adapter.searchUser.SearchUserPresenter;
+import interface_adapter.search_user.SearchUserPresenter;
 import interface_adapter.see_profile.SeeProfilePresenter;
 
 public class SeeProfileInteractor implements SeeProfileInputBoundary {
