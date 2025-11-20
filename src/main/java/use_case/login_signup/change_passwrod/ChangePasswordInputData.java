@@ -7,10 +7,14 @@ public class ChangePasswordInputData {
 
     private final String password;
     private final String username;
+    private final String email;
+    private final String name;
 
-    public ChangePasswordInputData(String password, String username) {
+    public ChangePasswordInputData(String password, String username, String email, String name) {
         this.password = password;
         this.username = username;
+        this.email = email;
+        this.name = name;
     }
 
     String getPassword() {
@@ -20,5 +24,9 @@ public class ChangePasswordInputData {
     String getUsername() {
         return username;
     }
+
+    String getEmail() {return email;}
+
+    String getName() {return name;}
 
 }

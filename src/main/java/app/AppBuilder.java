@@ -9,6 +9,7 @@ import use_case.login_signup.change_passwrod.ChangePasswordInputBoundary;
 import use_case.login_signup.change_passwrod.ChangePasswordInteractor;
 import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
 import use_case.login_signup.change_passwrod.ChangePasswordOutputData;
+import use_case.profile.ProfileUserDataAccessInterface;
 import view.*;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
@@ -31,7 +32,7 @@ import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
 import view.LandingView;
-import interface_adapter.make_post.MakePostController;
+import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
 import interface_adapter.searchUser.SearchUserController;
 import interface_adapter.searchUser.SearchUserPresenter;
@@ -164,7 +165,7 @@ public class AppBuilder {
                                                                                  landingViewModel,
                                                                                  searchUserViewModel,
                                                                                  profileViewModel);
-        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor((ProfileUserDataAccessInterface) userDataAccessObject,
                                                                                    profileOutputBoundary,
                                                                                    userFactory,
                                                                                    postFactory);

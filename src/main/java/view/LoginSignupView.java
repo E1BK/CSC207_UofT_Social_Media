@@ -302,8 +302,15 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         String newPassword = new String(newPasswordField.getPassword());
         String confirmPassword = new String(confirmPasswordField.getPassword());
 
-        if (changePasswordController != null) {
-            changePasswordController.execute(currentPassword, newPassword, confirmPassword);
+        if (changePasswordController != null && !currentUsername.isEmpty()) {
+            changePasswordController.execute(
+                    currentUsername,                // username
+                    currentPassword,                // oldPassword (current password)
+                    newPassword,                    // newPassword
+                    confirmPassword                 // confirmPassword
+            );
+        } else {
+            JOptionPane.showMessageDialog(this, "Please log in first.");
         }
     }
 
