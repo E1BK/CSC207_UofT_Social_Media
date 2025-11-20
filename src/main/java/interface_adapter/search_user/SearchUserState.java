@@ -1,4 +1,4 @@
-package interface_adapter.searchUser;
+package interface_adapter.search_user;
 
 // hasan
 import entity.User;

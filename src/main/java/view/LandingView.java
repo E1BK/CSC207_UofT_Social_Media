@@ -4,9 +4,9 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingState;
-import interface_adapter.landing.LandingViewModel;
 import interface_adapter.landing.MakePostController;
-import interface_adapter.profile.ProfileController;
+import interface_adapter.landing.LandingViewModel;
+import interface_adapter.my_profile.MyProfileController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -25,7 +25,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final String viewName = "landing";
     private LandingViewModel landingViewModel;
     private MakePostController makePostController = null;
-    private ProfileController profileController = null;
+    private MyProfileController myProfileController = null;
 
     //    private final JTextField postBody;
     private final JTextField postTitle;
@@ -43,7 +43,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         landingViewModel.addPropertyChangeListener(this);
 
         // top panel
-        JLabel name = new JLabel("UofTeam");
+        JLabel name = new JLabel("ChatUofT");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
         topPanel.add(name);
@@ -59,16 +59,17 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         titlePanel.add(title);
         titlePanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-        postTitle = new JTextField();
+        postTitle = new JTextField(20);
         postTitle.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        postTitle.setMaximumSize(new Dimension(300, 40));
-        postTitle.setPreferredSize(new Dimension(300, 40));
+        postTitle.setMargin(new Insets(10, 20, 10, 20));
+        postTitle.setMaximumSize(new Dimension(300, 30));
+        postTitle.setMinimumSize(new Dimension(300, 30));
 
         postBody = new JTextArea();
         postBody.setFont(new Font("Helvetica", Font.PLAIN, 20));
         postBody.setMinimumSize(new Dimension(300, 200));
         postBody.setMaximumSize(new Dimension(300, 200));
-        postBody.setMargin(new Insets(10, 20, 10, 20));
+        postBody.setMargin(new Insets(5, 5, 5, 5));
 
         makePost = new JButton(LandingViewModel.MAKE_POST_BUTTON_LABEL);
         makePost.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -77,9 +78,14 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postBody.setAlignmentX(Component.CENTER_ALIGNMENT);
         makePost.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        JPanel gapPanel = new JPanel();
+        gapPanel.setMinimumSize(new Dimension(20, 4));
+        gapPanel.setMaximumSize(new Dimension(20, 4));
+
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
         postPanel.add(postTitle);
+        postPanel.add(gapPanel);
         postPanel.add(postBody);
         postPanel.add(makePost);
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -120,7 +126,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
                             System.out.println("CLICKED 'ME'!");
-                            profileController.switchToProfileView();
+                            myProfileController.switchToMyProfileView();
                         }
                     }
                 }
@@ -210,11 +216,11 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        final LandingState state = (LandingState) evt.getNewValue();
-    }
+    public void propertyChange(PropertyChangeEvent evt) { final LandingState state = (LandingState) evt.getNewValue(); }
 
     public void setMakePostController(MakePostController controller) {
         this.makePostController = controller;
     }
+
+    public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
 }

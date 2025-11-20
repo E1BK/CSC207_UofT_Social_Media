@@ -1,7 +1,7 @@
-package use_case.profile;
+package use_case.my_profile;
 
-public interface ProfileOutputBoundary {
-    void prepareSuccessView(ProfileOutputData ProfileOutputData);
+public interface MyProfileOutputBoundary {
+    void prepareSuccessView(MyProfileOutputData myProfileOutputData);
     void prepareFailView(String errorMessage);
 
     void switchToLandingView();
