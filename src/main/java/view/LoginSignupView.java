@@ -72,7 +72,7 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         // Continue with the rest of your setup...
         setupLoginPanel();
         setupSignupPanel();
-        setupLoggedInPanel();
+        setupChangePasswordPanel();
 
         tabbedPane.addTab("Login", loginPanel);
         tabbedPane.addTab("Sign Up", signupPanel);
@@ -124,7 +124,7 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         signUp.addActionListener(this);
     }
 
-    private void setupLoggedInPanel() {
+    private void setupChangePasswordPanel() {
         loggedInPanel.setLayout(new GridLayout(0, 2, 10, 10));
 
         loggedInPanel.add(welcomeLabel);
