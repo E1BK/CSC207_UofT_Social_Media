@@ -1,5 +1,5 @@
 // hasan
-package View;
+package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingViewModel;

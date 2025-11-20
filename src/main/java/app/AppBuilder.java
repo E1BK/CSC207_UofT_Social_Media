@@ -1,8 +1,16 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
-import View.*;
-import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.change_password.ChangePasswordController;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
+import interface_adapter.logout.LogoutPresenter;
+import use_case.login_signup.change_passwrod.ChangePasswordInputBoundary;
+import use_case.login_signup.change_passwrod.ChangePasswordInteractor;
+import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
+import use_case.login_signup.change_passwrod.ChangePasswordOutputData;
+import view.*;
+import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
@@ -43,7 +51,7 @@ import use_case.login_signup.logout.LogoutOutputBoundary;
 import use_case.login_signup.signup.SignupInputBoundary;
 import use_case.login_signup.signup.SignupInteractor;
 import use_case.login_signup.signup.SignupOutputBoundary;
-import View.LoginView;
+import view.LoginSignupView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,12 +69,10 @@ public class AppBuilder {
     final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory);
 
     // Add View Models
-    private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
-    private LoggedInView loggedInView;
-    private LoginView loginView;
+    private LoginSignupView loginSignupView;
     private LandingView landingView;
     private LandingViewModel landingViewModel;
     private ProfileView profileView;
@@ -80,24 +86,11 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
-    public AppBuilder addSignupView() {
-        signupViewModel = new SignupViewModel();
-        signupView = new SignupView(signupViewModel);
-        cardPanel.add(signupView, signupView.getViewName());
-        return this;
-    }
-
     public AppBuilder addLoginView() {
         loginViewModel = new LoginViewModel();
-        loginView = new LoginView(loginViewModel);
-        cardPanel.add(loginView, loginView.getViewName());
-        return this;
-    }
-
-    public AppBuilder addLoggedInView() {
-        loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
-        cardPanel.add(loggedInView, loggedInView.getViewName());
+        signupViewModel = new SignupViewModel();
+        loginSignupView = new LoginSignupView(loginViewModel, signupViewModel);
+        cardPanel.add(loginSignupView, loginSignupView.getViewName());
         return this;
     }
 
@@ -108,7 +101,7 @@ public class AppBuilder {
                 userDataAccessObject, signupOutputBoundary, userFactory);
 
         SignupController controller = new SignupController(userSignupInteractor);
-        signupView.setSignupController(controller);
+        loginSignupView.setSignupController(controller);
         return this;
     }
 
@@ -119,36 +112,31 @@ public class AppBuilder {
                 userDataAccessObject, loginOutputBoundary);
 
         LoginController loginController = new LoginController(loginInteractor);
-        loginView.setLoginController(loginController);
+        loginSignupView.setLoginController(loginController);
         return this;
     }
 
     public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
-                loggedInViewModel);
+        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordOutputBoundary() {
+            @Override
+            public void prepareSuccessView(ChangePasswordOutputData outputData) {
+
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+
+            }
+        };
 
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
 
         ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
+        loginSignupView.setChangePasswordController(changePasswordController);
         return this;
     }
 
-    /**
-     * Adds the Logout Use Case to the application.
-     * @return this builder
-     */
-    public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-
-        final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
-        return this;
 
     public AppBuilder addLandingView() {
         landingViewModel = new LandingViewModel();

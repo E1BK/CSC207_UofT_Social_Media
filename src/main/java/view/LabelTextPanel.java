@@ -1,5 +1,5 @@
 // hasan
-package View;
+package view;
 
 import javax.swing.*;
 

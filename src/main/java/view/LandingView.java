@@ -4,8 +4,8 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingState;
-import interface_adapter.make_post.MakePostController;
 import interface_adapter.landing.LandingViewModel;
+import interface_adapter.landing.MakePostController;
 import interface_adapter.profile.ProfileController;
 
 import javax.swing.*;
@@ -27,7 +27,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private MakePostController makePostController = null;
     private ProfileController profileController = null;
 
-//    private final JTextField postBody;
+    //    private final JTextField postBody;
     private final JTextField postTitle;
     private final JTextArea postBody;
     private final JButton makePost;
@@ -144,8 +144,8 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                             System.out.println("CLICKED 'MAKE POST'!");
                             final LandingState landingState = landingViewModel.getState();
                             makePostController.execute(landingState.getUsername(),
-                                                        landingState.getNewpost_title(),
-                                                        landingState.getNewpost_body());
+                                    landingState.getNewpost_title(),
+                                    landingState.getNewpost_body());
                         }
                     }
                 }
