@@ -31,7 +31,8 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     private final JTextField signupNameInputField = new JTextField(15);
     private final JTextField signupEmailInputField = new JTextField(15);
     private final JTextField signupUsernameInputField = new JTextField(15);
-    private final JPasswordField signupPasswordInputField = new JPasswordField(15);
+    private final JPasswordField signupPassword1InputField = new JPasswordField(15);
+    private final JPasswordField signupPassword2InputField = new JPasswordField(15);
     private JButton signUp;
 
     // Logout & Change Password components (shown when logged in)
@@ -109,8 +110,11 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         signupPanel.add(new JLabel("Username:"));
         signupPanel.add(signupUsernameInputField);
 
-        signupPanel.add(new JLabel("Password:"));
-        signupPanel.add(signupPasswordInputField);
+        signupPanel.add(new JLabel("Password1:"));
+        signupPanel.add(signupPassword1InputField);
+
+        signupPanel.add(new JLabel("Password2:"));
+        signupPanel.add(signupPassword2InputField);
 
         signUp = new JButton("Sign Up");
         signupPanel.add(new JLabel());
@@ -225,8 +229,8 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
             }
         });
 
-        // Signup password listener
-        signupPasswordInputField.getDocument().addDocumentListener(new DocumentListener() {
+        // Signup password1 listener
+        signupPassword1InputField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) { updateSignupPassword(); }
             @Override
@@ -235,7 +239,22 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
             public void changedUpdate(DocumentEvent e) { updateSignupPassword(); }
             private void updateSignupPassword() {
                 var state = signupViewModel.getState();
-                state.setPassword(new String(signupPasswordInputField.getPassword()));
+                state.setPassword(new String(signupPassword1InputField.getPassword()));
+                signupViewModel.setState(state);
+            }
+        });
+
+        // Signup password2 listener
+        signupPassword2InputField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) { updateSignupPassword(); }
+            @Override
+            public void removeUpdate(DocumentEvent e) { updateSignupPassword(); }
+            @Override
+            public void changedUpdate(DocumentEvent e) { updateSignupPassword(); }
+            private void updateSignupPassword() {
+                var state = signupViewModel.getState();
+                state.setRepeatPassword(new String(signupPassword2InputField.getPassword()));
                 signupViewModel.setState(state);
             }
         });
@@ -283,10 +302,11 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         String name = signupNameInputField.getText();
         String email = signupEmailInputField.getText();
         String username = signupUsernameInputField.getText();
-        String password = new String(signupPasswordInputField.getPassword());
+        String password1 = new String(signupPassword1InputField.getPassword());
+        String password2 = new String(signupPassword2InputField.getPassword());
 
         if (signupController != null) {
-            signupController.execute(name, email, username, password, "");
+            signupController.execute(username, password1, password2, email, name);
         }
     }
 
@@ -348,7 +368,8 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         signupNameInputField.setText("");
         signupEmailInputField.setText("");
         signupUsernameInputField.setText("");
-        signupPasswordInputField.setText("");
+        signupPassword1InputField.setText("");
+        signupPassword2InputField.setText("");
         currentPasswordField.setText("");
         newPasswordField.setText("");
         confirmPasswordField.setText("");
@@ -407,7 +428,8 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         signupNameInputField.setText("");
         signupEmailInputField.setText("");
         signupUsernameInputField.setText("");
-        signupPasswordInputField.setText("");
+        signupPassword1InputField.setText("");
+        signupPassword2InputField.setText("");
     }
 
     public String getViewName() {
