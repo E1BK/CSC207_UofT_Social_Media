@@ -24,7 +24,7 @@ public class SignupInteractor implements SignupInputBoundary {
         if (userDataAccessObject.existsByName(signupInputData.getUsername())) {
             userPresenter.prepareFailView("User already exists.");
         }
-        else if (signupInputData.getEmail().endsWith("@mail.utoronto.ca")) {
+        else if (!signupInputData.getEmail().contains("@mail.utoronto.ca")) {
             userPresenter.prepareFailView("Must use UofT email (@mail.utoronto.ca)");
         }
         else if (!signupInputData.getPassword().equals(signupInputData.getRepeatPassword())) {
