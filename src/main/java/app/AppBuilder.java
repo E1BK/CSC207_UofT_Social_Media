@@ -10,6 +10,9 @@ import use_case.login_signup.change_passwrod.ChangePasswordInputBoundary;
 import use_case.login_signup.change_passwrod.ChangePasswordInteractor;
 import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
 import view.SearchUserView;
+import interface_adapter.my_profile.*;
+import use_case.my_profile.*;
+import view.*;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
@@ -19,8 +22,7 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
-import view.ProfileView;
-import view.ViewManager;
+import view.SearchUserView;
 //import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommentFactory;
@@ -28,12 +30,11 @@ import entity.PostFactory;
 import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
-import view.LandingView;
 import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.MakePostPresenter;
-import interface_adapter.searchUser.SearchUserController;
-import interface_adapter.searchUser.SearchUserPresenter;
-import interface_adapter.searchUser.SearchUserViewModel;
+import interface_adapter.search_user.SearchUserController;
+import interface_adapter.search_user.SearchUserPresenter;
+import interface_adapter.search_user.SearchUserViewModel;
 import use_case.make_post.MakePostInputBoundary;
 import use_case.make_post.MakePostInteractor;
 import use_case.make_post.MakePostOutputBoundary;
@@ -72,8 +73,12 @@ public class AppBuilder {
     private LoginSignupView loginSignupView;
     private LandingView landingView;
     private LandingViewModel landingViewModel;
+
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
+
+    private MyProfileView myProfileView;
+    private MyProfileViewModel myProfileViewModel;
 
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
@@ -157,15 +162,37 @@ public class AppBuilder {
                                                                                    postFactory);
         ProfileController controller = new ProfileController(profileInteractor);
         profileView.setProfileController(controller);
+        // Change to my profile
+        return this;
+
+    }
+
+    public AppBuilder addMyProfileView() {
+        myProfileViewModel = new MyProfileViewModel();
+        myProfileView = new MyProfileView(myProfileViewModel);
+        cardPanel.add(myProfileView, myProfileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addMyProfileUseCase() {
+        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(viewManagerModel,
+                landingViewModel,
+                searchUserViewModel,
+                myProfileViewModel);
+        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(userDataAccessObject,
+                myProfileOutputBoundary,
+                userFactory,
+                postFactory);
+        MyProfileController controller = new MyProfileController(myProfileInteractor);
+        myProfileView.setMyProfileController(controller);
+        landingView.setMyProfileController(controller);
         return this;
 
     }
 
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                                                                                    landingViewModel,
-                                                                                    searchUserViewModel,
-                                                                                    profileViewModel);
+                landingViewModel, searchUserViewModel, myProfileViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 
@@ -176,7 +203,7 @@ public class AppBuilder {
 
     public AppBuilder addSearchUserUseCase() {
         final SearchUserOutputBoundary searchUserOutputBoundary =  new SearchUserPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel);
+                landingViewModel, searchUserViewModel, myProfileViewModel);
         final SearchUserInputBoundary searchUserInteractor = new SearchUserInteractor(
                 userDataAccessObject, searchUserOutputBoundary);
 

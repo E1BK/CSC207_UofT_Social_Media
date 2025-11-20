@@ -1,41 +1,36 @@
-package interface_adapter.profile;
+package interface_adapter.my_profile;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.search_user.SearchUserViewModel;
-import use_case.profile.ProfileOutputBoundary;
-import use_case.profile.ProfileOutputData;
+import use_case.my_profile.MyProfileOutputBoundary;
+import use_case.my_profile.MyProfileOutputData;
 
-public class ProfilePresenter implements ProfileOutputBoundary {
+public class MyProfilePresenter implements MyProfileOutputBoundary {
 
-    private final ProfileViewModel profileViewModel;
+    private final MyProfileViewModel myProfileViewModel;
     private final SearchUserViewModel searchUserViewModel;
     // To implement
 //    private final PostViewModel postViewModel;
-//    private final MyProfileModel myProfileModel;
+//    private final MyProfileModel myMyProfileModel;
     private final ViewManagerModel viewManagerModel;
     private final LandingViewModel landingViewModel;
 
-    public ProfilePresenter(ViewManagerModel viewManagerModel,
+    public MyProfilePresenter(ViewManagerModel viewManagerModel,
                             LandingViewModel landingViewModel,
                             SearchUserViewModel searchUserViewModel,
-                            ProfileViewModel profileViewModel) {
+                            MyProfileViewModel myProfileViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.profileViewModel = profileViewModel; //TODO change this to myprofile
+        this.myProfileViewModel = myProfileViewModel;
         this.searchUserViewModel = searchUserViewModel;
         this.landingViewModel = landingViewModel;
     }
 
     @Override
-    public void prepareSuccessView(ProfileOutputData makePostOutputData) { profileViewModel.firePropertyChange(); }
+    public void prepareSuccessView(MyProfileOutputData makePostOutputData) { myProfileViewModel.firePropertyChange(); }
 
     @Override
-    public void prepareFailView(String errorMessage) { profileViewModel.firePropertyChange(); }
-
-    public void switchToProfileView() {
-        viewManagerModel.setState(profileViewModel.getViewName());
-        viewManagerModel.firePropertyChange();
-    }
+    public void prepareFailView(String errorMessage) { myProfileViewModel.firePropertyChange(); }
 
     public void switchToSearchView() {
         viewManagerModel.setState(searchUserViewModel.getViewName());
@@ -50,7 +45,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
 
     @Override
     public void switchToMyProfileView() {
-        viewManagerModel.setState(profileViewModel.getViewName());
+        viewManagerModel.setState(myProfileViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
 

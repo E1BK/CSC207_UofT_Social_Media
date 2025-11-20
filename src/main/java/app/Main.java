@@ -15,10 +15,12 @@ public class Main {
                 .addChangePasswordUseCase()
                 .addLandingView()
                 .addSearchUserView()
-                .addMakePostUseCase()
-                .addSearchUserUseCase()
                 .addProfileView()
                 .addProfileUseCase()
+                .addMyProfileView()
+                .addMyProfileUseCase()
+                .addMakePostUseCase()
+                .addSearchUserUseCase()
                 .build();
 
         application.pack();
