@@ -2,6 +2,7 @@ package app;
 
 //import data_access.FileUserDataAccessObject;
 import interface_adapter.change_password.ChangePasswordController;
+import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.logout.LogoutPresenter;
@@ -11,7 +12,6 @@ import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
 import use_case.login_signup.change_passwrod.ChangePasswordOutputData;
 import use_case.profile.ProfileUserDataAccessInterface;
 import view.*;
-import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
@@ -72,7 +72,6 @@ public class AppBuilder {
     // Add View Models
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
-    private LoggedInViewModel loggedInViewModel;
     private LoginSignupView loginSignupView;
     private LandingView landingView;
     private LandingViewModel landingViewModel;
@@ -87,7 +86,7 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
-    public AppBuilder addLoginView() {
+    public AppBuilder addLoginSignupView() {
         loginViewModel = new LoginViewModel();
         signupViewModel = new SignupViewModel();
         loginSignupView = new LoginSignupView(loginViewModel, signupViewModel);
@@ -108,7 +107,7 @@ public class AppBuilder {
 
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                landingViewModel, loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -118,18 +117,8 @@ public class AppBuilder {
     }
 
     public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordOutputBoundary() {
-            @Override
-            public void prepareSuccessView(ChangePasswordOutputData outputData) {
-
-            }
-
-            @Override
-            public void prepareFailView(String errorMessage) {
-
-            }
-        };
-
+        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
+                landingViewModel);
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
 
@@ -165,7 +154,7 @@ public class AppBuilder {
                                                                                  landingViewModel,
                                                                                  searchUserViewModel,
                                                                                  profileViewModel);
-        final ProfileInputBoundary profileInteractor = new ProfileInteractor((ProfileUserDataAccessInterface) userDataAccessObject,
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
                                                                                    profileOutputBoundary,
                                                                                    userFactory,
                                                                                    postFactory);
@@ -205,7 +194,7 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(profileView.getViewName());
+        viewManagerModel.setState(loginSignupView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;

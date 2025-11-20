@@ -413,24 +413,4 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     public String getViewName() {
         return viewName;
     }
-
-    // Test main method - remove this in production
-    public static void main(String[] args) {
-        // Create the view models
-        LoginViewModel loginViewModel = new LoginViewModel();
-        SignupViewModel signupViewModel = new SignupViewModel();
-
-        // Create the login signup view
-        LoginSignupView loginSignupView = new LoginSignupView(loginViewModel, signupViewModel);
-
-        // Create and setup the JFrame
-        JFrame frame = new JFrame("UofT Social Media - Login/Signup");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(loginSignupView);
-        frame.pack();
-        frame.setLocationRelativeTo(null); // Center the window
-        frame.setVisible(true);
-
-        System.out.println("LoginSignupView is running...");
-    }
 }

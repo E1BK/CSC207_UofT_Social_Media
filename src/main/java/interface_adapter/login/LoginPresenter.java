@@ -1,8 +1,8 @@
 package interface_adapter.login;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.landing.LandingState;
+import interface_adapter.landing.LandingViewModel;
 import use_case.login_signup.login.LoginOutputBoundary;
 import use_case.login_signup.login.LoginOutputData;
 
@@ -12,29 +12,24 @@ import use_case.login_signup.login.LoginOutputData;
 public class LoginPresenter implements LoginOutputBoundary {
 
     private final LoginViewModel loginViewModel;
-    private final LoggedInViewModel loggedInViewModel;
+    private final LandingViewModel landingViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public LoginPresenter(ViewManagerModel viewManagerModel,
-                          LoggedInViewModel loggedInViewModel,
+                          LandingViewModel landingViewModel,
                           LoginViewModel loginViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.loggedInViewModel = loggedInViewModel;
+        this.landingViewModel = landingViewModel;
         this.loginViewModel = loginViewModel;
     }
 
     @Override
     public void prepareSuccessView(LoginOutputData response) {
-        // On success, update the loggedInViewModel's state
-        final LoggedInState loggedInState = loggedInViewModel.getState();
-        loggedInState.setUsername(response.getUsername());
-        this.loggedInViewModel.firePropertyChange();
-
-        // and clear everything from the LoginViewModel's state
+        final LandingState landingState = landingViewModel.getState();
+        landingState.setUsername(response.getUsername());
+        this.landingViewModel.firePropertyChange();
         loginViewModel.setState(new LoginState());
-
-        // switch to the logged in view
-        this.viewManagerModel.setState(loggedInViewModel.getViewName());
+        this.viewManagerModel.setState(landingViewModel.getViewName());
         this.viewManagerModel.firePropertyChange();
     }
 

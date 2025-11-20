@@ -1,6 +1,7 @@
 package interface_adapter.change_password;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.landing.LandingViewModel;
 import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
 import use_case.login_signup.change_passwrod.ChangePasswordOutputData;
 
@@ -9,25 +10,25 @@ import use_case.login_signup.change_passwrod.ChangePasswordOutputData;
  */
 public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
 
-    private final LoggedInViewModel loggedInViewModel;
+    private final LandingViewModel landingViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public ChangePasswordPresenter(ViewManagerModel viewManagerModel,
-                                   LoggedInViewModel loggedInViewModel) {
+                                   LandingViewModel landingViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.loggedInViewModel = loggedInViewModel;
+        this.landingViewModel = landingViewModel;
     }
 
     @Override
     public void prepareSuccessView(ChangePasswordOutputData outputData) {
-        loggedInViewModel.getState().setPassword("");
-        loggedInViewModel.getState().setPasswordError(null);
-        loggedInViewModel.firePropertyChange("password");
+        landingViewModel.getState().setPassword("");
+        landingViewModel.getState().setPasswordError(null);
+        landingViewModel.firePropertyChange("password");
     }
 
     @Override
     public void prepareFailView(String error) {
-        loggedInViewModel.getState().setPasswordError(error);
-        loggedInViewModel.firePropertyChange("password");
+        landingViewModel.getState().setPasswordError(error);
+        landingViewModel.firePropertyChange("password");
     }
 }

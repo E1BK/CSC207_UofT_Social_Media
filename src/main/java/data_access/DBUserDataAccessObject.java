@@ -22,6 +22,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LoginUserDataAccessInterface,
         LogoutUserDataAccessInterface,
+        ProfileUserDataAccessInterface,
         SignupUserDataAccessInterface{
 
     private static final String STATUS_CODE_LABEL = "status_code";
