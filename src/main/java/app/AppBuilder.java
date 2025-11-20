@@ -149,7 +149,7 @@ public class AppBuilder {
 
     public AppBuilder addSearchUserUseCase() {
         final SearchUserOutputBoundary searchUserOutputBoundary =  new SearchUserPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel);
+                landingViewModel, searchUserViewModel, myProfileViewModel);
         final SearchUserInputBoundary searchUserInteractor = new SearchUserInteractor(
                 userDataAccessObject, searchUserOutputBoundary);
 

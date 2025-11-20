@@ -3,6 +3,7 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingViewModel;
+import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;
 
