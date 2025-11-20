@@ -1,18 +1,7 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
-import interface_adapter.logout.LogoutPresenter;
-import use_case.login_signup.change_passwrod.ChangePasswordInputBoundary;
-import use_case.login_signup.change_passwrod.ChangePasswordInteractor;
-import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
-import use_case.login_signup.change_passwrod.ChangePasswordOutputData;
-import use_case.profile.ProfileUserDataAccessInterface;
-import view.*;
-import interface_adapter.login.LoginViewModel;
+import view.SearchUserView;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
