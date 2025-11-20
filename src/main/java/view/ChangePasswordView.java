@@ -222,11 +222,9 @@ public class ChangePasswordView extends JPanel implements ActionListener, Proper
             changePasswordViewModel.setState(state);
         } else if (state.isPasswordChanged()) {
             JOptionPane.showMessageDialog(this, "Password changed successfully!");
-            // Clear fields
             currentPasswordField.setText("");
             newPasswordField.setText("");
             confirmPasswordField.setText("");
-            // Reset state
             state.setPasswordChanged(false);
             changePasswordViewModel.setState(state);
         }
