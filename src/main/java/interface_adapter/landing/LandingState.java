@@ -12,6 +12,7 @@ public class LandingState {
 
     private String username = "";
     private String password = "";
+    private String newpost_username = "";
     private String newpost_title = "";
     private String newpost_body = "";
     private ArrayList<Post> posts = new ArrayList<Post>();
@@ -25,6 +26,7 @@ public class LandingState {
         username = copy.username;
         password = copy.password;
         posts = copy.posts;
+        newpost_username = copy.newpost_username;
         newpost_title = copy.newpost_title;
         newpost_body = copy.newpost_body;
     }
@@ -59,6 +61,14 @@ public class LandingState {
     public String getNewpost_body() { return newpost_body; }
 
     public void setNewpost_body(String newpost_body) { this.newpost_body = newpost_body; }
+
+    public String getNewpost_username() {
+        return newpost_username;
+    }
+
+    public void setNewpost_username(String newpost_username) {
+        this.newpost_username = newpost_username;
+    }
 
 //    public void addNewPost(Post p) {
 //        posts.add(p);
