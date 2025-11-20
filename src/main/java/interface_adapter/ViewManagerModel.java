@@ -1,4 +1,4 @@
-// hasan
+// Hasan / Julian
 package interface_adapter;
 
 /**
@@ -11,5 +11,5 @@ public class ViewManagerModel extends ViewModel<String> {
         super("view manager");
         this.setState("");
     }
-
 }
+

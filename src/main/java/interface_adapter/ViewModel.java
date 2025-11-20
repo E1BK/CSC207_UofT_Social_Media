@@ -1,4 +1,4 @@
-// hasan
+// Hasan / Julian
 package interface_adapter;
 
 import java.beans.PropertyChangeListener;

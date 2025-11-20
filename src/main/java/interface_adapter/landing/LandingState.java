@@ -16,6 +16,7 @@ public class LandingState {
     private String newpost_title = "";
     private String newpost_body = "";
     private ArrayList<Post> posts = new ArrayList<Post>();
+    private String passwordError = "";
 
     // the default no-arg constructor:
     public LandingState() {
@@ -29,15 +30,12 @@ public class LandingState {
         newpost_username = copy.newpost_username;
         newpost_title = copy.newpost_title;
         newpost_body = copy.newpost_body;
+        passwordError = copy.passwordError;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getUsername() { return username; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void setUsername(String username) { this.username = username; }
 
     public String getPassword() {
         return password;
@@ -45,6 +43,14 @@ public class LandingState {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setPasswordError(String passwordError) {
+        this.passwordError = passwordError;
+    }
+
+    public String getPasswordError() {
+        return passwordError;
     }
 
     public ArrayList<Post> getPosts() {return posts;}

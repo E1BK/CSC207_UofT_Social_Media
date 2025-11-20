@@ -1,13 +1,12 @@
 // hasan
 package interface_adapter.landing;
 
-import View.LandingView;
+import view.LandingView;
 import interface_adapter.ViewModel;
 
 public class LandingViewModel extends ViewModel<LandingState> {
 
     public static final String TITLE_LABEL = "Welcome, user!";
-
     public static final String ME_BUTTON_LABEL = "Me";
     public static final String MAKE_POST_BUTTON_LABEL = "Make a Post";
     public static final String PEOPLE_BUTTON_LABEL = "People";
