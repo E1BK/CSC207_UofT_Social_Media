@@ -1,21 +1,27 @@
 package app;
 
 import javax.swing.*;
-
-import View.SearchView;
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("UofT Social Media");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        AppBuilder appBuilder = new AppBuilder();
 
-            frame.setContentPane(new SearchView());
+        JFrame application = appBuilder
+                .addLandingView()
+                .addSearchUserView()
+                .addProfileView()
+                .addProfileUseCase()
+                .addMyProfileView()
+                .addMyProfileUseCase()
+                .addMakePostUseCase()
+                .addSearchUserUseCase()
+                .build();
 
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
+        application.pack();
+        application.setSize(1200, 800);
+        application.setLocationRelativeTo(null);
+        application.setVisible(true);
     }
 }
