@@ -2,7 +2,7 @@
 package use_case.search_user;
 
 import entity.User;
-import interface_adapter.searchUser.SearchUserPresenter;
+import interface_adapter.search_user.SearchUserPresenter;
 
 public class SearchUserInteractor implements SearchUserInputBoundary{
 
@@ -30,6 +30,11 @@ public class SearchUserInteractor implements SearchUserInputBoundary{
     public void switchToLandingView() {
         SearchUserPresenter temp = (SearchUserPresenter) searchUserPresenter;
         temp.switchToLandingView();
+    }
+
+    public void switchToMeView() {
+        SearchUserPresenter temp = (SearchUserPresenter) searchUserPresenter;
+        temp.switchToMeView();
     }
 
 }

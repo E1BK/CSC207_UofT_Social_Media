@@ -8,6 +8,7 @@ import org.json.JSONArray;
 
 
 import use_case.make_post.MakePostUserDataAccessInterface;
+import use_case.my_profile.MyProfileUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 
@@ -16,7 +17,8 @@ import java.util.ArrayList;
 
 public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                                                SearchUserDataAccessInterface,
-                                               ProfileUserDataAccessInterface {
+                                               ProfileUserDataAccessInterface,
+                                               MyProfileUserDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
@@ -25,8 +27,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String POST_ID = "post_id";
-    private static final String POST_TITLE = "post_title";
-    private static final String POST_BODY = "post_body";
+    private static final String POST_TITLE = "title";
+    private static final String POST_BODY = "body";
     private static final String POST_DATE = "post_date";
     private static final String COMMENT_LIKES = "comment_likes";
     private static final String COMMENT_ID = "comment_id";
@@ -46,8 +48,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         this.commentFactory = commentFactory;
     }
 
-    @Override
-    public void save(User user){
+    public void makePost(User user){
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
 
@@ -114,6 +115,11 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     @Override
     public User findUserByUsername(String username) {
         return null;
+    }
+
+    @Override
+    public void save(User user) {
+        // TODO Implement
     }
 
     @Override

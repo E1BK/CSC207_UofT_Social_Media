@@ -1,5 +1,5 @@
 // hasan
-package interface_adapter.searchUser;
+package interface_adapter.search_user;
 
 import entity.User;
 import use_case.search_user.SearchUserInputBoundary;
@@ -28,5 +28,10 @@ public class SearchUserController {
     public void switchToLandingView() {
         SearchUserInteractor temp = (SearchUserInteractor) searchUserInteractor;
         temp.switchToLandingView();
+    }
+
+    public void switchToMeView() {
+        SearchUserInteractor temp = (SearchUserInteractor) searchUserInteractor;
+        temp.switchToMeView();
     }
 }

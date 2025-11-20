@@ -1,5 +1,5 @@
 // hasan
-package interface_adapter.searchUser;
+package interface_adapter.search_user;
 
 import interface_adapter.ViewModel;
 

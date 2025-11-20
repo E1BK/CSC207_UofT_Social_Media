@@ -1,9 +1,11 @@
-// Julian
 package view;
 
 import app.GradientPanel;
 import entity.Post;
-import interface_adapter.profile.*;
+import interface_adapter.my_profile.MyProfileController;
+import interface_adapter.my_profile.MyProfileViewModel;
+import interface_adapter.profile.ProfileState;
+import interface_adapter.profile.ProfileViewModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,34 +16,34 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-/**
- * The view for when a user is looking at someone's profile
- */
-public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
+public class MyProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     // Variables
-    private ProfileViewModel profileViewModel;
-    private String viewName = "profile";
-    private ProfileController profileController;
+    private MyProfileViewModel myProfileViewModel;
+    private String viewName = "my profile";
+    private MyProfileController myProfileController;
     private int numOfLabels;
+
+    // Textfields
+    private final JTextField bioInputField = new JTextField(15);
 
     // Labels
     private final JLabel username;
-    private final JLabel bio;
     private final JLabel utorID;
     private final JPanel postContainer;
 
     // Buttons
     private final JButton back;
+    private final JButton bioConfirm;
     private final JButton postButton;
     private final JButton searchButton;
     private final JButton profileButton;
 
-    public ProfileView(ProfileViewModel profileViewModel) {
-        this.profileViewModel = profileViewModel;
-        this.profileViewModel.addPropertyChangeListener(this);
+    public MyProfileView(MyProfileViewModel myProfileViewModel) {
+        this.myProfileViewModel = myProfileViewModel;
+        this.myProfileViewModel.addPropertyChangeListener(this);
 
         // Page Title
-        JLabel name = new JLabel("ChatUofT > Profile");
+        JLabel name = new JLabel("ChatUofT > My Profile");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
         back = new JButton (ProfileViewModel.BACK_BUTTON_LABEL);
@@ -57,23 +59,25 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         middlePanel.setMaximumSize(new Dimension(400, 100));
         middlePanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
-        // Add User
+        // Add username
         final JPanel usernamePanel = new JPanel();
         final JLabel usernameInfo = new JLabel("Profile: ");
         usernameInfo.setFont(new Font("Helvetica", Font.BOLD, 40));
-        username = new JLabel("SorEgo");
+        username = new JLabel("Me!");
         username.setFont(new Font("Helvetica", Font.BOLD, 40));
         usernamePanel.add(usernameInfo);
         usernamePanel.add(username);
 
-        // Add Bio
+        // Add Bio Editor
         final JPanel bioPanel = new JPanel();
-        final JLabel bioInfo = new JLabel("Bio: ");
-        bioInfo.setFont(new Font("Helvetica", Font.BOLD, 20));
-        bio = new JLabel("Feeling SorE");
-        bio.setFont(new Font("Helvetica", Font.BOLD, 20));
+        bioConfirm = new JButton("Confirm");
+        final JLabel bioLabel = new JLabel("Bio: ");
+        bioLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        final LabelTextPanel bioInfo = new LabelTextPanel(bioLabel,
+                                                          bioInputField,
+                                                          bioConfirm);
+
         bioPanel.add(bioInfo);
-        bioPanel.add(bio);
 
         // Add ID
         final JPanel idPanel = new JPanel();
@@ -90,27 +94,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         postContainer.setLayout(new BoxLayout(postContainer, BoxLayout.Y_AXIS));
         postsPanel.add(new JScrollPane(postContainer),  BorderLayout.CENTER);
 
-//        JButton button = new JButton("Add");
-//        button.addActionListener(new ActionListener() {
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.out.println(numOfLabels);
-//                final JPanel newPanel = new JPanel();
-//                newPanel.add(new JLabel("Label " + numOfLabels++));
-//                postContainer.add(newPanel);
-//                postContainer.revalidate();
-//                // Scroll down to last added panel
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        newPanel.scrollRectToVisible(newPanel.getBounds());
-//                    }
-//                });
-//            }
-//        });
-//        postsPanel.add(button, BorderLayout.PAGE_END);
-
         // Temp until posts are added
         ProfileState state = new ProfileState();
         List<Post> postList = state.getPosts();
@@ -121,9 +104,10 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         postsPanel.setVisible(true);
 
         // Add to middle Panel
-        middlePanel.add(usernamePanel/*, BorderLayout.NORTH*/);
-        middlePanel.add(bioPanel/*, BorderLayout.CENTER*/);
-        middlePanel.add(idPanel/*, BorderLayout.SOUTH*/);
+        middlePanel.add(usernamePanel);
+        middlePanel.add(bioPanel);
+        middlePanel.add(idPanel);
+        middlePanel.add(postsPanel);
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
@@ -147,39 +131,48 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        profileController.switchToLandingView();
+                        myProfileController.switchToLandingView();
+                    }
+                }
+        );
+
+        bioConfirm.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // TODO To Implement
                     }
                 }
         );
 
         postButton.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    profileController.switchToPostView();
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        myProfileController.switchToPostView();
+                    }
                 }
-            }
         );
 
         searchButton.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    profileController.switchToSearchView();
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        myProfileController.switchToSearchView();
+                    }
                 }
-            }
         );
 
         profileButton.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    profileController.switchToMyProfileView();
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        myProfileController.switchToMyProfileView();
+                    }
                 }
-            }
         );
 
-        // Creates frame
+        //Creates Frame
         this.setLayout( new BorderLayout() );
 
         this.add(topPanel,  BorderLayout.NORTH);
@@ -232,10 +225,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         }
     }
 
-    public String getViewName() {
-        return viewName;
-    }
+    public String getViewName() { return viewName; }
 
-    public void setProfileController(ProfileController controller) { this.profileController = controller; }
+    public void setMyProfileController(MyProfileController controller) {this.myProfileController = controller;}
 }
-
