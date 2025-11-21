@@ -35,16 +35,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     private final JPasswordField signupPassword2InputField = new JPasswordField(15);
     private JButton signUp;
 
-    // Logout & Change Password components (shown when logged in)
-    private final JPanel loggedInPanel = new JPanel();
-    private final JLabel welcomeLabel = new JLabel("Welcome!");
-    private final JButton changePasswordButton = new JButton("Change Password");
-    private final JButton logoutButton = new JButton("Logout");
-    private final JPasswordField currentPasswordField = new JPasswordField(15);
-    private final JPasswordField newPasswordField = new JPasswordField(15);
-    private final JPasswordField confirmPasswordField = new JPasswordField(15);
-    private final JButton submitPasswordChange = new JButton("Change Password");
-
     // Tab components
     private final JTabbedPane tabbedPane = new JTabbedPane();
     private final JPanel loginPanel = new JPanel();
@@ -54,9 +44,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     private SignupController signupController;
     private LogoutController logoutController;
     private ChangePasswordController changePasswordController;
-
-    private boolean isLoggedIn = false;
-    private String currentUsername = "";
 
     public LoginSignupView(LoginViewModel loginViewModel, SignupViewModel signupViewModel) {
         this.loginViewModel = loginViewModel;
@@ -72,7 +59,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         // Continue with the rest of your setup...
         setupLoginPanel();
         setupSignupPanel();
-        setupLoggedInPanel();
 
         tabbedPane.addTab("Login", loginPanel);
         tabbedPane.addTab("Sign Up", signupPanel);
@@ -122,33 +108,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
         addSignupListeners();
         signUp.addActionListener(this);
-    }
-
-    private void setupLoggedInPanel() {
-        loggedInPanel.setLayout(new GridLayout(0, 2, 10, 10));
-
-        loggedInPanel.add(welcomeLabel);
-        loggedInPanel.add(new JLabel()); // Empty cell
-
-        // Change Password section
-        loggedInPanel.add(new JLabel("Current Password:"));
-        loggedInPanel.add(currentPasswordField);
-
-        loggedInPanel.add(new JLabel("New Password:"));
-        loggedInPanel.add(newPasswordField);
-
-        loggedInPanel.add(new JLabel("Confirm New Password:"));
-        loggedInPanel.add(confirmPasswordField);
-
-        loggedInPanel.add(submitPasswordChange);
-        loggedInPanel.add(new JLabel()); // Empty cell
-
-        // Logout button
-        loggedInPanel.add(new JLabel());
-        loggedInPanel.add(logoutButton);
-
-        submitPasswordChange.addActionListener(this);
-        logoutButton.addActionListener(this);
     }
 
     private void addLoginListeners() {
@@ -282,12 +241,9 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
             onLogin();
         } else if (evt.getSource() == signUp) {
             onSignup();
-        } else if (evt.getSource() == logoutButton) {
-            onLogout();
-        } else if (evt.getSource() == submitPasswordChange) {
-            onChangePassword();
         }
     }
+
 
     private void onLogin() {
         String username = loginUsernameInputField.getText();
@@ -310,58 +266,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         }
     }
 
-    private void onLogout() {
-        if (logoutController != null) {
-            logoutController.execute();
-            switchToLoginSignupView();
-        }
-    }
-
-    private void onChangePassword() {
-        String currentPassword = new String(currentPasswordField.getPassword());
-        String newPassword = new String(newPasswordField.getPassword());
-        String confirmPassword = new String(confirmPasswordField.getPassword());
-
-        if (changePasswordController != null && !currentUsername.isEmpty()) {
-            changePasswordController.execute(
-                    currentUsername,                // username
-                    currentPassword,                // oldPassword (current password)
-                    newPassword,                    // newPassword
-                    confirmPassword                 // confirmPassword
-            );
-        } else {
-            JOptionPane.showMessageDialog(this, "Please log in first.");
-        }
-    }
-
-    private void switchToLoggedInView(String username) {
-        this.isLoggedIn = true;
-        this.currentUsername = username;
-        welcomeLabel.setText("Welcome, " + username + "!");
-
-        // Replace tabs with logged in panel
-        tabbedPane.removeAll();
-        tabbedPane.addTab("Account", loggedInPanel);
-
-        // Clear password fields
-        currentPasswordField.setText("");
-        newPasswordField.setText("");
-        confirmPasswordField.setText("");
-    }
-
-    private void switchToLoginSignupView() {
-        this.isLoggedIn = false;
-        this.currentUsername = "";
-
-        // Restore login/signup tabs
-        tabbedPane.removeAll();
-        tabbedPane.addTab("Login", loginPanel);
-        tabbedPane.addTab("Sign Up", signupPanel);
-
-        // Clear all fields
-        clearAllFields();
-    }
-
     private void clearAllFields() {
         loginUsernameInputField.setText("");
         loginPasswordInputField.setText("");
@@ -370,9 +274,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         signupUsernameInputField.setText("");
         signupPassword1InputField.setText("");
         signupPassword2InputField.setText("");
-        currentPasswordField.setText("");
-        newPasswordField.setText("");
-        confirmPasswordField.setText("");
     }
 
     @Override
@@ -391,11 +292,10 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
             JOptionPane.showMessageDialog(this, state.getLoginError());
             state.setLoginError(null);
             loginViewModel.setState(state);
-        } else {
-            // Login successful - switch to logged in view
-            switchToLoggedInView(state.getUsername());
         }
+        // else: success; presenter has already told ViewManager to show LandingView
     }
+
 
     private void handleSignupStateChange() {
         var state = signupViewModel.getState();
