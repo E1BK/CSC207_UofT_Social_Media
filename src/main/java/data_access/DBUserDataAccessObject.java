@@ -24,6 +24,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         LoginUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         ProfileUserDataAccessInterface,
+        MyProfileUserDataAccessInterface,
         SignupUserDataAccessInterface{
 
     private static final String STATUS_CODE_LABEL = "status_code";
@@ -178,11 +179,6 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     @Override
     public String getCurrentUsername() {
         return currentUsername;
-    }
-
-    @Override
-    public void save(User user) {
-        // TODO Implement
     }
 
     @Override

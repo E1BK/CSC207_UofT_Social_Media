@@ -25,6 +25,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     // Textfields
     private final JTextField bioInputField = new JTextField(15);
+    private final JTextField passwordInputField = new JTextField(15);
 
     // Labels
     private final JLabel username;
@@ -34,6 +35,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     // Buttons
     private final JButton back;
     private final JButton bioConfirm;
+    private final JButton passwordConfirm;
     private final JButton postButton;
     private final JButton searchButton;
     private final JButton profileButton;
@@ -56,7 +58,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         // Page Body
         final JPanel middlePanel = new JPanel();
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
-        middlePanel.setMaximumSize(new Dimension(400, 100));
+        middlePanel.setMaximumSize(new Dimension(1080, 100));
         middlePanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
         // Add username
@@ -68,17 +70,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         usernamePanel.add(usernameInfo);
         usernamePanel.add(username);
 
-        // Add Bio Editor
-        final JPanel bioPanel = new JPanel();
-        bioConfirm = new JButton("Confirm");
-        final JLabel bioLabel = new JLabel("Bio: ");
-        bioLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
-        final LabelTextPanel bioInfo = new LabelTextPanel(bioLabel,
-                                                          bioInputField,
-                                                          bioConfirm);
-
-        bioPanel.add(bioInfo);
-
         // Add ID
         final JPanel idPanel = new JPanel();
         final JLabel idInfo = new JLabel("utorID: ");
@@ -87,6 +78,28 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         utorID.setFont(new Font("Helvetica", Font.BOLD, 20));
         idPanel.add(idInfo);
         idPanel.add(utorID);
+
+        // Add Bio Editor
+        final JPanel bioPanel = new JPanel();
+        bioConfirm = new JButton("Confirm");
+        bioConfirm.setFont(new Font("Helvetica", Font.BOLD, 20));
+        final JLabel bioLabel = new JLabel("Bio: ");
+        bioLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        final LabelTextPanel bioInfo = new LabelTextPanel(bioLabel,
+                                                          bioInputField,
+                                                          bioConfirm);
+        bioPanel.add(bioInfo);
+
+        // Add Change Password
+        final JPanel passwordPanel = new  JPanel();
+        final JLabel passwordLabel = new JLabel("New Password: ");
+        passwordLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        passwordConfirm = new JButton("Confirm");
+        passwordConfirm.setFont(new Font("Helvetica", Font.BOLD, 20));
+        final LabelTextPanel passwordInfo = new LabelTextPanel(passwordLabel,
+                                                               passwordInputField,
+                                                               passwordConfirm);
+        passwordPanel.add(passwordInfo);
 
         // Display Posts
         final JPanel postsPanel = new JPanel();
@@ -105,8 +118,9 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
         // Add to middle Panel
         middlePanel.add(usernamePanel);
-        middlePanel.add(bioPanel);
         middlePanel.add(idPanel);
+        middlePanel.add(bioPanel);
+        middlePanel.add(passwordPanel);
         middlePanel.add(postsPanel);
 
         // Page Navigation
@@ -137,6 +151,15 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         );
 
         bioConfirm.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // TODO To Implement
+                    }
+                }
+        );
+
+        passwordConfirm.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -199,6 +222,8 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     }
 
     private void addPosts(List<Post> postList) {
+        // Creates post preview to display on profile
+        // TODO Make it display the 5 most recent/random posts
         for (int i = 0; i < postList.size(); i++) {
             JLabel postTitle = new JLabel(postList.get(i).getTitle());
             JLabel postDate = new JLabel(postList.get(i).getPost_date());
@@ -215,6 +240,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             postHeader.add(Box.createHorizontalGlue());
             postHeader.add(postDate, BorderLayout.LINE_END);
 
+            // TODO Change postPanel to postInfo, add a new panel postPanel with layout X_axis, add postInfo and postButton to access the posts from the post view
             JPanel postPanel = new JPanel();
             postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
             postPanel.add(postHeader);
