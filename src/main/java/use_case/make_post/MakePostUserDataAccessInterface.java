@@ -4,5 +4,6 @@ import entity.User;
 
 public interface MakePostUserDataAccessInterface {
 
-    void makePost(User user);
+    public void save(User user);
+    public User getUserInfo(String username);
 }

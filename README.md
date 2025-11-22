@@ -78,7 +78,7 @@ Use Case 5: Search for People
 - Alternate Flow:
   - filler
 
-Use Case 6: View Post/Comment
+Use Case 6: view Post/Comment
 - Main Flow:
   - filler
 - Alternate Flow:
@@ -93,7 +93,7 @@ Use Case 6: View Post/Comment
 | Profile and Bio          | User Story 4 and 8  | Julian         |
 | Make a Post              | User Story 5        | Hayden         |
 | Search system for people | User Story 6 and 7  | Russell        |
-| View Post/Comment        | User Story 9 and 10 | Ioane          |
+| view Post/Comment        | User Story 9 and 10 | Ioane          |
 
 # API Specification
 
@@ -115,33 +115,44 @@ To store extra information we need, such as the bio or posts, we add into the `i
 
 ```json
 {
-    "username": "uoft_student_1", 
-    "password": "somepassword",
+    "username": "zhaohayd", 
+    "password": "omgmypasswordisleaking",
     "info": {
         "bio": "this is a bio",
-        "email": "someone.someone@mail.utoronto.ca",
+        "email": "hayden.zhao@mail.utoronto.ca",
+        "name": "Hayden HaoDong Zhao",
         "posts": [
             {
                 "post_id": 1,
-                "title": "this is a title",
-                "body": "this is the body",
+                "post_title": "this is a title",
+                "post_body": "this is the body",
+                "post_date": "2025-11-16T17:05:32.123",
                 "comments": [
                     {
                         "comment_id": 1,
+                        "comment_date": "2025-11-18T17:05:32.123",
                         "comment_body": "this is a comment",
-                        "likes": 124
+                        "comment_likes": 124
                     }
                 ]
             },
             {
                 "post_id": 2,
-                "title":"this is a title",
-                "body": "this is the body",
+                "post_title":"this is a title",
+                "post_body": "this is the body",
+                "post_date": "2025-11-17T17:05:32.123",
                 "comments": [
                     {
                         "comment_id": 1,
+                        "comment_date": "2025-11-17T17:05:32.123",
                         "comment_body": "this is another comment",
-                        "likes": 4566
+                        "comment_likes": 4566
+                    },
+                    {
+                        "comment_id": 2,
+                        "comment_date": "2025-11-27T17:05:32.123",
+                        "comment_body": "this is another 111111 comment",
+                        "comment_likes": 43
                     }
                 ]
             }
@@ -150,21 +161,31 @@ To store extra information we need, such as the bio or posts, we add into the `i
 }
 ```
 
+`username` should be a UTORiD, since this cannot be enforced, it should still be checked that usernames do not overlap on signup. This is also to prevent repeatedly signing up from the same user.
+
+`password` can be kept as-is for now, unless we figure something out to encrypt it?
+
+`email` should be an address that ends with "@mail.utoronto.ca", this should be enforced by checking the string.
+
+`post_date` and `comment_date` should be created with `LocalDateTime.now().toString()`
+
+Note that all fields should be checked for illegal characters.
+
 Additionally, we also need a "*repository*" user to store all the users that currently exist, we define a permanent `user` entity in the DB, and store usernames inside `info`, as such:
 
 ```json
 {
-    "username": "user_repository_CTG3",
+    "username": "USER_REPO_CTG3",
     "password": "CTG3CTG3",
     "info": {
         "users": [
             {
-                "user_id": 1,
-                "user_name": "username1"
+                "username": "zhaohayd",
+                "name": "Hayden HaoDong Zhao"
             },
             {
-                "user_id": 2,
-                "user_name": "username2"
+                "username": "zhaochri",
+                "name": "Christie HaoJing Zhao"
             }
         ]
     }
@@ -178,7 +199,7 @@ Additionally, we also need a "*repository*" user to store all the users that cur
 
 ### Fields
 
-username: String, username of user
+username: String, username of user, must be a utorid?
 
 password: String, password of user
 
