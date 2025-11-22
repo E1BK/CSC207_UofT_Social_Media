@@ -2,9 +2,12 @@ package view;
 
 import app.GradientPanel;
 import entity.Post;
+import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.MyProfileState;
+import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
+import interface_adapter.profile.ProfileViewModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,8 +22,11 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     // Variables
     private MyProfileViewModel myProfileViewModel;
     private String viewName = "my profile";
-    private MyProfileController myProfileController;
     private int numOfLabels;
+
+    // Controllers
+    private MyProfileController myProfileController;
+    private MyProfileChangePasswordController changePasswordController = null;
 
     // Textfields
     private final JTextField bioInputField = new JTextField(15);
@@ -164,7 +170,17 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        final MyProfileState state = myProfileViewModel.getState();
                         state.setPassword(passwordInputField.getText());
+
+                        changePasswordController.execute(
+                                state.getUsername(),
+                                passwordInputField.getText(),
+                                state.getBio(),
+                                state.getEmail(),
+                                state.getName(),
+                                state.getPosts()
+                        );
                     }
                 }
         );
@@ -222,9 +238,9 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("state")) {
-            final MyProfileState state = (MyProfileState) evt.getNewValue();
+    public void propertyChange(PropertyChangeEvent e) {
+        if (e.getPropertyName().equals("state")) {
+            final MyProfileState state = (MyProfileState) e.getNewValue();
             username.setText(state.getUsername());
             passwordInputField.setText(state.getPassword());
             bioInputField.setText(state.getBio());
@@ -277,5 +293,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     public String getViewName() { return viewName; }
 
-    public void setMyProfileController(MyProfileController controller) {this.myProfileController = controller;}
+    public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
+    public void setChangePasswordController(MyProfileChangePasswordController controller) { this.changePasswordController = controller; }
 }

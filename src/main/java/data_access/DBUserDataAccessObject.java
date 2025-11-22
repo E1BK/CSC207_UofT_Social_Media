@@ -12,8 +12,10 @@ import use_case.login_signup.logout.LogoutUserDataAccessInterface;
 import use_case.login_signup.signup.SignupUserDataAccessInterface;
 import use_case.make_post.MakePostUserDataAccessInterface;
 import use_case.my_profile.MyProfileUserDataAccessInterface;
+import use_case.my_profile.profile_change_password.MyProfileChangePasswordUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
+import view.MyProfileView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         MyProfileUserDataAccessInterface,
+        MyProfileChangePasswordUserDataAccessInterface,
         SignupUserDataAccessInterface{
 
     private static final String STATUS_CODE_LABEL = "status_code";
@@ -353,7 +356,35 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     @Override
     public void changePassword(User user) {
+        final OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
 
+        // POST METHOD
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+        final JSONObject requestBody = new JSONObject();
+        requestBody.put(USERNAME, user.getUsername());
+        requestBody.put(PASSWORD, user.getPassword());
+        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+        final Request request = new Request.Builder()
+                .url("http://vm003.teach.cs.toronto.edu:20112/user?username=%s")
+                .method("PUT", body)
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+        try {
+            final Response response = client.newCall(request).execute();
+
+            final JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
+                // success!
+            }
+            else {
+                throw new RuntimeException(responseBody.getString(MESSAGE));
+            }
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
