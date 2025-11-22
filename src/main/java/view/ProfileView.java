@@ -61,7 +61,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         final JPanel usernamePanel = new JPanel();
         final JLabel usernameInfo = new JLabel("Profile: ");
         usernameInfo.setFont(new Font("Helvetica", Font.BOLD, 40));
-        username = new JLabel("SorEgo");
+        username = new JLabel();
         username.setFont(new Font("Helvetica", Font.BOLD, 40));
         usernamePanel.add(usernameInfo);
         usernamePanel.add(username);
