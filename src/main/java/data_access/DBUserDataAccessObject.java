@@ -366,7 +366,11 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         // If the user does not exist or the API returns an error,
         // getUserInfo will throw a RuntimeException, and we treat that as "user not found".
         try {
-            return getUserInfo(username);
+            User user = getUserInfo(username);
+            if (user != null) {
+                System.out.println("User found: " + user.getUsername());
+            }
+            return user;
         } catch (RuntimeException ex) {
             System.out.println("User not found or error from API for username: " + username);
             return null;
