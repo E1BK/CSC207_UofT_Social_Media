@@ -110,12 +110,20 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             throw new RuntimeException(ex);
         }
     }
-
-    // This method needs to be implemented
+    //Russell
     @Override
     public User findUserByUsername(String username) {
-        return null;
+        // We reuse getUserInfo here.
+        // If the user does not exist or the API returns an error,
+        // getUserInfo will throw a RuntimeException, and we treat that as "user not found".
+        try {
+            return getUserInfo(username);
+        } catch (RuntimeException ex) {
+            System.out.println("User not found or error from API for username: " + username);
+            return null;
+        }
     }
+
 
     @Override
     public void save(User user) {

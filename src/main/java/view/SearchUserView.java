@@ -1,9 +1,26 @@
-// hasan
+// hasan, russell
+/** (russell)
+ * SearchUserView is the GUI for the "People" / user search screen.
+ *
+ * functions:
+ * - Show a text field and a "Search" button for entering a friend's username.
+ * - Forward the entered username to SearchUserController, instead of accessing
+ *   the database or data access layer directly.
+ * - Provide navigation buttons ("Home", "People", "Me") that ask the controller
+ *   to switch views via the ViewManager.
+ *
+ *  notes:
+ * - searchBar and searchButton are stored as fields (not local variables) so
+ *   the whole view can access them (for adding listeners, reading input, or
+ *   clearing / disabling the button).
+ * - The ActionListener on searchButton calls searchUserController.execute(username),
+ *   which triggers the SearchUser use case (SearchUserInteractor).
+ */
 package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.my_profile.MyProfileController;
+// (deleted) import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;
 
@@ -25,6 +42,13 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
     private final JButton people;
     private final JButton home;
 
+    //// (russell) newly added
+    //// We store searchBar (line 59) and searchButton (line 63) as fields
+    //// instead of local variables so that the whole view can access them
+    //// (for adding listeners, clearing input, disabling the button ...)
+    private final JTextField searchBar;
+    private final JButton searchButton;
+
     public SearchUserView(SearchUserViewModel searchUserViewModel) {
         this.searchUserViewModel = searchUserViewModel;
         this.searchUserViewModel.addPropertyChangeListener(this);
@@ -45,11 +69,15 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         title.setFont(new Font("Helvetica", Font.BOLD, 40));
         titlePanel.add(title);
 
-        JTextField searchBar = new JTextField(20);
+        //// (russell) newly added
+        //// We store searchBar (line 59) and searchButton (line 63) as fields
+        //// instead of local variables so that the whole view can access them
+        //// (for adding listeners, clearing input, disabling the button ...)
+        searchBar = new JTextField(20);
         JLabel searchPrompt = new JLabel("Your friend's username:");
         searchPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         searchBar.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        JButton searchButton = new JButton("Search");
+        searchButton = new JButton("Search");
         searchButton.setFont(new Font("Helvetica", Font.BOLD, 20));
         LabelTextPanel searchBarPanel = new LabelTextPanel(searchPrompt, searchBar, searchButton);
 
@@ -115,6 +143,22 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                 }
         );
 
+        //// (russell) newly added
+        //// it forwards the entered username to the SearchUserController,
+        //// which then calls the search use case (SearchUserInteractor) with
+        //// a SearchUserInputData object.
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (searchUserController != null) {
+                    String username = searchBar.getText();
+                    System.out.println("SEARCH for: " + username);
+                    searchUserController.execute(username);
+                } else {
+                    System.out.println("SearchUserController is null (not set yet)");
+                }
+            }
+        });
 
 
     }
