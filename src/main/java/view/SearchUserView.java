@@ -20,9 +20,10 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingViewModel;
-// (deleted) import interface_adapter.my_profile.MyProfileController;
+import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;
+import interface_adapter.search_user.SearchUserState;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -41,6 +42,10 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
     private final JButton me;
     private final JButton people;
     private final JButton home;
+
+
+    // (russell) newly added: label for showing success/fail message
+    private final JLabel resultLabel;
 
     // (russell) newly added
     // We store searchBar (line 59) and searchButton (line 63) as fields
@@ -87,11 +92,15 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         middlePanel.add(titlePanel, BorderLayout.NORTH);
         middlePanel.add(searchBarPanel, BorderLayout.CENTER);
 
-        // IMPORTANT:
-        // middlePanel.add(displayResultPanel, BorderLayout.SOUTH)
-        // NOTE: when the searching functionality has been implemented.
-        // then use the displayResultPanel to display the resulting posts
-        // of the searched user, or to display the error message if the user does not exist.
+        // Russell: panel for result message (e.g. "Found user: gaohe" / "User Not Found")
+        resultLabel = new JLabel("");
+        resultLabel.setFont(new Font("Helvetica", Font.ITALIC, 16));
+        resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JPanel messagePanel = new JPanel(new BorderLayout());
+        messagePanel.add(resultLabel, BorderLayout.CENTER);
+        messagePanel.setBorder(new EmptyBorder(10, 0, 10, 0));
+
+        middlePanel.add(messagePanel, BorderLayout.SOUTH);
 
         // bottom panel
         GradientPanel bottomPanel = new GradientPanel();
@@ -175,6 +184,11 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        // Russell: whenever SearchUserViewModel fires a change,
+        // read the latest state and update the result label on the UI.
+        SearchUserState state = searchUserViewModel.getState();
+        String message = state.getMessage();
+        resultLabel.setText(message);
     }
 
     public void setSearchUserController(SearchUserController searchUserController) {
