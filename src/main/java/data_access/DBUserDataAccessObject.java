@@ -14,6 +14,7 @@ import use_case.make_post.MakePostUserDataAccessInterface;
 import use_case.my_profile.MyProfileUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
+import use_case.view_post.ViewPostDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +25,9 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         LoginUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         ProfileUserDataAccessInterface,
-        SignupUserDataAccessInterface{
+        SignupUserDataAccessInterface,
+        MyProfileUserDataAccessInterface,
+        ViewPostDataAccessInterface{
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
@@ -181,11 +184,6 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     }
 
     @Override
-    public void save(User user) {
-        // TODO Implement
-    }
-
-    @Override
     public User getUserInfo(String req_username){
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
@@ -254,6 +252,21 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     @Override
     public User findUserByUsername(String username) {
+        return null;
+    }
+
+    @Override
+    public Post getPost(String username, int postId) {
+        User user = getUserInfo(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        for (Post post : user.getPosts()) {
+            if (post.getPost_id() == postId) {
+                return post;
+            }
+        }
         return null;
     }
 }
