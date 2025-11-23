@@ -28,11 +28,19 @@ public class SearchUserPresenter implements SearchUserOutputBoundary {
 
     @Override
     public void prepareSuccessView(User user) {
+        // Russell: update state with a success message, then notify the view
+        SearchUserState state = searchUserViewModel.getState();
+        state.setMessage("Found user: " + user.getUsername());
+        searchUserViewModel.setState(state);
         searchUserViewModel.firePropertyChange();
     }
 
     @Override
     public void prepareFailView() {
+        // Russell: update state with a failure message, then notify the view
+        SearchUserState state = searchUserViewModel.getState();
+        state.setMessage("User Not Found");
+        searchUserViewModel.setState(state);
         searchUserViewModel.firePropertyChange();
     }
 
