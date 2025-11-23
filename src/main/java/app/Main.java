@@ -9,6 +9,10 @@ public class Main {
         AppBuilder appBuilder = new AppBuilder();
 
         JFrame application = appBuilder
+                .addLoginSignupView()
+                .addSignupUseCase()
+                .addLoginUseCase()
+                .addChangePasswordUseCase()
                 .addLandingView()
                 .addSearchUserView()
                 .addProfileView()
@@ -17,6 +21,8 @@ public class Main {
                 .addMyProfileUseCase()
                 .addMakePostUseCase()
                 .addSearchUserUseCase()
+                .addPostView()
+                .addViewPostUseCase()
                 .build();
 
         application.pack();

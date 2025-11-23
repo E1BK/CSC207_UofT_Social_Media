@@ -1,12 +1,24 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
+import interface_adapter.change_password.ChangePasswordController;
+import interface_adapter.change_password.ChangePasswordPresenter;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
+import interface_adapter.login.LoginViewModel;
+import use_case.login_signup.change_passwrod.ChangePasswordInputBoundary;
+import use_case.login_signup.change_passwrod.ChangePasswordInteractor;
+import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
+import view.SearchUserView;
 import interface_adapter.my_profile.*;
 import use_case.my_profile.*;
 import view.*;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupPresenter;
+import interface_adapter.signup.SignupViewModel;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
@@ -29,19 +41,23 @@ import use_case.make_post.MakePostOutputBoundary;
 import use_case.search_user.SearchUserInputBoundary;
 import use_case.search_user.SearchUserInteractor;
 import use_case.search_user.SearchUserOutputBoundary;
-//import use_case.login.LoginInputBoundary;
-//import use_case.login.LoginInteractor;
-//import use_case.login.LoginOutputBoundary;
-//import use_case.logout.LogoutInputBoundary;
-//import use_case.logout.LogoutInteractor;
-//import use_case.logout.LogoutOutputBoundary;
-//import use_case.signup.SignupInputBoundary;
-//import use_case.signup.SignupInteractor;
-//import use_case.signup.SignupOutputBoundary;
-//import view.LoggedInView;
-//import view.LoginView;
-//import view.SignupView;
-//import view.ViewManager;
+import use_case.login_signup.login.LoginInputBoundary;
+import use_case.login_signup.login.LoginInteractor;
+import use_case.login_signup.login.LoginOutputBoundary;
+import use_case.login_signup.logout.LogoutInputBoundary;
+import use_case.login_signup.logout.LogoutInteractor;
+import use_case.login_signup.logout.LogoutOutputBoundary;
+import use_case.login_signup.signup.SignupInputBoundary;
+import use_case.login_signup.signup.SignupInteractor;
+import use_case.login_signup.signup.SignupOutputBoundary;
+import view.LoginSignupView;
+import interface_adapter.view_post.ViewPostController;
+import interface_adapter.view_post.ViewPostPresenter;
+import interface_adapter.view_post.ViewPostViewModel;
+import use_case.view_post.ViewPostInputBoundary;
+import use_case.view_post.ViewPostInteractor;
+import use_case.view_post.ViewPostOutputBoundary;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,6 +75,9 @@ public class AppBuilder {
     final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory);
 
     // Add View Models
+    private SignupViewModel signupViewModel;
+    private LoginViewModel loginViewModel;
+    private LoginSignupView loginSignupView;
     private LandingView landingView;
     private LandingViewModel landingViewModel;
 
@@ -71,10 +90,55 @@ public class AppBuilder {
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
 
+    private PostView postView;
+    private ViewPostViewModel viewPostViewModel;
+
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
+
+    public AppBuilder addLoginSignupView() {
+        loginViewModel = new LoginViewModel();
+        signupViewModel = new SignupViewModel();
+        loginSignupView = new LoginSignupView(loginViewModel, signupViewModel);
+        cardPanel.add(loginSignupView, loginSignupView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addSignupUseCase() {
+        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
+                signupViewModel, loginViewModel);
+        final SignupInputBoundary userSignupInteractor = new SignupInteractor(
+                userDataAccessObject, signupOutputBoundary, userFactory);
+
+        SignupController controller = new SignupController(userSignupInteractor);
+        loginSignupView.setSignupController(controller);
+        return this;
+    }
+
+    public AppBuilder addLoginUseCase() {
+        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
+                landingViewModel, loginViewModel);
+        final LoginInputBoundary loginInteractor = new LoginInteractor(
+                userDataAccessObject, loginOutputBoundary);
+
+        LoginController loginController = new LoginController(loginInteractor);
+        loginSignupView.setLoginController(loginController);
+        return this;
+    }
+
+    public AppBuilder addChangePasswordUseCase() {
+        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
+                landingViewModel);
+        final ChangePasswordInputBoundary changePasswordInteractor =
+                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
+
+        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
+        loginSignupView.setChangePasswordController(changePasswordController);
+        return this;
+    }
+
 
     public AppBuilder addLandingView() {
         landingViewModel = new LandingViewModel();
@@ -121,11 +185,13 @@ public class AppBuilder {
     }
 
     public AppBuilder addMyProfileUseCase() {
-        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(viewManagerModel,
+        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(
+                viewManagerModel,
                 landingViewModel,
                 searchUserViewModel,
                 myProfileViewModel);
-        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(userDataAccessObject,
+        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
+                userDataAccessObject,
                 myProfileOutputBoundary,
                 userFactory,
                 postFactory);
@@ -134,6 +200,26 @@ public class AppBuilder {
         landingView.setMyProfileController(controller);
         return this;
 
+    }
+
+    public AppBuilder addPostView() {
+        viewPostViewModel = new ViewPostViewModel();
+        postView = new PostView(viewPostViewModel);
+        cardPanel.add(postView, postView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addViewPostUseCase() {
+        final ViewPostOutputBoundary viewPostOutputBoundary =
+                new ViewPostPresenter(viewManagerModel, viewPostViewModel);
+
+        final ViewPostInputBoundary viewPostInteractor =
+                new ViewPostInteractor(userDataAccessObject, viewPostOutputBoundary);
+
+        ViewPostController viewPostController = new ViewPostController(viewPostInteractor);
+        postView.setViewPostController(viewPostController);
+
+        return this;
     }
 
     public AppBuilder addMakePostUseCase() {
@@ -164,7 +250,7 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(landingView.getViewName());
+        viewManagerModel.setState(loginSignupView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;

@@ -1,10 +1,10 @@
 package entity;
 
 public class Comment {
-    private int comment_id;
-    private String comment_body;
-    private String comment_date;
-    private int likes;
+    private final int comment_id;
+    private final String comment_body;
+    private final String comment_date;
+    private final int likes;
 
     public Comment(int comment_id, String body, String commentDate, int likes) {
         this.comment_id =  comment_id;

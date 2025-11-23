@@ -27,7 +27,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private MakePostController makePostController = null;
     private MyProfileController myProfileController = null;
 
-//    private final JTextField postBody;
+    //    private final JTextField postBody;
     private final JTextField postTitle;
     private final JTextArea postBody;
     private final JButton makePost;
@@ -150,8 +150,8 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                             System.out.println("CLICKED 'MAKE POST'!");
                             final LandingState landingState = landingViewModel.getState();
                             makePostController.execute(landingState.getUsername(),
-                                                        landingState.getNewpost_title(),
-                                                        landingState.getNewpost_body());
+                                    landingState.getNewpost_title(),
+                                    landingState.getNewpost_body());
                         }
                     }
                 }
@@ -221,5 +221,6 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     public void setMakePostController(MakePostController controller) {
         this.makePostController = controller;
     }
+
     public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
 }
