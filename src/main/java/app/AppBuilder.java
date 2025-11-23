@@ -185,11 +185,13 @@ public class AppBuilder {
     }
 
     public AppBuilder addMyProfileUseCase() {
-        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(viewManagerModel,
+        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(
+                viewManagerModel,
                 landingViewModel,
                 searchUserViewModel,
                 myProfileViewModel);
-        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(userDataAccessObject,
+        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
+                userDataAccessObject,
                 myProfileOutputBoundary,
                 userFactory,
                 postFactory);
