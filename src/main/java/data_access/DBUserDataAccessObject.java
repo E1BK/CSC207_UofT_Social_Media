@@ -181,11 +181,6 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     }
 
     @Override
-    public void save(User user) {
-        // TODO Implement
-    }
-
-    @Override
     public User getUserInfo(String req_username){
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
