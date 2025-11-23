@@ -15,6 +15,7 @@ import use_case.my_profile.MyProfileUserDataAccessInterface;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
+import use_case.view_post.ViewPostDataAccessInterface;
 import view.MyProfileView;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         MyProfileUserDataAccessInterface,
         MyProfileChangePasswordUserDataAccessInterface,
-        SignupUserDataAccessInterface{
+        SignupUserDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
@@ -214,7 +215,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
+                .url("http://vm003.teach.cs.toronto.edu:20112/user")
                 .method("PUT", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
@@ -389,6 +390,21 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     @Override
     public User findUserByUsername(String username) {
+        return null;
+    }
+
+    @Override
+    public Post getPost(String username, int postId) {
+        User user = getUserInfo(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        for (Post post : user.getPosts()) {
+            if (post.getPost_id() == postId) {
+                return post;
+            }
+        }
         return null;
     }
 }
