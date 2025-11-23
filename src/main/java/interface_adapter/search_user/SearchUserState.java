@@ -1,6 +1,6 @@
 package interface_adapter.search_user;
 
-// hasan
+// hasan, russell
 import entity.User;
 
 import java.util.ArrayList;
@@ -10,6 +10,9 @@ public class SearchUserState {
     private String password = "";
     private ArrayList<User> people = new ArrayList<User>();
 
+    // Russell: new field for displaying result message in the UI
+    // eg. "Found user: gaohe" or "User Not Found"
+    private String message = "";
     // the default no-arg constructor:
     public SearchUserState() {
     }
@@ -19,6 +22,7 @@ public class SearchUserState {
         username = copy.username;
         password = copy.password;
         people = copy.people;
+        message = copy.message;  // Russell: copy message as well
     }
 
     public String getUsername() {
@@ -42,6 +46,15 @@ public class SearchUserState {
     public void setPeople(ArrayList<User> newPeople) {
         people.clear();
         people.addAll(newPeople);
+    }
+
+    // Russell: getter/setter for message
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }
