@@ -42,10 +42,10 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
     private final JButton people;
     private final JButton home;
 
-    //// (russell) newly added
-    //// We store searchBar (line 59) and searchButton (line 63) as fields
-    //// instead of local variables so that the whole view can access them
-    //// (for adding listeners, clearing input, disabling the button ...)
+    // (russell) newly added
+    // We store searchBar (line 59) and searchButton (line 63) as fields
+    // instead of local variables so that the whole view can access them
+    // (for adding listeners, clearing input, disabling the button ...)
     private final JTextField searchBar;
     private final JButton searchButton;
 
@@ -69,10 +69,10 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         title.setFont(new Font("Helvetica", Font.BOLD, 40));
         titlePanel.add(title);
 
-        //// (russell) newly added
-        //// We store searchBar (line 59) and searchButton (line 63) as fields
-        //// instead of local variables so that the whole view can access them
-        //// (for adding listeners, clearing input, disabling the button ...)
+        //(russell) newly added
+        // We store searchBar (line 59) and searchButton (line 63) as fields
+        // instead of local variables so that the whole view can access them
+        // (for adding listeners, clearing input, disabling the button ...)
         searchBar = new JTextField(20);
         JLabel searchPrompt = new JLabel("Your friend's username:");
         searchPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -143,10 +143,10 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                 }
         );
 
-        //// (russell) newly added
-        //// it forwards the entered username to the SearchUserController,
-        //// which then calls the search use case (SearchUserInteractor) with
-        //// a SearchUserInputData object.
+        // (russell) newly added
+        // it forwards the entered username to the SearchUserController,
+        // which then calls the search use case (SearchUserInteractor) with
+        // a SearchUserInputData object.
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
