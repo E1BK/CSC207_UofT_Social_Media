@@ -6,9 +6,14 @@ import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
+import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordPresenter;
 import use_case.login_signup.change_passwrod.ChangePasswordInputBoundary;
 import use_case.login_signup.change_passwrod.ChangePasswordInteractor;
 import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
+import use_case.my_profile.profile_change_password.MyProfileChangePasswordInputBoundary;
+import use_case.my_profile.profile_change_password.MyProfileChangePasswordInteractor;
+import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputBoundary;
 import view.SearchUserView;
 import interface_adapter.my_profile.*;
 import use_case.my_profile.*;
@@ -22,7 +27,6 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
-import view.SearchUserView;
 //import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommentFactory;
@@ -44,9 +48,6 @@ import use_case.search_user.SearchUserOutputBoundary;
 import use_case.login_signup.login.LoginInputBoundary;
 import use_case.login_signup.login.LoginInteractor;
 import use_case.login_signup.login.LoginOutputBoundary;
-import use_case.login_signup.logout.LogoutInputBoundary;
-import use_case.login_signup.logout.LogoutInteractor;
-import use_case.login_signup.logout.LogoutOutputBoundary;
 import use_case.login_signup.signup.SignupInputBoundary;
 import use_case.login_signup.signup.SignupInteractor;
 import use_case.login_signup.signup.SignupOutputBoundary;
@@ -119,7 +120,9 @@ public class AppBuilder {
 
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                landingViewModel, loginViewModel);
+                                                                           landingViewModel,
+                                                                           loginViewModel,
+                                                                           myProfileViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -199,7 +202,18 @@ public class AppBuilder {
         myProfileView.setMyProfileController(controller);
         landingView.setMyProfileController(controller);
         return this;
+    }
 
+    public AppBuilder addMyProfileChangePasswordUseCase() {
+        final MyProfileChangePasswordOutputBoundary myProfileChangePasswordOutputBoundary =
+                new MyProfileChangePasswordPresenter(viewManagerModel,
+                landingViewModel);
+        final MyProfileChangePasswordInputBoundary myProfileChangePasswordInteractor =
+                new MyProfileChangePasswordInteractor(userDataAccessObject, myProfileChangePasswordOutputBoundary, userFactory);
+
+        MyProfileChangePasswordController myProfileChangePasswordController = new MyProfileChangePasswordController(myProfileChangePasswordInteractor);
+        myProfileView.setChangePasswordController(myProfileChangePasswordController);
+        return this;
     }
 
     public AppBuilder addPostView() {
