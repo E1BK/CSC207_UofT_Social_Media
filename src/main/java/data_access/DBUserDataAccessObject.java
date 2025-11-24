@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-import use_case.login_signup.change_passwrod.ChangePasswordUserDataAccessInterface;
 import use_case.login_signup.login.LoginUserDataAccessInterface;
 import use_case.login_signup.logout.LogoutUserDataAccessInterface;
 import use_case.login_signup.signup.SignupUserDataAccessInterface;
@@ -22,13 +21,12 @@ import java.util.ArrayList;
 
 public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         SearchUserDataAccessInterface,
-        ChangePasswordUserDataAccessInterface,
         LoginUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         MyProfileUserDataAccessInterface,
         SignupUserDataAccessInterface,
-        MyProfileUserDataAccessInterface,
+        MyProfileChangePasswordUserDataAccessInterface,
         ViewPostDataAccessInterface{
 
     private static final String STATUS_CODE_LABEL = "status_code";
@@ -367,7 +365,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
                 .url("http://vm003.teach.cs.toronto.edu:20112/user")
-                .method("POST", body)
+                .method("PUT", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
