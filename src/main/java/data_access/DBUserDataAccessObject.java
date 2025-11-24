@@ -200,8 +200,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
         JSONObject JSONInfo = new JSONObject()
                 .put("bio", user.getBio())
-                .put("email", user.getEmail())
-                .put("name", user.getName())
+                .put(EMAIL, user.getEmail())
+                .put(NAME, user.getName())
                 .put("posts", JSONPostArray);
 
         final JSONObject requestBody = new JSONObject()
@@ -353,7 +353,35 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     @Override
     public void changePassword(User user) {
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
 
+        final JSONObject requestBody = new JSONObject()
+                .put(USERNAME, user.getUsername())
+                .put(PASSWORD, user.getPassword());
+
+        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+        final Request request = new Request.Builder()
+                .url("http://vm003.teach.cs.toronto.edu:20112/user")
+                .method("POST", body)
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+
+        try {
+            final Response response = client.newCall(request).execute();
+
+            final JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
+                // success!
+            }
+            else {
+                throw new RuntimeException(responseBody.getString(MESSAGE));
+            }
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
