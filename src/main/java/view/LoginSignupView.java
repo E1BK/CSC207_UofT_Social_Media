@@ -4,8 +4,6 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.login.LoginController;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.change_password.ChangePasswordController;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -42,8 +40,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
     private LoginController loginController;
     private SignupController signupController;
-    private LogoutController logoutController;
-    private ChangePasswordController changePasswordController;
 
     public LoginSignupView(LoginViewModel loginViewModel, SignupViewModel signupViewModel) {
         this.loginViewModel = loginViewModel;
@@ -225,14 +221,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
     public void setSignupController(SignupController controller) {
         this.signupController = controller;
-    }
-
-    public void setLogoutController(LogoutController controller) {
-        this.logoutController = controller;
-    }
-
-    public void setChangePasswordController(ChangePasswordController controller) {
-        this.changePasswordController = controller;
     }
 
     @Override

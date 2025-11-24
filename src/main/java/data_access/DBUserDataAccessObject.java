@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-import use_case.login_signup.change_passwrod.ChangePasswordUserDataAccessInterface;
 import use_case.login_signup.login.LoginUserDataAccessInterface;
 import use_case.login_signup.logout.LogoutUserDataAccessInterface;
 import use_case.login_signup.signup.SignupUserDataAccessInterface;
@@ -23,14 +22,13 @@ import java.util.ArrayList;
 
 public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         SearchUserDataAccessInterface,
-        ChangePasswordUserDataAccessInterface,
         LoginUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         MyProfileUserDataAccessInterface,
-        MyProfileChangePasswordUserDataAccessInterface,
         SignupUserDataAccessInterface,
-        ViewPostDataAccessInterface {
+        MyProfileChangePasswordUserDataAccessInterface,
+        ViewPostDataAccessInterface{
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
@@ -206,8 +204,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
         JSONObject JSONInfo = new JSONObject()
                 .put("bio", user.getBio())
-                .put("email", user.getEmail())
-                .put("name", user.getName())
+                .put(EMAIL, user.getEmail())
+                .put(NAME, user.getName())
                 .put("posts", JSONPostArray);
 
         final JSONObject requestBody = new JSONObject()
@@ -217,7 +215,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/user")
+                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
                 .method("PUT", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
@@ -359,20 +357,20 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     @Override
     public void changePassword(User user) {
-        final OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-
-        // POST METHOD
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, user.getUsername());
-        requestBody.put(PASSWORD, user.getPassword());
+
+        final JSONObject requestBody = new JSONObject()
+                .put(USERNAME, user.getUsername())
+                .put(PASSWORD, user.getPassword());
+
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/user?username=%s")
+                .url("http://vm003.teach.cs.toronto.edu:20112/user")
                 .method("PUT", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
+
         try {
             final Response response = client.newCall(request).execute();
 

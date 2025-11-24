@@ -1,7 +1,5 @@
 package use_case.my_profile.profile_change_password;
 
-import use_case.login_signup.change_passwrod.ChangePasswordOutputData;
-
 /**
  * The output boundary for the Change Password Use Case.
  */

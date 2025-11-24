@@ -2,7 +2,6 @@ package view;
 
 import app.GradientPanel;
 import entity.Post;
-import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.MyProfileState;
