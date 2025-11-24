@@ -52,7 +52,7 @@ public class PostData {
     public void setPostList(ArrayList<Post> userPosts) {
         ArrayList<Map> tempPostList = new ArrayList<>();
 
-        int loops = tempPostList.size();
+        int loops = userPosts.size();
 
         if (loops > 3) {
             loops = 3;

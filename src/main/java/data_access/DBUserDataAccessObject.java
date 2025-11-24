@@ -392,11 +392,6 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return null;
-    }
-
-    @Override
     public Post getPost(String username, int postId) {
         User user = getUserInfo(username);
         if (user == null) {

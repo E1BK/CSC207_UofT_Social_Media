@@ -266,11 +266,12 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     }
 
     private void addPosts(ArrayList<Map> posts) {
-        // Creates post preview to display on profile
-        // TODO Make it display the 3 most recent/random posts
         for (int i = 0; i < posts.size(); i++) {
             JLabel postTitle = new JLabel((String) posts.get(i).get(myProfileViewModel.TITLE));
-            JLabel postDate = new JLabel((String) posts.get(i).get(myProfileViewModel.DATE));
+            String date = (String) posts.get(i).get(myProfileViewModel.DATE);
+            date = date.substring(0, date.indexOf("T"));
+
+            JLabel postDate = new JLabel(date);
             JPanel postBody = new JPanel();
             JLabel postInfo = new JLabel((String) posts.get(i).get(myProfileViewModel.BODY));
 
@@ -284,7 +285,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             postHeader.add(Box.createHorizontalGlue());
             postHeader.add(postDate, BorderLayout.LINE_END);
 
-            JButton seePostButton = new JButton(STR."View \{i}");
+            JButton seePostButton = new JButton(STR."View \{i + 1}");
             seePostButton.setFont(new Font("Helvetica", Font.BOLD, 15));
 
             JPanel postInfoPanel = new JPanel();
