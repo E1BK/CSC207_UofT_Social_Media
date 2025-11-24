@@ -31,8 +31,10 @@ public class MakePostPresenter implements MakePostOutputBoundary {
 
     @Override
     public void prepareSuccessView(MakePostOutputData makePostOutputData) {
-        // ????
-        // landingViewModel.getState().addNewPost(p); ???
+        LandingState state = landingViewModel.getState();
+        state.setNewpost_username(makePostOutputData.getUsername());
+        state.setNewpost_title(makePostOutputData.getTitle());
+        state.setNewpost_body(makePostOutputData.getBody());
         landingViewModel.firePropertyChange();
     }
 

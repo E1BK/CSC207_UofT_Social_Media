@@ -1,5 +1,6 @@
 package interface_adapter.my_profile;
 
+import entity.Post;
 import entity.User;
 import use_case.my_profile.MyProfileInputBoundary;
 import use_case.my_profile.MyProfileInputData;
@@ -25,4 +26,6 @@ public class MyProfileController {
     public void switchToSearchView() { myProfileInteractor.switchToSearchView(); }
     public void switchToPostView() { myProfileInteractor.switchToPostView(); }
     public void switchToMyProfileView() { myProfileInteractor.switchToMyProfileView(); }
+    public void switchToCurrentPost(Post post) {
+    }
 }
