@@ -32,7 +32,11 @@ public class MyProfileChangePasswordInteractor implements MyProfileChangePasswor
                     myProfileChangePasswordInputData.getName(),
                     myProfileChangePasswordInputData.getPosts());
 
-            userDataAccessObject.changePassword(user);
+            if (myProfileChangePasswordInputData.getPassOrBio().equals("password")) {
+                userDataAccessObject.changePassword(user);
+            } else if (myProfileChangePasswordInputData.getPassOrBio().equals("bio")) {
+                userDataAccessObject.changeBio(user);
+            }
 
             final MyProfileChangePasswordOutputData myProfileChangePasswordOutputData =
                     new MyProfileChangePasswordOutputData(user.getName());

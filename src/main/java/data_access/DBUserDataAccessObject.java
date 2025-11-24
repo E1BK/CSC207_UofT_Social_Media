@@ -29,12 +29,14 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         MyProfileUserDataAccessInterface,
         MyProfileChangePasswordUserDataAccessInterface,
-        SignupUserDataAccessInterface {
+        SignupUserDataAccessInterface,
+        ViewPostDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
+    private static final String BIO = "bio";
     private static final String EMAIL = "email";
     private static final String NAME = "name";
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
@@ -386,6 +388,11 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public void changeBio(User user) {
+        save(user);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package app;
 
-//import data_access.FileUserDataAccessObject;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.login.LoginController;
@@ -195,9 +194,7 @@ public class AppBuilder {
                 myProfileViewModel);
         final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
                 userDataAccessObject,
-                myProfileOutputBoundary,
-                userFactory,
-                postFactory);
+                myProfileOutputBoundary);
         MyProfileController controller = new MyProfileController(myProfileInteractor);
         myProfileView.setMyProfileController(controller);
         landingView.setMyProfileController(controller);

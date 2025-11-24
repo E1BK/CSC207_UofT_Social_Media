@@ -96,7 +96,7 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(home)) {
-                            System.out.println("CLICKED 'HOME'!");
+                            System.out.println(evt.getActionCommand());
                             searchUserController.switchToLandingView();
 
                         }
@@ -108,7 +108,7 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(me)) {
-                            System.out.println("CLICKED 'ME'!");
+                            System.out.println(evt.getActionCommand());
                             searchUserController.switchToMeView();
                         }
                     }

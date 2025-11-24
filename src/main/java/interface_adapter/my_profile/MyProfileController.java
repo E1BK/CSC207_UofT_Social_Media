@@ -1,9 +1,10 @@
 package interface_adapter.my_profile;
 
 import entity.Post;
-import entity.User;
 import use_case.my_profile.MyProfileInputBoundary;
 import use_case.my_profile.MyProfileInputData;
+
+import java.util.ArrayList;
 
 public class MyProfileController {
 
@@ -13,11 +14,11 @@ public class MyProfileController {
         this.myProfileInteractor = myProfileInteractor;
     }
 
-    public void execute(User user) {
-        final MyProfileInputData myMyProfileInputData = new MyProfileInputData(user.getUsername(),
-                user.getEmail(),
-                user.getBio(),
-                user.getPosts());
+    public void execute(String username, String email, String bio, ArrayList<Post> posts) {
+        final MyProfileInputData myMyProfileInputData = new MyProfileInputData(username,
+                email,
+                bio,
+                posts);
 
         myProfileInteractor.execute(myMyProfileInputData);
     }

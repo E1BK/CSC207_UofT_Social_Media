@@ -10,6 +10,7 @@ public class MyProfileChangePasswordInputData {
     private final String bio;
     private final String email;
     private final String name;
+    private final String passOrBio;
     private final ArrayList<Post> posts;
 
     public MyProfileChangePasswordInputData(String username,
@@ -17,6 +18,7 @@ public class MyProfileChangePasswordInputData {
                                             String bio,
                                             String email,
                                             String name,
+                                            String passOrBio,
                                             ArrayList<Post> posts) {
         this.username = username;
         this.password = password;
@@ -24,6 +26,7 @@ public class MyProfileChangePasswordInputData {
         this.email = email;
         this.name = name;
         this.posts = posts;
+        this.passOrBio = passOrBio;
     }
 
     String getUsername() {
@@ -41,6 +44,7 @@ public class MyProfileChangePasswordInputData {
     String getName() {
         return name;
     }
+    String getPassOrBio() { return passOrBio; }
     ArrayList<Post> getPosts() {
         return posts;
     }

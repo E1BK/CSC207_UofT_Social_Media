@@ -152,6 +152,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
                         myProfileController.switchToLandingView();
                     }
                 }
@@ -161,7 +162,19 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        final MyProfileState state = myProfileViewModel.getState();
                         state.setBio(bioInputField.getText());
+
+                        System.out.println(e.getActionCommand());
+                        changePasswordController.execute(
+                                state.getUsername(),
+                                passwordInputField.getText(),
+                                state.getBio(),
+                                state.getEmail(),
+                                state.getName(),
+                                "bio",
+                                state.getPosts()
+                        );
                     }
                 }
         );
@@ -173,12 +186,14 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                         final MyProfileState state = myProfileViewModel.getState();
                         state.setPassword(passwordInputField.getText());
 
+                        System.out.println(e.getActionCommand());
                         changePasswordController.execute(
                                 state.getUsername(),
                                 passwordInputField.getText(),
                                 state.getBio(),
                                 state.getEmail(),
                                 state.getName(),
+                                "password",
                                 state.getPosts()
                         );
                     }
@@ -189,6 +204,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
                         myProfileController.switchToPostView();
                     }
                 }
@@ -198,6 +214,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
                         myProfileController.switchToSearchView();
                     }
                 }
@@ -207,6 +224,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
                         myProfileController.switchToMyProfileView();
                     }
                 }
@@ -231,6 +249,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         if (e.getActionCommand().contains("View")) {
             for (int i = 0; i < posts.size(); i++) {
                 if (e.getActionCommand().contains (STR."\{i}")) {
+                    System.out.println(e.getActionCommand());
                     myProfileController.switchToCurrentPost(posts.get(i));
                 }
             }

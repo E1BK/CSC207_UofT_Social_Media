@@ -125,7 +125,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
-                            System.out.println("CLICKED 'ME'!");
+                            System.out.println(evt.getActionCommand());
                             myProfileController.switchToMyProfileView();
                         }
                     }
@@ -136,7 +136,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(people)) {
-                            System.out.println("CLICKED 'PEOPLE'!");
+                            System.out.println(evt.getActionCommand());
                             makePostController.switchToPeopleView();
                         }
                     }
@@ -147,7 +147,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(makePost)) {
-                            System.out.println("CLICKED 'MAKE POST'!");
+                            System.out.println(evt.getActionCommand());
                             final LandingState landingState = landingViewModel.getState();
                             makePostController.execute(landingState.getUsername(),
                                     landingState.getNewpost_title(),
