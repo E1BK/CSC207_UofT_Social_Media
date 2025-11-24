@@ -1,16 +1,11 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordPresenter;
-import use_case.login_signup.change_passwrod.ChangePasswordInputBoundary;
-import use_case.login_signup.change_passwrod.ChangePasswordInteractor;
-import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInteractor;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputBoundary;
@@ -130,18 +125,6 @@ public class AppBuilder {
         loginSignupView.setLoginController(loginController);
         return this;
     }
-
-    public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
-                landingViewModel);
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
-
-        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
-        loginSignupView.setChangePasswordController(changePasswordController);
-        return this;
-    }
-
 
     public AppBuilder addLandingView() {
         landingViewModel = new LandingViewModel();
