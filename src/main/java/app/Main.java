@@ -22,6 +22,8 @@ public class Main {
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
+                .addPostView()
+                .addViewPostUseCase()
                 .build();
 
         application.pack();
