@@ -7,6 +7,10 @@ import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.MyProfileViewModel;
 import use_case.login_signup.login.LoginOutputBoundary;
 import use_case.login_signup.login.LoginOutputData;
+import use_case.my_profile.PostData;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * The Presenter for the Login Use Case.
@@ -39,7 +43,10 @@ public class LoginPresenter implements LoginOutputBoundary {
         myProfileState.setPassword(response.getPassword());
         myProfileState.setBio(response.getBio());
         myProfileState.setEmail(response.getEmail());
-        myProfileState.setPosts(response.getPosts());
+        PostData postData = new PostData();
+        postData.setPostList(response.getPosts());
+        ArrayList<Map> postList = postData.getPosts();
+        myProfileState.setPosts(postList);
         myProfileViewModel.firePropertyChange();
 
         loginViewModel.setState(new LoginState());

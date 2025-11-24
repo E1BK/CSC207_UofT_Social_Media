@@ -1,25 +1,21 @@
 package interface_adapter.my_profile;
 
-import entity.Post;
 import use_case.my_profile.MyProfileInputBoundary;
 import use_case.my_profile.MyProfileInputData;
-
-import java.util.ArrayList;
+import use_case.my_profile.MyProfileUserDataAccessInterface;
 
 public class MyProfileController {
 
     private final MyProfileInputBoundary myProfileInteractor;
+    private final MyProfileUserDataAccessInterface dataAccess;
 
-    public MyProfileController(MyProfileInputBoundary myProfileInteractor) {
+    public MyProfileController(MyProfileInputBoundary myProfileInteractor, MyProfileUserDataAccessInterface dataAccess) {
         this.myProfileInteractor = myProfileInteractor;
+        this.dataAccess = dataAccess;
     }
 
-    public void execute(String username, String email, String bio, ArrayList<Post> posts) {
-        final MyProfileInputData myMyProfileInputData = new MyProfileInputData(username,
-                email,
-                bio,
-                posts);
-
+    public void execute(String username) {
+        final MyProfileInputData myMyProfileInputData = new MyProfileInputData(dataAccess, username);
         myProfileInteractor.execute(myMyProfileInputData);
     }
 
@@ -27,6 +23,6 @@ public class MyProfileController {
     public void switchToSearchView() { myProfileInteractor.switchToSearchView(); }
     public void switchToPostView() { myProfileInteractor.switchToPostView(); }
     public void switchToMyProfileView() { myProfileInteractor.switchToMyProfileView(); }
-    public void switchToCurrentPost(Post post) {
+    public void switchToCurrentPost(int postID) {
     }
 }

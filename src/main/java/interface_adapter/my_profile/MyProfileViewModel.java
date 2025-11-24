@@ -9,6 +9,11 @@ public class MyProfileViewModel extends ViewModel<MyProfileState> {
     public static final String SEARCH_BUTTON_LABEL = "Search";
     public static final String PROFILE_BUTTON_LABEL = "Profile";
 
+    public static final String TITLE = "Title";
+    public static final String BODY = "Body";
+    public static final String DATE = "Date";
+    public static final String ID = "Id";
+
     public MyProfileViewModel() {
         super("my profile");
         setState(new MyProfileState());

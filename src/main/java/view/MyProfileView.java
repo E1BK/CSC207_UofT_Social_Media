@@ -1,12 +1,11 @@
 package view;
 
 import app.GradientPanel;
-import entity.Post;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
-import interface_adapter.profile.ProfileViewModel;
+import use_case.my_profile.MyProfileUserDataAccessInterface;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MyProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     // Variables
@@ -43,7 +43,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     private final JButton postButton;
     private final JButton searchButton;
     private final JButton profileButton;
-    private ArrayList<Post> posts;
+    private ArrayList<Map> posts;
 
     public MyProfileView(MyProfileViewModel myProfileViewModel) {
         this.myProfileViewModel = myProfileViewModel;
@@ -113,14 +113,14 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         postContainer.setLayout(new BoxLayout(postContainer, BoxLayout.Y_AXIS));
         postsPanel.add(new JScrollPane(postContainer),  BorderLayout.CENTER);
 
-        // Temp until posts are added
-        MyProfileState state = new MyProfileState();
-        ArrayList<Post> postList = state.getPosts();
-        addPosts(postList);
-
         postsPanel.add(postContainer);
         postsPanel.setSize(new Dimension(300, 200));
         postsPanel.setVisible(true);
+
+//        Post newPost = new Post(1000, "Me", "title", "body", "00/00/00");
+//        ArrayList<Post> list = new ArrayList<Post>();
+//        list.add(newPost);
+//        addPosts(list);
 
         // Add to middle Panel
         middlePanel.add(usernamePanel);
@@ -171,8 +171,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                                 state.getBio(),
                                 state.getEmail(),
                                 state.getName(),
-                                "bio",
-                                state.getPosts()
+                                "bio"
                         );
                     }
                 }
@@ -192,8 +191,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                                 state.getBio(),
                                 state.getEmail(),
                                 state.getName(),
-                                "password",
-                                state.getPosts()
+                                "password"
                         );
                     }
                 }
@@ -249,7 +247,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             for (int i = 0; i < posts.size(); i++) {
                 if (e.getActionCommand().contains (STR."\{i}")) {
                     System.out.println(e.getActionCommand());
-                    myProfileController.switchToCurrentPost(posts.get(i));
+                    myProfileController.switchToCurrentPost((int) posts.get(i).get(myProfileViewModel.ID));
                 }
             }
         }
@@ -267,14 +265,14 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         }
     }
 
-    private void addPosts(ArrayList<Post> posts) {
+    private void addPosts(ArrayList<Map> posts) {
         // Creates post preview to display on profile
-        // TODO Make it display the 5 most recent/random posts
+        // TODO Make it display the 3 most recent/random posts
         for (int i = 0; i < posts.size(); i++) {
-            JLabel postTitle = new JLabel(posts.get(i).getTitle());
-            JLabel postDate = new JLabel(posts.get(i).getPost_date());
+            JLabel postTitle = new JLabel((String) posts.get(i).get(myProfileViewModel.TITLE));
+            JLabel postDate = new JLabel((String) posts.get(i).get(myProfileViewModel.DATE));
             JPanel postBody = new JPanel();
-            JLabel postInfo = new JLabel(posts.get(i).getBody());
+            JLabel postInfo = new JLabel((String) posts.get(i).get(myProfileViewModel.BODY));
 
             postBody.setLayout(new BoxLayout(postBody, BoxLayout.X_AXIS));
             postBody.add(postInfo,  BorderLayout.LINE_START);
@@ -311,6 +309,8 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     public String getViewName() { return viewName; }
 
-    public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
+    public void setMyProfileController(MyProfileController controller) {
+        this.myProfileController = controller;
+    }
     public void setChangePasswordController(MyProfileChangePasswordController controller) { this.changePasswordController = controller; }
 }

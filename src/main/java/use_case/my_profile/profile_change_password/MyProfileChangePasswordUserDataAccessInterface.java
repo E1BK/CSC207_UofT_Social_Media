@@ -13,4 +13,5 @@ public interface MyProfileChangePasswordUserDataAccessInterface {
      */
     void changePassword(User user);
     void changeBio(User user);
+    User getUserInfo(String username);
 }

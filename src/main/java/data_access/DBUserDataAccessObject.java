@@ -15,7 +15,6 @@ import use_case.my_profile.profile_change_password.MyProfileChangePasswordUserDa
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.view_post.ViewPostDataAccessInterface;
-import view.MyProfileView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,13 +27,12 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         MyProfileUserDataAccessInterface,
         SignupUserDataAccessInterface,
         MyProfileChangePasswordUserDataAccessInterface,
-        ViewPostDataAccessInterface{
+        ViewPostDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
-    private static final String BIO = "bio";
     private static final String EMAIL = "email";
     private static final String NAME = "name";
     private static final String CONTENT_TYPE_LABEL = "Content-Type";

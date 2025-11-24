@@ -1,8 +1,9 @@
 package app;
 
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.ChangePasswordPresenter;
-//import data_access.FileUserDataAccessObject;
+
+import entity.CommentFactory;
+import entity.PostFactory;
+import entity.UserFactory;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -24,11 +25,7 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
-//import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
-import entity.CommentFactory;
-import entity.PostFactory;
-import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.MakePostController;
@@ -181,7 +178,7 @@ public class AppBuilder {
         final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
                 userDataAccessObject,
                 myProfileOutputBoundary);
-        MyProfileController controller = new MyProfileController(myProfileInteractor);
+        MyProfileController controller = new MyProfileController(myProfileInteractor, userDataAccessObject);
         myProfileView.setMyProfileController(controller);
         landingView.setMyProfileController(controller);
         return this;
