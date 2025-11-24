@@ -18,7 +18,7 @@ public class SearchUserInteractor implements SearchUserInputBoundary{
     }
 
     public void execute(SearchUserInputData searchUserInputData) {
-        User foundUser = searchUserDataAccessObject.findUserByUsername(searchUserInputData.getUsername());
+        User foundUser = searchUserDataAccessObject.getUserInfo(searchUserInputData.getUsername());
         if (foundUser == null) {
             searchUserPresenter.prepareFailView();
         }

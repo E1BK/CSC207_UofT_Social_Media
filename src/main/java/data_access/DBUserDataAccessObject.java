@@ -340,7 +340,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                         comments.add(comment);
                     }
                     final Post post = postFactory.create(username, post_id, post_title, post_body, post_date, comments);
-
+                    posts.add(post);
                 }
                 return userFactory.create(username, password, bio, email, name, posts);
             }
@@ -384,11 +384,6 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    @Override
-    public User findUserByUsername(String username) {
-        return null;
     }
 
     @Override
