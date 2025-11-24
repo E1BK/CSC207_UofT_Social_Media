@@ -18,11 +18,8 @@ public class Main {
                 .addMyProfileUseCase()
                 .addMakePostUseCase()
                 .addSearchUserUseCase()
-                .addLoginSignupView()
-                .addSignupUseCase()
-                .addLoginUseCase()
-                .addChangePasswordUseCase()
-                .addMyProfileChangePasswordUseCase()
+                .addPostView()
+                .addViewPostUseCase()
                 .build();
 
         application.pack();

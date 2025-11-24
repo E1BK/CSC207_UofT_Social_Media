@@ -52,6 +52,13 @@ import use_case.login_signup.signup.SignupInputBoundary;
 import use_case.login_signup.signup.SignupInteractor;
 import use_case.login_signup.signup.SignupOutputBoundary;
 import view.LoginSignupView;
+import interface_adapter.view_post.ViewPostController;
+import interface_adapter.view_post.ViewPostPresenter;
+import interface_adapter.view_post.ViewPostViewModel;
+import use_case.view_post.ViewPostInputBoundary;
+import use_case.view_post.ViewPostInteractor;
+import use_case.view_post.ViewPostOutputBoundary;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,6 +90,9 @@ public class AppBuilder {
 
     private SearchUserView searchUserView;
     private SearchUserViewModel searchUserViewModel;
+
+    private PostView postView;
+    private ViewPostViewModel viewPostViewModel;
 
 
     public AppBuilder() {
@@ -178,11 +188,13 @@ public class AppBuilder {
     }
 
     public AppBuilder addMyProfileUseCase() {
-        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(viewManagerModel,
+        final MyProfileOutputBoundary myProfileOutputBoundary = new MyProfilePresenter(
+                viewManagerModel,
                 landingViewModel,
                 searchUserViewModel,
                 myProfileViewModel);
-        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(userDataAccessObject,
+        final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
+                userDataAccessObject,
                 myProfileOutputBoundary,
                 userFactory,
                 postFactory);
@@ -201,6 +213,26 @@ public class AppBuilder {
 
         MyProfileChangePasswordController myProfileChangePasswordController = new MyProfileChangePasswordController(myProfileChangePasswordInteractor);
         myProfileView.setChangePasswordController(myProfileChangePasswordController);
+        return this;
+    }
+
+    public AppBuilder addPostView() {
+        viewPostViewModel = new ViewPostViewModel();
+        postView = new PostView(viewPostViewModel);
+        cardPanel.add(postView, postView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addViewPostUseCase() {
+        final ViewPostOutputBoundary viewPostOutputBoundary =
+                new ViewPostPresenter(viewManagerModel, viewPostViewModel);
+
+        final ViewPostInputBoundary viewPostInteractor =
+                new ViewPostInteractor(userDataAccessObject, viewPostOutputBoundary);
+
+        ViewPostController viewPostController = new ViewPostController(viewPostInteractor);
+        postView.setViewPostController(viewPostController);
+
         return this;
     }
 
