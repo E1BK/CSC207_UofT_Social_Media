@@ -16,12 +16,12 @@ public class Main {
                 .addProfileUseCase()
                 .addMyProfileView()
                 .addMyProfileUseCase()
+                .addMyProfileChangePasswordUseCase()
                 .addMakePostUseCase()
                 .addSearchUserUseCase()
                 .addLoginSignupView()
                 .addSignupUseCase()
                 .addLoginUseCase()
-                .addChangePasswordUseCase()
                 .addPostView()
                 .addViewPostUseCase()
                 .build();
