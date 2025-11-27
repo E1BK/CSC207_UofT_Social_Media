@@ -131,12 +131,19 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
 
             JPanel post1header = new JPanel();
+            post1header.setBackground(Color.white);
+            post1header.setLayout(new BorderLayout());
                 JLabel post1title = new JLabel(postsToDisplay.getFirst().getTitle());
                 post1title.setFont(new Font("Helvetica", Font.BOLD, 20));
                 JLabel post1username = new JLabel("by " + postsToDisplay.getFirst().getUsername());
                 post1username.setFont(new Font("Helvetica", Font.ITALIC, 15));
-            post1header.add(post1title);
-            post1header.add(post1username);
+                post1username.setForeground(Color.GRAY);
+                JLabel post1date = new JLabel(postsToDisplay.getFirst().getPost_date());
+                post1date.setFont(new Font("Helvetica", Font.ITALIC, 15));
+                post1date.setForeground(Color.GRAY);
+            post1header.add(post1title, BorderLayout.NORTH);
+            post1header.add(post1username, BorderLayout.CENTER);
+            post1header.add(post1date, BorderLayout.SOUTH);
 
             JTextArea post1body = new JTextArea(postsToDisplay.getFirst().getBody());
             post1body.setPreferredSize(new Dimension(200, 150));
@@ -148,11 +155,15 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
             post1body.setEditable(false);
             post1body.setFont(new Font("Helvetica", Font.PLAIN, 15));
             post1body.setBorder(new EmptyBorder(new Insets(10, 0, 10, 0)));
+
+
+            JLabel post1numComments = new JLabel("Comments: " + postsToDisplay.getFirst().getComments().size());
+            post1numComments.setFont(new Font("Helvetica", Font.ITALIC, 15));
+            post1numComments.setForeground(Color.GRAY);
+
+            post1.add(post1header, BorderLayout.NORTH);
             post1.add(post1body, BorderLayout.CENTER);
-
-
-            JLabel post1numComments = new JLabel(String.valueOf(postsToDisplay.getFirst().getComments().size()));
-            post1.add(post1numComments, BorderLayout.NORTH);
+            post1.add(post1numComments, BorderLayout.SOUTH);
 
 
 
