@@ -4,7 +4,7 @@ import entity.Club;
 
 public interface ClubsOutputBoundary {
 
-    void prepareSuccessView(Club foundClub);
+    void prepareSuccessView(ClubsOutputData clubsOutputData);
 
     void prepareFailView(String searchQuery);
 }

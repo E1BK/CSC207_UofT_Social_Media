@@ -2,13 +2,13 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.clubs.ClubsController;
+import interface_adapter.clubs.ClubsState;
 import interface_adapter.clubs.ClubsViewModel;
-import interface_adapter.landing.LandingViewModel;
-import interface_adapter.search_user.SearchUserController;
-import interface_adapter.search_user.SearchUserViewModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +20,11 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
     private final String viewName = "clubs";
     private ClubsViewModel clubsViewModel;
     private ClubsController clubsController = null;
+
+    private final JTextField searchBar;
+    private final JLabel clubInfoField = new JLabel();
+    private final JButton searchButton;
+
 
     public ClubsView(ClubsViewModel clubsViewModel) {
         this.clubsViewModel = clubsViewModel;
@@ -36,9 +41,6 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
         JPanel middlePanel = new JPanel();
         middlePanel.setLayout(new BorderLayout());
 
-
-
-
         JLabel title = new JLabel("Clubs: The heart of UofT's campus");
         JPanel titlePanel = new JPanel();
         title.setFont(new Font("Helvetica", Font.BOLD, 40));
@@ -46,11 +48,11 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
         titlePanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
 
-        final JTextField searchBar = new JTextField(20);
+        searchBar = new JTextField(20);
         JLabel searchPrompt = new JLabel("Find a club:");
         searchPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         searchBar.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        JButton searchButton = new JButton("Search");
+        searchButton = new JButton("Search");
         searchButton.setFont(new Font("Helvetica", Font.BOLD, 20));
         LabelTextPanel searchBarPanel = new LabelTextPanel(searchPrompt, searchBar, searchButton);
 
@@ -59,8 +61,22 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
         searchButton.setMargin(new Insets(4, 20, 4, 20));
         searchBar.setMargin(new Insets(10, 20, 10, 20));
 
-        middlePanel.add(titlePanel, BorderLayout.NORTH);
-        middlePanel.add(searchBarPanel, BorderLayout.CENTER);
+        JPanel titleAndSearchPanel = new JPanel();
+        titleAndSearchPanel.setLayout(new BoxLayout(titleAndSearchPanel, BoxLayout.Y_AXIS));
+        titleAndSearchPanel.add(titlePanel);
+        titleAndSearchPanel.add(searchBarPanel);
+
+//        JPanel displayPanel = new JPanel();
+//        if (clubsViewModel.getState().getClubToDisplay() != null) {
+//            displayPanel.add(new JLabel(clubsViewModel.getState().getClubToDisplay().getName()));
+//        } else {
+//            displayPanel.add(new JLabel("No club found."));
+//        }
+
+
+        middlePanel.add(titleAndSearchPanel, BorderLayout.NORTH);
+        clubInfoField.setText(clubsViewModel.getState().getFoundClubName());
+        middlePanel.add(clubInfoField);
 
 
 
@@ -87,7 +103,7 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(home)) {
                             clubsController.switchToLandingView();
-
+                            clubsViewModel.firePropertyChange();
                         }
                     }
                 }
@@ -97,12 +113,38 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(searchButton)) {
+                            final ClubsState currentState = clubsViewModel.getState();
+
                             String searchQuery = searchBar.getText();
-                            clubsController.findClub(searchQuery);
+                            clubsController.execute(searchQuery);
                         }
                     }
                 }
         );
+
+        searchBar.getDocument().addDocumentListener(new DocumentListener(){
+
+            private void documentListenerHelper() {
+                final ClubsState currentState = clubsViewModel.getState();
+                currentState.setFoundClubName(searchBar.getText());
+                clubsViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
     }
 
     public String getViewName() {
@@ -115,6 +157,14 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("GOT HERE!");
+        final ClubsState state = (ClubsState) evt.getNewValue();
+        setFields(state);
+
+        clubInfoField.setText(state.getFoundClubName());
+    }
+    private void setFields(ClubsState state) {
+        clubInfoField.setText(state.getFoundClubName());
     }
 
     public void setClubsController(ClubsController clubsController) {
