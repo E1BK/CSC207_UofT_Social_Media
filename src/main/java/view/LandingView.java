@@ -90,6 +90,13 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         gapPanel.setMinimumSize(new Dimension(20, 4));
         gapPanel.setMaximumSize(new Dimension(20, 4));
 
+        // detour: clubs!
+        JButton clubsButton = new JButton("See Clubs");
+        clubsButton.setFont(new Font("Helvetica", Font.BOLD, 20));
+        clubsButton.setMargin(new Insets(10, 30, 10, 30));
+        clubsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // detour: clubs complete
+
         // postPanel is where you can make a post:
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
@@ -97,6 +104,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postPanel.add(gapPanel);
         postPanel.add(postBody);
         postPanel.add(makePost);
+        postPanel.add(clubsButton);
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
         // Now, let's display the top 3 posts!
@@ -118,7 +126,6 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
             }
 
 
-
         PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
         PostPanel post2 = new PostPanel(postsToDisplay.get(1));
         PostPanel post3 = new PostPanel(postsToDisplay.get(2));
@@ -126,6 +133,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         displayPanel.add(post1.panel);
         displayPanel.add(post2.panel);
         displayPanel.add(post3.panel);
+        displayPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
 
 
         middlePanel.add(titlePanel, BorderLayout.NORTH);
@@ -191,6 +199,17 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                             makePostController.execute(landingState.getUsername(),
                                     landingState.getNewpost_title(),
                                     landingState.getNewpost_body());
+                        }
+                    }
+                }
+        );
+
+        clubsButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(clubsButton)) {
+                            System.out.println("CLICKED 'SEE CLUBS'!");
+                            makePostController.switchToClubsView();
                         }
                     }
                 }

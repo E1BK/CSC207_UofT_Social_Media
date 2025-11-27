@@ -238,7 +238,7 @@ public class AppBuilder {
 
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel, myProfileViewModel);
+                landingViewModel, searchUserViewModel, myProfileViewModel, clubsViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 
