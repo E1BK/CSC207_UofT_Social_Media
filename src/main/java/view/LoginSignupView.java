@@ -1,11 +1,13 @@
 package view;
 
+import app.GradientPanel;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.login.LoginController;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -59,25 +61,55 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         tabbedPane.addTab("Login", loginPanel);
         tabbedPane.addTab("Sign Up", signupPanel);
 
+        // top panel
+        JLabel name = new JLabel("ChatUofT");
+        name.setFont(new Font("Helvetica", Font.PLAIN, 30));
+        GradientPanel topPanel = new GradientPanel();
+        topPanel.add(name);
+        topPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
+
+        // bottom panel
+        GradientPanel bottomPanel = new GradientPanel();
+        JLabel slogan = new JLabel("Est. 2025");
+        slogan.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        bottomPanel.add(slogan);
+        bottomPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
+
+
         this.setLayout(new BorderLayout());
+        this.add(topPanel, BorderLayout.NORTH);
         this.add(tabbedPane, BorderLayout.CENTER);
+        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void setupLoginPanel() {
-        loginPanel.setLayout(new GridLayout(0, 2, 10, 10));
+        loginPanel.setLayout(new BorderLayout());
 
-        loginPanel.add(new JLabel("Usernameoooo:"));
-        loginPanel.add(loginUsernameInputField);
+        LabelTextPanel thingy = new LabelTextPanel(new JLabel("Username:"), loginUsernameInputField);
+        loginPanel.add(thingy, BorderLayout.NORTH);
+        LabelTextPanel thingy2 = new LabelTextPanel(new JLabel("Password:"), loginPasswordInputField);
+        loginPanel.add(thingy2, BorderLayout.CENTER);
 
-        loginPanel.add(new JLabel("Password:"));
-        loginPanel.add(loginPasswordInputField);
 
         logIn = new JButton("Log In");
-        loginPanel.add(new JLabel()); // Empty cell for alignment
-        loginPanel.add(logIn);
+        loginPanel.add(logIn, BorderLayout.SOUTH);
 
         addLoginListeners();
         logIn.addActionListener(this);
+//        loginPanel.setLayout(new GridLayout(0, 2, 10, 10));
+//
+//        loginPanel.add(new JLabel("Username:"));
+//        loginPanel.add(loginUsernameInputField);
+//
+//        loginPanel.add(new JLabel("Password:"));
+//        loginPanel.add(loginPasswordInputField);
+//
+//        logIn = new JButton("Log In");
+//        loginPanel.add(new JLabel()); // Empty cell for alignment
+//        loginPanel.add(logIn);
+//
+//        addLoginListeners();
+//        logIn.addActionListener(this);
     }
 
     private void setupSignupPanel() {
