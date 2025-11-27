@@ -1,11 +1,17 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
+import interface_adapter.clubs.ClubsController;
+import interface_adapter.clubs.ClubsPresenter;
+import interface_adapter.clubs.ClubsViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordPresenter;
+import use_case.clubs.ClubsInputBoundary;
+import use_case.clubs.ClubsInteractor;
+import use_case.clubs.ClubsOutputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInteractor;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputBoundary;
@@ -89,6 +95,10 @@ public class AppBuilder {
     private PostView postView;
     private ViewPostViewModel viewPostViewModel;
 
+    private ClubsView clubsView;
+    private ClubsViewModel clubsViewModel;
+
+
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -144,6 +154,13 @@ public class AppBuilder {
         profileViewModel = new ProfileViewModel();
         profileView = new ProfileView(profileViewModel);
         cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addClubsView() {
+        clubsViewModel = new ClubsViewModel();
+        clubsView = new ClubsView(clubsViewModel);
+        cardPanel.add(clubsView, clubsView.getViewName());
         return this;
     }
 
@@ -221,7 +238,7 @@ public class AppBuilder {
 
     public AppBuilder addMakePostUseCase() {
         final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel, myProfileViewModel);
+                landingViewModel, searchUserViewModel, myProfileViewModel, clubsViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 
@@ -241,13 +258,25 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addClubsUseCase() {
+        final ClubsOutputBoundary clubsOutputBoundary = new ClubsPresenter(clubsViewModel,
+                landingViewModel, viewManagerModel);
+        final ClubsInputBoundary clubsInteractor = new ClubsInteractor(
+                clubsOutputBoundary, userDataAccessObject);
+
+        ClubsController clubsController = new ClubsController(clubsInteractor);
+        clubsView.setClubsController(clubsController);
+        return this;
+    }
+
     public JFrame build() {
         final JFrame application = new JFrame("UofT Social Media App");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(loginSignupView.getViewName());
+//        viewManagerModel.setState(loginSignupView.getViewName());
+        viewManagerModel.setState(clubsView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;
