@@ -24,6 +24,10 @@ import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;
 import interface_adapter.search_user.SearchUserState;
+import entity.User;
+import interface_adapter.profile.ProfileController;
+
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -38,6 +42,7 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
     private final String viewName = "searchUser";
     private SearchUserViewModel searchUserViewModel;
     private SearchUserController searchUserController = null;
+    private ProfileController profileController = null;   // to profile
 
     private final JButton me;
     private final JButton people;
@@ -48,7 +53,9 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
     private final JLabel resultLabel;
 
     // (russell) newly added
-    // We store searchBar (line 59) and searchButton (line 63) as fields
+    // store searchBar and searchButton as fields
+    // Russell: button to go to the found user's profile
+    private final JButton viewProfileButton;
     // instead of local variables so that the whole view can access them
     // (for adding listeners, clearing input, disabling the button ...)
     private final JTextField searchBar;
@@ -65,42 +72,64 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         topPanel.add(name);
         topPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
-        // middle panel
+        // Russell: new middle panel
         JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new BorderLayout());
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
+        middlePanel.setBorder(new EmptyBorder(60, 0, 40, 0));
 
+        // title
         JLabel title = new JLabel("Find your friends here!");
         JPanel titlePanel = new JPanel();
         title.setFont(new Font("Helvetica", Font.BOLD, 40));
         titlePanel.add(title);
+        titlePanel.setBorder(new EmptyBorder(5, 0, 5, 0));
+        titlePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //(russell) newly added
-        // We store searchBar (line 59) and searchButton (line 63) as fields
-        // instead of local variables so that the whole view can access them
-        // (for adding listeners, clearing input, disabling the button ...)
+        // Searching Area
         searchBar = new JTextField(20);
         JLabel searchPrompt = new JLabel("Your friend's username:");
         searchPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         searchBar.setFont(new Font("Helvetica", Font.PLAIN, 20));
         searchButton = new JButton("Search");
         searchButton.setFont(new Font("Helvetica", Font.BOLD, 20));
-        LabelTextPanel searchBarPanel = new LabelTextPanel(searchPrompt, searchBar, searchButton);
 
-        titlePanel.setBorder(new EmptyBorder(5, 0, 5, 0));
+        LabelTextPanel searchBarPanel =
+                new LabelTextPanel(searchPrompt, searchBar, searchButton);
+
         searchBarPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-        middlePanel.add(titlePanel, BorderLayout.NORTH);
-        middlePanel.add(searchBarPanel, BorderLayout.CENTER);
+        searchBarPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Russell: panel for result message (e.g. "Found user: gaohe" / "User Not Found")
-        resultLabel = new JLabel("");
-        resultLabel.setFont(new Font("Helvetica", Font.ITALIC, 16));
+        searchBar.setMargin(new Insets(10, 20, 10, 20));
+        searchButton.setMargin(new Insets(6, 20, 6, 20));
+
+        // results and View Profile button
+        resultLabel = new JLabel(" ");
+        resultLabel.setFont(new Font("Helvetica", Font.PLAIN, 20));
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        JPanel messagePanel = new JPanel(new BorderLayout());
-        messagePanel.add(resultLabel, BorderLayout.CENTER);
-        messagePanel.setBorder(new EmptyBorder(10, 0, 10, 0));
 
-        middlePanel.add(messagePanel, BorderLayout.SOUTH);
+        viewProfileButton = new JButton("View Profile");
+        viewProfileButton.setFont(new Font("Helvetica", Font.BOLD, 18));
+        viewProfileButton.setMargin(new Insets(10, 40, 10, 40));
+        viewProfileButton.setEnabled(false);
+
+        JPanel messagePanel = new JPanel();
+        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
+        messagePanel.setBorder(new EmptyBorder(15, 0, 0, 0));
+
+        resultLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewProfileButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        messagePanel.add(resultLabel);
+        messagePanel.add(Box.createVerticalStrut(8));
+        messagePanel.add(viewProfileButton);
+        messagePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        middlePanel.add(titlePanel);
+        middlePanel.add(Box.createVerticalStrut(25));
+        middlePanel.add(searchBarPanel);
+        middlePanel.add(Box.createVerticalStrut(15));
+        middlePanel.add(messagePanel);
 
         // bottom panel
         GradientPanel bottomPanel = new GradientPanel();
@@ -169,6 +198,29 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
             }
         });
 
+        // Russell: viewProfileButton listener
+        // Later can call controller to show this user's profile
+        viewProfileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (searchUserController != null) {
+                    // get the selected user from state, just for logging
+                    SearchUserState state = searchUserViewModel.getState();
+                    User selected = state.getSelectedUser();
+                    if (selected != null) {
+                        System.out.println("View Profile clicked for: " + selected.getUsername());
+                        // to Profile use case
+                        profileController.execute(selected);
+                        // to ProfileView
+                        profileController.switchToProfileView();
+                    } else {
+                        System.out.println("View Profile clicked but no selectedUser in state");
+                    }
+                } else {
+                    System.out.println("SearchUserController is null (not set yet)");
+                }
+            }
+        });
 
     }
 
@@ -189,9 +241,19 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         SearchUserState state = searchUserViewModel.getState();
         String message = state.getMessage();
         resultLabel.setText(message);
+        // Russell: enable "View Profile" button only when a user was found
+        if (state.getSelectedUser() != null) {
+            viewProfileButton.setEnabled(true);
+        } else {
+            viewProfileButton.setEnabled(false);
+        }
     }
 
     public void setSearchUserController(SearchUserController searchUserController) {
         this.searchUserController = searchUserController;
+    }
+
+    public void setProfileController(ProfileController profileController) {
+        this.profileController = profileController;
     }
 }
