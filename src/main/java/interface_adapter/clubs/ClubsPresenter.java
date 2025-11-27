@@ -16,11 +16,11 @@ public class ClubsPresenter implements ClubsOutputBoundary {
         this.viewManagerModel = viewManagerModel;
     }
 
-    public prepareSuccessView() {
+    public void prepareSuccessView() {
         clubsViewModel.firePropertyChange();
     }
 
-    public prepareFailView() {
+    public void prepareFailView() {
         clubsViewModel.firePropertyChange();
     }
 

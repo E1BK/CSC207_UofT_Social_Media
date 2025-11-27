@@ -15,6 +15,7 @@ public class Main {
                 .addProfileView()
                 .addProfileUseCase()
                 .addMyProfileView()
+                .addClubsView()
                 .addMyProfileUseCase()
                 .addMyProfileChangePasswordUseCase()
                 .addMakePostUseCase()
@@ -24,6 +25,7 @@ public class Main {
                 .addLoginUseCase()
                 .addPostView()
                 .addViewPostUseCase()
+                .addClubsUseCase()
                 .build();
 
         application.pack();

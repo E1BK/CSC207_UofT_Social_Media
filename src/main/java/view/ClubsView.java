@@ -1,6 +1,8 @@
 package view;
 
 import app.GradientPanel;
+import interface_adapter.clubs.ClubsController;
+import interface_adapter.clubs.ClubsViewModel;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;

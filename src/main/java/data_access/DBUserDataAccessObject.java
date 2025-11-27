@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import use_case.clubs.ClubsDataAccessInterface;
 import use_case.login_signup.login.LoginUserDataAccessInterface;
 import use_case.login_signup.logout.LogoutUserDataAccessInterface;
 import use_case.login_signup.signup.SignupUserDataAccessInterface;
@@ -27,7 +28,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         MyProfileUserDataAccessInterface,
         SignupUserDataAccessInterface,
         MyProfileChangePasswordUserDataAccessInterface,
-        ViewPostDataAccessInterface{
+        ViewPostDataAccessInterface,
+        ClubsDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
