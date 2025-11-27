@@ -85,9 +85,14 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     private void setupLoginPanel() {
         loginPanel.setLayout(new BorderLayout());
 
-        LabelTextPanel thingy = new LabelTextPanel(new JLabel("Username:"), loginUsernameInputField);
+        JLabel usernamePrompt = new JLabel("Username:");
+        usernamePrompt.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        JLabel passwordPrompt = new JLabel("Password");
+        passwordPrompt.setFont(new Font("Helvetica", Font.PLAIN, 20));
+
+        LabelTextPanel thingy = new LabelTextPanel(usernamePrompt, loginUsernameInputField);
         loginPanel.add(thingy, BorderLayout.NORTH);
-        LabelTextPanel thingy2 = new LabelTextPanel(new JLabel("Password:"), loginPasswordInputField);
+        LabelTextPanel thingy2 = new LabelTextPanel(passwordPrompt, loginPasswordInputField);
         loginPanel.add(thingy2, BorderLayout.CENTER);
 
 
