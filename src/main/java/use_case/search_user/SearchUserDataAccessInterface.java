@@ -8,6 +8,8 @@ public interface SearchUserDataAccessInterface {
     /**
      * Search the database for a user whose username matches.
      * If found, return the User object. Otherwise return null.
+     * @param username
      */
-    User findUserByUsername(String username);
+    User getUserInfo(String username);
+
 }

@@ -1,13 +1,13 @@
-package use_case.login_signup.change_passwrod;
+package use_case.my_profile.profile_change_password;
 
 /**
  * Output Data for the Change Password Use Case.
  */
-public class ChangePasswordOutputData {
+public class MyProfileChangePasswordOutputData {
 
     private final String username;
 
-    public ChangePasswordOutputData(String username) {
+    public MyProfileChangePasswordOutputData(String username) {
         this.username = username;
     }
 

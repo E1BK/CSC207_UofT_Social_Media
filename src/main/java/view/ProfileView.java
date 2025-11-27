@@ -61,19 +61,10 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         final JPanel usernamePanel = new JPanel();
         final JLabel usernameInfo = new JLabel("Profile: ");
         usernameInfo.setFont(new Font("Helvetica", Font.BOLD, 40));
-        username = new JLabel("SorEgo");
+        username = new JLabel();
         username.setFont(new Font("Helvetica", Font.BOLD, 40));
         usernamePanel.add(usernameInfo);
         usernamePanel.add(username);
-
-        // Add Bio
-        final JPanel bioPanel = new JPanel();
-        final JLabel bioInfo = new JLabel("Bio: ");
-        bioInfo.setFont(new Font("Helvetica", Font.BOLD, 20));
-        bio = new JLabel("Feeling SorE");
-        bio.setFont(new Font("Helvetica", Font.BOLD, 20));
-        bioPanel.add(bioInfo);
-        bioPanel.add(bio);
 
         // Add ID
         final JPanel idPanel = new JPanel();
@@ -83,6 +74,15 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         utorID.setFont(new Font("Helvetica", Font.BOLD, 20));
         idPanel.add(idInfo);
         idPanel.add(utorID);
+
+        // Add Bio
+        final JPanel bioPanel = new JPanel();
+        final JLabel bioInfo = new JLabel("Bio: ");
+        bioInfo.setFont(new Font("Helvetica", Font.BOLD, 20));
+        bio = new JLabel("Feeling SorE");
+        bio.setFont(new Font("Helvetica", Font.BOLD, 20));
+        bioPanel.add(bioInfo);
+        bioPanel.add(bio);
 
         // Display Posts
         final JPanel postsPanel = new JPanel();
@@ -121,9 +121,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         postsPanel.setVisible(true);
 
         // Add to middle Panel
-        middlePanel.add(usernamePanel/*, BorderLayout.NORTH*/);
-        middlePanel.add(bioPanel/*, BorderLayout.CENTER*/);
-        middlePanel.add(idPanel/*, BorderLayout.SOUTH*/);
+        middlePanel.add(usernamePanel);
+        middlePanel.add(idPanel);
+        middlePanel.add(bioPanel);
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
@@ -180,14 +180,11 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         );
 
         // Creates frame
-        this.setLayout( new BorderLayout() );
 
-        this.add(topPanel,  BorderLayout.NORTH);
-        JPanel bodyPanel = new JPanel();
-        bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS));
-        bodyPanel.add(middlePanel);
-        bodyPanel.add(postsPanel);
-        this.add(bodyPanel,  BorderLayout.CENTER);
+
+        this.setLayout(new BorderLayout());
+        this.add(topPanel, BorderLayout.NORTH);
+        this.add(middlePanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 

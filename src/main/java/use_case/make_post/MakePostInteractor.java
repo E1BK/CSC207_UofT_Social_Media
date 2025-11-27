@@ -88,4 +88,9 @@ public class MakePostInteractor implements MakePostInputBoundary{
         MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
         temp.switchToMeView();
     }
+
+    public void switchToClubsView() {
+        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
+        temp.switchToClubsView();
+    }
 }

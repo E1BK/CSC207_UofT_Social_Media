@@ -1,26 +1,26 @@
-package interface_adapter.change_password;
+package interface_adapter.my_profile.my_profile_change_password;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
-import use_case.login_signup.change_passwrod.ChangePasswordOutputBoundary;
-import use_case.login_signup.change_passwrod.ChangePasswordOutputData;
+import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputBoundary;
+import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputData;
 
 /**
  * The Presenter for the Change Password Use Case.
  */
-public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
+public class MyProfileChangePasswordPresenter implements MyProfileChangePasswordOutputBoundary {
 
     private final LandingViewModel landingViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public ChangePasswordPresenter(ViewManagerModel viewManagerModel,
+    public MyProfileChangePasswordPresenter(ViewManagerModel viewManagerModel,
                                    LandingViewModel landingViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.landingViewModel = landingViewModel;
     }
 
     @Override
-    public void prepareSuccessView(ChangePasswordOutputData outputData) {
+    public void prepareSuccessView(MyProfileChangePasswordOutputData outputData) {
         landingViewModel.getState().setPassword("");
         landingViewModel.getState().setPasswordError(null);
         landingViewModel.firePropertyChange("password");

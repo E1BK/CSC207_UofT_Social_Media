@@ -1,13 +1,13 @@
 package view;
 
+import app.GradientPanel;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.login.LoginController;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.change_password.ChangePasswordController;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -42,8 +42,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
     private LoginController loginController;
     private SignupController signupController;
-    private LogoutController logoutController;
-    private ChangePasswordController changePasswordController;
 
     public LoginSignupView(LoginViewModel loginViewModel, SignupViewModel signupViewModel) {
         this.loginViewModel = loginViewModel;
@@ -60,25 +58,75 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         setupLoginPanel();
         setupSignupPanel();
 
-        tabbedPane.addTab("Login", loginPanel);
+        tabbedPane.addTab("Log In", loginPanel);
         tabbedPane.addTab("Sign Up", signupPanel);
 
+        // top panel
+        JLabel name = new JLabel("ChatUofT");
+        name.setFont(new Font("Helvetica", Font.PLAIN, 30));
+        GradientPanel topPanel = new GradientPanel();
+        topPanel.add(name);
+        topPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
+
+        // bottom panel
+        GradientPanel bottomPanel = new GradientPanel();
+        JLabel slogan = new JLabel("Est. 2025");
+        slogan.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        bottomPanel.add(slogan);
+        bottomPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
+
+
         this.setLayout(new BorderLayout());
+        this.add(topPanel, BorderLayout.NORTH);
         this.add(tabbedPane, BorderLayout.CENTER);
+        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void setupLoginPanel() {
-        loginPanel.setLayout(new GridLayout(0, 2, 10, 10));
+        loginPanel.setLayout(new BorderLayout());
 
-        loginPanel.add(new JLabel("Username:"));
-        loginPanel.add(loginUsernameInputField);
+        // inputPanel begins
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+        inputPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
+        JLabel usernamePrompt = new JLabel("Username: ");
+        usernamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel passwordPrompt = new JLabel("Password: ");
+        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
 
-        loginPanel.add(new JLabel("Password:"));
-        loginPanel.add(loginPasswordInputField);
+        loginUsernameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        loginUsernameInputField.setMargin(new Insets(10, 20, 10, 20));
+        loginPasswordInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        loginPasswordInputField.setMargin(new Insets(10, 20, 10, 20));
 
+        LabelTextPanel usernameProcessingPanel = new LabelTextPanel(usernamePrompt, loginUsernameInputField);
+        inputPanel.add(usernameProcessingPanel);
+        LabelTextPanel passwordProcessingPanel = new LabelTextPanel(passwordPrompt, loginPasswordInputField);
+        inputPanel.add(passwordProcessingPanel);
+        // inputPanel ends
+
+        // sloganPanel begins
+        JPanel sloganPanel = new JPanel();
+        JLabel slogan = new JLabel("Where UofT comes to chat");
+        slogan.setFont(new Font("Helvetica", Font.BOLD, 80));
+        sloganPanel.add(slogan);
+        sloganPanel.setBorder(new EmptyBorder(130, 0, 0, 0));
+        // sloganPanel ends
+
+        // logInButtonPanel begins
+        JPanel logInButtonPanel = new JPanel();
         logIn = new JButton("Log In");
-        loginPanel.add(new JLabel()); // Empty cell for alignment
-        loginPanel.add(logIn);
+        logIn.setFont(new Font("Helvetica", Font.BOLD, 20));
+        logIn.setMargin(new Insets(10, 20, 10, 20));
+        logIn.setMaximumSize(new Dimension(80, 50));
+        logIn.setMinimumSize(new Dimension(80, 50));
+        logIn.setPreferredSize(new Dimension(140, 50));
+        logInButtonPanel.add(logIn);
+        // logInButtonPanel ends
+
+        loginPanel.add(inputPanel, BorderLayout.NORTH);
+        loginPanel.add(sloganPanel, BorderLayout.CENTER);
+        loginPanel.add(logInButtonPanel, BorderLayout.SOUTH);
 
         addLoginListeners();
         logIn.addActionListener(this);
@@ -225,14 +273,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
     public void setSignupController(SignupController controller) {
         this.signupController = controller;
-    }
-
-    public void setLogoutController(LogoutController controller) {
-        this.logoutController = controller;
-    }
-
-    public void setChangePasswordController(ChangePasswordController controller) {
-        this.changePasswordController = controller;
     }
 
     @Override

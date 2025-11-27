@@ -1,11 +1,11 @@
-package use_case.login_signup.change_passwrod;
+package use_case.my_profile.profile_change_password;
 
 import entity.User;
 
 /**
  * The DAO interface for the Change Password Use Case.
  */
-public interface ChangePasswordUserDataAccessInterface {
+public interface MyProfileChangePasswordUserDataAccessInterface {
 
     /**
      * Updates the system to record this user's password.
