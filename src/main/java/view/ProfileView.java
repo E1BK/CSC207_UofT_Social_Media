@@ -180,15 +180,25 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         );
 
         // Creates frame
-        this.setLayout( new BorderLayout() );
 
-        this.add(topPanel,  BorderLayout.NORTH);
-        JPanel bodyPanel = new JPanel();
-        bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS));
-        bodyPanel.add(middlePanel);
-        bodyPanel.add(postsPanel);
-        this.add(bodyPanel,  BorderLayout.CENTER);
+
+        this.setLayout(new BorderLayout());
+        this.add(topPanel, BorderLayout.NORTH);
+        this.add(middlePanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
+
+
+
+        // OLD:
+//        this.setLayout( new BorderLayout() );
+//
+//        this.add(topPanel,  BorderLayout.NORTH);
+//        JPanel bodyPanel = new JPanel();
+//        bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS));
+//        bodyPanel.add(middlePanel);
+//        bodyPanel.add(postsPanel);
+//        this.add(bodyPanel,  BorderLayout.CENTER);
+//        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     @Override
