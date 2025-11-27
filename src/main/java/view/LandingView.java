@@ -90,6 +90,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         gapPanel.setMinimumSize(new Dimension(20, 4));
         gapPanel.setMaximumSize(new Dimension(20, 4));
 
+        // postPanel is where you can make a post:
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
         postPanel.add(postTitle);
@@ -98,24 +99,24 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postPanel.add(makePost);
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-
-
-            // HERE ADD THE POSTS DISPLAY
+        // Now, let's display the top 3 posts!
             ArrayList<Post> allPosts = landingViewModel.getState().getPosts();
-            if (allPosts.size() <= 3) {
-                PostFactory myPostFactory = new PostFactory();
-                allPosts.add(myPostFactory.create("sophia", 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
-                allPosts.add(myPostFactory.create("mike", 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
-                allPosts.add(myPostFactory.create("julian", 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
-                allPosts.add(myPostFactory.create("ioane", 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
-                allPosts.add(myPostFactory.create("hayden", 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
-
-            }
             ArrayList<Post> postsToDisplay = new ArrayList<Post>();
-            // assuming allPosts.size() >= 3:
-            postsToDisplay.add(allPosts.getLast());
-            postsToDisplay.add(allPosts.get(allPosts.size() - 2));
-            postsToDisplay.add(allPosts.get(allPosts.size() - 3));
+
+            if (allPosts.size() < 3) {
+                PostFactory myPostFactory = new PostFactory();
+
+                postsToDisplay.add(myPostFactory.create("julian", 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
+                postsToDisplay.add(myPostFactory.create("ioane", 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
+                postsToDisplay.add(myPostFactory.create("hayden", 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
+                postsToDisplay.add(myPostFactory.create("sophia", 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
+                postsToDisplay.add(myPostFactory.create("mike", 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
+            } else {
+                postsToDisplay.add(allPosts.getLast());
+                postsToDisplay.add(allPosts.get(allPosts.size() - 2));
+                postsToDisplay.add(allPosts.get(allPosts.size() - 3));
+            }
+
 
 
         PostPanel post1 = new PostPanel(postsToDisplay.getFirst());

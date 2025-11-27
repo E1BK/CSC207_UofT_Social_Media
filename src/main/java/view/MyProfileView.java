@@ -1,7 +1,9 @@
 package view;
 
 import app.GradientPanel;
+import entity.Comment;
 import entity.Post;
+import entity.PostFactory;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.MyProfileState;
@@ -21,7 +23,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     // Variables
     private MyProfileViewModel myProfileViewModel;
     private String viewName = "my profile";
-    private int numOfLabels;
 
     // Controllers
     private MyProfileController myProfileController;
@@ -34,7 +35,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     // Labels
     private final JLabel username;
     private final JLabel email;
-    private final JPanel postContainer;
 
     // Buttons
 //    private final JButton back;
@@ -43,7 +43,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     private final JButton postButton;
     private final JButton searchButton;
     private final JButton profileButton;
-    private ArrayList<Post> posts;
 
     public MyProfileView(MyProfileViewModel myProfileViewModel) {
         this.myProfileViewModel = myProfileViewModel;
@@ -103,8 +102,29 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         passwordPanel.add(passwordInfo);
 
         // Display Posts: postsPanel
-        ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
         JPanel postsPanel = new JPanel();
+        ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
+        ArrayList<Post> postsToDisplay = new ArrayList<>();
+
+        if (allMyPosts.size() < 3) {
+            PostFactory myPostFactory = new PostFactory();
+            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
+            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
+            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
+            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
+            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
+        } else {
+            postsToDisplay.add(allMyPosts.getLast());
+            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 2));
+            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 3));
+        }
+
+        PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
+        PostPanel post2 = new PostPanel(postsToDisplay.get(1));
+        PostPanel post3 = new PostPanel(postsToDisplay.get(2));
+        postsPanel.add(post1.panel);
+        postsPanel.add(post2.panel);
+        postsPanel.add(post3.panel);
 
 
         // Add to middle Panel
@@ -158,6 +178,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        final MyProfileState state = myProfileViewModel.getState();
                         state.setBio(bioInputField.getText());
                     }
                 }
@@ -215,13 +236,13 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
 
-        if (e.getActionCommand().contains("View")) {
-            for (int i = 0; i < posts.size(); i++) {
-                if (e.getActionCommand().contains (STR."\{i}")) {
-                    myProfileController.switchToCurrentPost(posts.get(i));
-                }
-            }
-        }
+//        if (e.getActionCommand().contains("View")) {
+//            for (int i = 0; i < posts.size(); i++) {
+//                if (e.getActionCommand().contains (STR."\{i}")) {
+//                    myProfileController.switchToCurrentPost(posts.get(i));
+//                }
+//            }
+//        }
     }
 
     @Override
