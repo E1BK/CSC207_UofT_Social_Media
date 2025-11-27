@@ -1,4 +1,12 @@
 package interface_adapter.clubs;
 
-public class ClubsViewModel {
+import interface_adapter.ViewModel;
+import interface_adapter.search_user.SearchUserState;
+
+public class ClubsViewModel extends ViewModel<ClubsState> {
+
+    public ClubsViewModel() {
+        super("clubs");
+        setState(new ClubsState());
+    }
 }
