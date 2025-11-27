@@ -35,9 +35,9 @@ public class ClubsInteractor implements ClubsInputBoundary{
         }
 
         if (foundClub == null) {
-            clubsPresenter.prepareFailView(clubsInputData.getSearchQuery());
+            clubsPresenter.prepareFailView(clubsInputData);
         } else {
-            ClubsOutputData outputData = new ClubsOutputData(foundClub.getName());
+            ClubsOutputData outputData = new ClubsOutputData(foundClub.getName(), foundClub.getStatementOfPurpose());
             clubsPresenter.prepareSuccessView(outputData);
         }
     }

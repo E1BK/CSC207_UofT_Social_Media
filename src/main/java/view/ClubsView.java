@@ -22,7 +22,8 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
     private ClubsController clubsController = null;
 
     private final JTextField searchBar;
-    private final JLabel clubInfoField = new JLabel();
+    private final JLabel clubNameField = new JLabel();
+    private final JTextArea clubDescriptionField = new JTextArea();
     private final JButton searchButton;
 
 
@@ -35,11 +36,11 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
         topPanel.add(name);
-        topPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
+        topPanel.setBorder(new EmptyBorder(30, 0, 15, 0));
 
         // middle panel
         JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new BorderLayout());
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Clubs: The heart of UofT's campus");
         JPanel titlePanel = new JPanel();
@@ -74,18 +75,33 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
 //        }
 
 
-        middlePanel.add(titleAndSearchPanel, BorderLayout.NORTH);
-        clubInfoField.setText(clubsViewModel.getState().getFoundClubName());
-        middlePanel.add(clubInfoField);
+        middlePanel.add(titleAndSearchPanel);
+        ClubsState state = clubsViewModel.getState();
+        if (state.getFoundClubName() == null) {
+            clubNameField.setText("Search for a club!");
+            clubDescriptionField.setText("");
+        } else {
+            clubNameField.setText(state.getFoundClubName());
+            clubDescriptionField.setText(state.getFoundClubDescription());
+        }
+        clubNameField.setFont(new Font("Helvetica", Font.BOLD, 40));
+        clubNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        clubNameField.setBorder(new EmptyBorder(20, 0, 40, 0));
 
+        clubDescriptionField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        clubDescriptionField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        clubDescriptionField.setLineWrap(true);
+        clubDescriptionField.setWrapStyleWord(true);
+        clubDescriptionField.setEditable(false);
+
+        clubDescriptionField.setBorder(new EmptyBorder(10, 40, 10, 40));
+
+        middlePanel.add(clubNameField);
+        middlePanel.add(clubDescriptionField);
 
 
         // bottom panel
         GradientPanel bottomPanel = new GradientPanel();
-//        JButton me = new JButton("Me");
-//        me.setFont(new Font("Helvetica", Font.BOLD, 15));
-//        JButton people = new JButton("People");
-//        people.setFont(new Font("Helvetica", Font.BOLD, 15));
         JButton home = new JButton("Return Home");
         home.setFont(new Font("Helvetica", Font.BOLD, 15));
         home.setMargin(new Insets(10, 20, 10, 20));
@@ -161,10 +177,12 @@ public class ClubsView extends JPanel implements ActionListener, PropertyChangeL
         final ClubsState state = (ClubsState) evt.getNewValue();
         setFields(state);
 
-        clubInfoField.setText(state.getFoundClubName());
+        clubNameField.setText(state.getFoundClubName());
+        clubDescriptionField.setText(state.getFoundClubDescription());
     }
     private void setFields(ClubsState state) {
-        clubInfoField.setText(state.getFoundClubName());
+        clubNameField.setText(state.getFoundClubName());
+        clubDescriptionField.setText(state.getFoundClubDescription());
     }
 
     public void setClubsController(ClubsController clubsController) {
