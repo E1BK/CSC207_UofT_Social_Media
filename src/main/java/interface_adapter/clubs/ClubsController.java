@@ -11,6 +11,10 @@ public class ClubsController {
         this.clubsInteractor = clubsInteractor;
     }
 
+    public void findClub(String searchQuery) {
+        clubsInteractor.findClub(searchQuery);
+    }
+
     public void switchToLandingView() {
         ClubsInteractor temp = (ClubsInteractor) clubsInteractor;
         temp.switchToLandingView();

@@ -1,8 +1,10 @@
 package use_case.clubs;
 
+import entity.Club;
+
 public interface ClubsOutputBoundary {
 
-    void prepareSuccessView();
+    void prepareSuccessView(Club foundClub);
 
-    void prepareFailView();
+    void prepareFailView(String searchQuery);
 }

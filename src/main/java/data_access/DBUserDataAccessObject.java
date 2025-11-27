@@ -402,4 +402,9 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         }
         return null;
     }
+
+    @Override
+    public Club search(String searchQuery) {
+        return null;
+    }
 }
