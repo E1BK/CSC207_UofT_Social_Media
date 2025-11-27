@@ -85,6 +85,7 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     private void setupLoginPanel() {
         loginPanel.setLayout(new BorderLayout());
 
+        // inputPanel begins
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
         inputPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
@@ -102,7 +103,17 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         inputPanel.add(usernameProcessingPanel);
         LabelTextPanel passwordProcessingPanel = new LabelTextPanel(passwordPrompt, loginPasswordInputField);
         inputPanel.add(passwordProcessingPanel);
+        // inputPanel ends
 
+        // sloganPanel begins
+        JPanel sloganPanel = new JPanel();
+        JLabel slogan = new JLabel("Where UofT comes to chat");
+        slogan.setFont(new Font("Helvetica", Font.BOLD, 80));
+        sloganPanel.add(slogan);
+        sloganPanel.setBorder(new EmptyBorder(130, 0, 0, 0));
+        // sloganPanel ends
+
+        // logInButtonPanel begins
         JPanel logInButtonPanel = new JPanel();
         logIn = new JButton("Log In");
         logIn.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -111,10 +122,11 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         logIn.setMinimumSize(new Dimension(80, 50));
         logIn.setPreferredSize(new Dimension(140, 50));
         logInButtonPanel.add(logIn);
+        // logInButtonPanel ends
 
 
         loginPanel.add(inputPanel, BorderLayout.NORTH);
-//        loginPanel.add(sloganPanel, BorderLayout.CENTER);
+        loginPanel.add(sloganPanel, BorderLayout.CENTER);
         loginPanel.add(logInButtonPanel, BorderLayout.SOUTH);
 
         addLoginListeners();
