@@ -13,7 +13,7 @@ import java.awt.*;
  */
 public class PostPanel extends JPanel {
 
-    public JPanel panel;
+    public JPanel panel = new JPanel();
 
     public PostPanel(Post post) {
 
