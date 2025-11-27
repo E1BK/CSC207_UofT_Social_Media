@@ -50,7 +50,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         this.myProfileViewModel.addPropertyChangeListener(this);
 
         // Page Title
-
         JLabel name = new JLabel("ChatUofT > My Profile");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
@@ -103,21 +102,10 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                                                                passwordConfirm);
         passwordPanel.add(passwordInfo);
 
-        // Display Posts
-        //posts = new ArrayList<Post>();
-        final JPanel postsPanel = new JPanel();
-        postContainer = new JPanel();
-        postContainer.setLayout(new BoxLayout(postContainer, BoxLayout.Y_AXIS));
-        postsPanel.add(new JScrollPane(postContainer),  BorderLayout.CENTER);
+        // Display Posts: postsPanel
+        ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
+        JPanel postsPanel = new JPanel();
 
-        // Temp until posts are added
-        MyProfileState state = new MyProfileState();
-        ArrayList<Post> postList = state.getPosts();
-        addPosts(postList);
-
-        postsPanel.add(postContainer);
-        postsPanel.setSize(new Dimension(300, 200));
-        postsPanel.setVisible(true);
 
         // Add to middle Panel
         middlePanel.add(usernamePanel);
@@ -125,6 +113,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         middlePanel.add(bioPanel);
         middlePanel.add(passwordPanel);
         middlePanel.add(postsPanel);
+
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
@@ -243,51 +232,51 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             passwordInputField.setText(state.getPassword());
             bioInputField.setText(state.getBio());
             email.setText(state.getEmail());
-            addPosts(state.getPosts());
+//            addPosts(state.getPosts());
         }
     }
 
-    private void addPosts(ArrayList<Post> posts) {
-        // Creates post preview to display on profile
-        // TODO Make it display the 5 most recent/random posts
-        for (int i = 0; i < posts.size(); i++) {
-            JLabel postTitle = new JLabel(posts.get(i).getTitle());
-            JLabel postDate = new JLabel(posts.get(i).getPost_date());
-            JPanel postBody = new JPanel();
-            JLabel postInfo = new JLabel(posts.get(i).getBody());
-
-            postBody.setLayout(new BoxLayout(postBody, BoxLayout.X_AXIS));
-            postBody.add(postInfo,  BorderLayout.LINE_START);
-            postBody.add(Box.createHorizontalGlue());
-
-            JPanel postHeader = new JPanel();
-            postHeader.setLayout(new BoxLayout(postHeader, BoxLayout.X_AXIS));
-            postHeader.add(postTitle, BorderLayout.LINE_START);
-            postHeader.add(Box.createHorizontalGlue());
-            postHeader.add(postDate, BorderLayout.LINE_END);
-
-            JButton seePostButton = new JButton(STR."View \{i}");
-            seePostButton.setFont(new Font("Helvetica", Font.BOLD, 15));
-
-            JPanel postInfoPanel = new JPanel();
-            postInfoPanel.setLayout(new BoxLayout(postInfoPanel, BoxLayout.Y_AXIS));
-            postInfoPanel.add(postHeader);
-            postInfoPanel.add(postBody);
-            postInfoPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
-
-            JPanel postPanel = new JPanel();
-            postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.X_AXIS));
-            JPanel postSpacer = new JPanel();
-            postSpacer.setMinimumSize(new Dimension(5, 5));
-            postPanel.add(postInfoPanel);
-            postPanel.add(postSpacer);
-            postPanel.add(seePostButton);
-
-            postContainer.add(postPanel);
-        }
-
-        this.posts = posts;
-    }
+//    private void addPosts(ArrayList<Post> posts) {
+//        // Creates post preview to display on profile
+//        // TODO Make it display the 5 most recent/random posts
+//        for (int i = 0; i < posts.size(); i++) {
+//            JLabel postTitle = new JLabel(posts.get(i).getTitle());
+//            JLabel postDate = new JLabel(posts.get(i).getPost_date());
+//            JPanel postBody = new JPanel();
+//            JLabel postInfo = new JLabel(posts.get(i).getBody());
+//
+//            postBody.setLayout(new BoxLayout(postBody, BoxLayout.X_AXIS));
+//            postBody.add(postInfo,  BorderLayout.LINE_START);
+//            postBody.add(Box.createHorizontalGlue());
+//
+//            JPanel postHeader = new JPanel();
+//            postHeader.setLayout(new BoxLayout(postHeader, BoxLayout.X_AXIS));
+//            postHeader.add(postTitle, BorderLayout.LINE_START);
+//            postHeader.add(Box.createHorizontalGlue());
+//            postHeader.add(postDate, BorderLayout.LINE_END);
+//
+//            JButton seePostButton = new JButton(STR."View \{i}");
+//            seePostButton.setFont(new Font("Helvetica", Font.BOLD, 15));
+//
+//            JPanel postInfoPanel = new JPanel();
+//            postInfoPanel.setLayout(new BoxLayout(postInfoPanel, BoxLayout.Y_AXIS));
+//            postInfoPanel.add(postHeader);
+//            postInfoPanel.add(postBody);
+//            postInfoPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
+//
+//            JPanel postPanel = new JPanel();
+//            postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.X_AXIS));
+//            JPanel postSpacer = new JPanel();
+//            postSpacer.setMinimumSize(new Dimension(5, 5));
+//            postPanel.add(postInfoPanel);
+//            postPanel.add(postSpacer);
+//            postPanel.add(seePostButton);
+//
+//            postContainer.add(postPanel);
+//        }
+//
+//        this.posts = posts;
+//    }
 
     public String getViewName() { return viewName; }
 
