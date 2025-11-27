@@ -141,15 +141,12 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         postsPanel.add(row1);
         postsPanel.add(row2);
 
-
         // Add to middle Panel
         middlePanel.add(usernamePanel);
         middlePanel.add(idPanel);
         middlePanel.add(bioPanel);
         middlePanel.add(passwordPanel);
         middlePanel.add(postsPanel);
-
-
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
@@ -165,11 +162,9 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         bottomPanel.add(postButton);
         bottomPanel.add(searchButton);
         bottomPanel.add(profileButton);
-
         bottomPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-
-        //Creates Frame
+        // Creates Frame
         this.setLayout( new BorderLayout() );
 
         this.add(topPanel,  BorderLayout.NORTH);
