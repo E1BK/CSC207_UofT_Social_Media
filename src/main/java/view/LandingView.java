@@ -104,11 +104,11 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
             ArrayList<Post> allPosts = landingViewModel.getState().getPosts();
             if (allPosts.size() <= 3) {
                 PostFactory myPostFactory = new PostFactory();
-                allPosts.add(myPostFactory.create("sophia", 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "882193", new ArrayList<Comment>()));
-                allPosts.add(myPostFactory.create("mike", 23, "Java project update", "Implemented the backend today—feels great!", "449201", new ArrayList<Comment>()));
-                allPosts.add(myPostFactory.create("linda", 31, "Exam stress", "Can't believe how fast finals are approaching.", "732510", new ArrayList<Comment>()));
-                allPosts.add(myPostFactory.create("arjun", 56, "New hobby!", "Started learning guitar and it's surprisingly relaxing.", "110834", new ArrayList<Comment>()));
-                allPosts.add(myPostFactory.create("hasan", 42, "CSC236 is hard", "Term Test 4 was really difficult! hahahahhahahah a ahhahahaaa haahhuqk hfehfhiufhihf  ffhrifhi", "565775", new ArrayList<Comment>()));
+                allPosts.add(myPostFactory.create("sophia", 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
+                allPosts.add(myPostFactory.create("mike", 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
+                allPosts.add(myPostFactory.create("julian", 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
+                allPosts.add(myPostFactory.create("ioane", 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
+                allPosts.add(myPostFactory.create("hayden", 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
 
             }
             ArrayList<Post> postsToDisplay = new ArrayList<Post>();
@@ -169,12 +169,13 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
 
 
-        PostPanel thingy = new PostPanel(postsToDisplay.getFirst());
-
+        PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
+        PostPanel post2 = new PostPanel(postsToDisplay.get(1));
+        PostPanel post3 = new PostPanel(postsToDisplay.get(2));
         JPanel displayPanel = new JPanel();
-        displayPanel.add(thingy.panel);
-//        displayPanel.add(post2);
-//        displayPanel.add(post3);
+        displayPanel.add(post1.panel);
+        displayPanel.add(post2.panel);
+        displayPanel.add(post3.panel);
 
 
 
