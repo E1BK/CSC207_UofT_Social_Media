@@ -118,57 +118,6 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
             postsToDisplay.add(allPosts.get(allPosts.size() - 3));
 
 
-
-
-//            JPanel post1 = new JPanel();
-////          post1.setLayout(new BoxLayout(post1, BoxLayout.Y_AXIS));
-//            post1.setLayout(new BorderLayout());
-//            post1.setBackground(Color.white);
-//            post1.setBorder(new EmptyBorder(new Insets(10, 20, 10, 20)));
-////            post1.setMinimumSize(new Dimension(300, 200));
-////            post1.setMaximumSize(new Dimension(300, 200));
-//            post1.setPreferredSize(new Dimension(300, 200));
-//
-//
-//            JPanel post1header = new JPanel();
-//            post1header.setBackground(Color.white);
-//            post1header.setLayout(new BorderLayout());
-//                JLabel post1title = new JLabel(postsToDisplay.getFirst().getTitle());
-//                post1title.setFont(new Font("Helvetica", Font.BOLD, 20));
-//                JLabel post1username = new JLabel("by " + postsToDisplay.getFirst().getUsername());
-//                post1username.setFont(new Font("Helvetica", Font.ITALIC, 15));
-//                post1username.setForeground(Color.GRAY);
-//                JLabel post1date = new JLabel(postsToDisplay.getFirst().getPost_date());
-//                post1date.setFont(new Font("Helvetica", Font.ITALIC, 15));
-//                post1date.setForeground(Color.GRAY);
-//            post1header.add(post1title, BorderLayout.NORTH);
-//            post1header.add(post1username, BorderLayout.CENTER);
-//            post1header.add(post1date, BorderLayout.SOUTH);
-//
-//            JTextArea post1body = new JTextArea(postsToDisplay.getFirst().getBody());
-//            post1body.setPreferredSize(new Dimension(200, 150));
-//            post1body.setMaximumSize(new Dimension(200, 150));
-//            post1body.setMinimumSize(new Dimension(200, 150));
-//
-//            post1body.setLineWrap(true);
-//            post1body.setWrapStyleWord(true);
-//            post1body.setEditable(false);
-//            post1body.setFont(new Font("Helvetica", Font.PLAIN, 15));
-//            post1body.setBorder(new EmptyBorder(new Insets(10, 0, 10, 0)));
-//
-//
-//            JLabel post1numComments = new JLabel("Comments: " + postsToDisplay.getFirst().getComments().size());
-//            post1numComments.setFont(new Font("Helvetica", Font.ITALIC, 15));
-//            post1numComments.setForeground(Color.GRAY);
-//
-//            post1.add(post1header, BorderLayout.NORTH);
-//            post1.add(post1body, BorderLayout.CENTER);
-//            post1.add(post1numComments, BorderLayout.SOUTH);
-
-
-
-
-
         PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
         PostPanel post2 = new PostPanel(postsToDisplay.get(1));
         PostPanel post3 = new PostPanel(postsToDisplay.get(2));
@@ -178,17 +127,9 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         displayPanel.add(post3.panel);
 
 
-
-
-
-
-
         middlePanel.add(titlePanel, BorderLayout.NORTH);
         middlePanel.add(postPanel, BorderLayout.CENTER);
         middlePanel.add(displayPanel, BorderLayout.SOUTH);
-
-
-
 
         // bottom panel
         GradientPanel bottomPanel = new GradientPanel();

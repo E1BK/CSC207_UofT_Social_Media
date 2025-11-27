@@ -37,7 +37,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     private final JPanel postContainer;
 
     // Buttons
-    private final JButton back;
+//    private final JButton back;
     private final JButton bioConfirm;
     private final JButton passwordConfirm;
     private final JButton postButton;
@@ -50,14 +50,11 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         this.myProfileViewModel.addPropertyChangeListener(this);
 
         // Page Title
+
         JLabel name = new JLabel("ChatUofT > My Profile");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
-        back = new JButton (MyProfileViewModel.BACK_BUTTON_LABEL);
-        back.setMargin(new Insets(8, 20, 8, 20));
-        topPanel.add(back, BorderLayout.WEST);
-        topPanel.add(Box.createHorizontalGlue());
-        topPanel.add(name, BorderLayout.CENTER);
+        topPanel.add(name);
         topPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
         // Page Body
@@ -131,7 +128,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
-        postButton = new JButton (MyProfileViewModel.POST_BUTTON_LABEL);
+        postButton = new JButton (MyProfileViewModel.HOME_BUTTON_LABEL);
         postButton.setFont(new Font("Helvetica", Font.BOLD, 15));
         postButton.setMargin(new Insets(10, 20, 10, 20));
         searchButton = new JButton (MyProfileViewModel.SEARCH_BUTTON_LABEL);
@@ -146,8 +143,20 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
         bottomPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
+
+        //Creates Frame
+        this.setLayout( new BorderLayout() );
+
+        this.add(topPanel,  BorderLayout.NORTH);
+        JPanel bodyPanel = new JPanel();
+        bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS));
+        bodyPanel.add(middlePanel);
+        bodyPanel.add(postsPanel);
+        this.add(bodyPanel,  BorderLayout.CENTER);
+        this.add(bottomPanel, BorderLayout.SOUTH);
+
         // Adds functionality to the buttons
-        back.addActionListener(
+        postButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -211,16 +220,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 }
         );
 
-        //Creates Frame
-        this.setLayout( new BorderLayout() );
-
-        this.add(topPanel,  BorderLayout.NORTH);
-        JPanel bodyPanel = new JPanel();
-        bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS));
-        bodyPanel.add(middlePanel);
-        bodyPanel.add(postsPanel);
-        this.add(bodyPanel,  BorderLayout.CENTER);
-        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     @Override
