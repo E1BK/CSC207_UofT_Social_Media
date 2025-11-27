@@ -102,11 +102,10 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         passwordPanel.add(passwordInfo);
 
         // Display Posts: postsPanel
-        JPanel postsPanel = new JPanel();
         ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
         ArrayList<Post> postsToDisplay = new ArrayList<>();
 
-        if (allMyPosts.size() < 3) {
+        if (allMyPosts.size() < 6) {
             PostFactory myPostFactory = new PostFactory();
             postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
             postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
@@ -117,15 +116,28 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             postsToDisplay.add(allMyPosts.getLast());
             postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 2));
             postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 3));
+            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 4));
+            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 5));
+            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 6));
         }
 
+        JPanel row1 = new JPanel();
+        JPanel row2 = new JPanel();
         PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
         PostPanel post2 = new PostPanel(postsToDisplay.get(1));
         PostPanel post3 = new PostPanel(postsToDisplay.get(2));
-        postsPanel.add(post1.panel);
-        postsPanel.add(post2.panel);
-        postsPanel.add(post3.panel);
+        PostPanel post4 = new PostPanel(postsToDisplay.get(3));
+        PostPanel post5 = new PostPanel(postsToDisplay.get(4));
+        PostPanel post6 = new PostPanel(postsToDisplay.getLast());
+        row1.add(post1.panel);
+        row1.add(post2.panel);
+        row1.add(post3.panel);
+        row2.add(post4.panel);
+        row2.add(post5.panel);
+        row2.add(post6.panel);
 
+        JPanel postsPanel = new JPanel();
+        postsPanel.add(row1);
 
         // Add to middle Panel
         middlePanel.add(usernamePanel);
