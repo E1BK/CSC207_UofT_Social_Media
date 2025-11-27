@@ -85,19 +85,37 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     private void setupLoginPanel() {
         loginPanel.setLayout(new BorderLayout());
 
-        JLabel usernamePrompt = new JLabel("Username:");
-        usernamePrompt.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        JLabel passwordPrompt = new JLabel("Password");
-        passwordPrompt.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+        inputPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
+        JLabel usernamePrompt = new JLabel("Username: ");
+        usernamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel passwordPrompt = new JLabel("Password: ");
+        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
 
-        LabelTextPanel thingy = new LabelTextPanel(usernamePrompt, loginUsernameInputField);
-        loginPanel.add(thingy, BorderLayout.NORTH);
-        LabelTextPanel thingy2 = new LabelTextPanel(passwordPrompt, loginPasswordInputField);
-        loginPanel.add(thingy2, BorderLayout.CENTER);
+        loginUsernameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        loginUsernameInputField.setMargin(new Insets(10, 20, 10, 20));
+        loginPasswordInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        loginPasswordInputField.setMargin(new Insets(10, 20, 10, 20));
 
+        LabelTextPanel usernameProcessingPanel = new LabelTextPanel(usernamePrompt, loginUsernameInputField);
+        inputPanel.add(usernameProcessingPanel);
+        LabelTextPanel passwordProcessingPanel = new LabelTextPanel(passwordPrompt, loginPasswordInputField);
+        inputPanel.add(passwordProcessingPanel);
 
+        JPanel logInButtonPanel = new JPanel();
         logIn = new JButton("Log In");
-        loginPanel.add(logIn, BorderLayout.SOUTH);
+        logIn.setFont(new Font("Helvetica", Font.BOLD, 20));
+        logIn.setMargin(new Insets(10, 20, 10, 20));
+        logIn.setMaximumSize(new Dimension(80, 50));
+        logIn.setMinimumSize(new Dimension(80, 50));
+        logIn.setPreferredSize(new Dimension(140, 50));
+        logInButtonPanel.add(logIn);
+
+
+        loginPanel.add(inputPanel, BorderLayout.NORTH);
+//        loginPanel.add(sloganPanel, BorderLayout.CENTER);
+        loginPanel.add(logInButtonPanel, BorderLayout.SOUTH);
 
         addLoginListeners();
         logIn.addActionListener(this);
