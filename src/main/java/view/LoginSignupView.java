@@ -58,7 +58,7 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         setupLoginPanel();
         setupSignupPanel();
 
-        tabbedPane.addTab("Login", loginPanel);
+        tabbedPane.addTab("Log In", loginPanel);
         tabbedPane.addTab("Sign Up", signupPanel);
 
         // top panel
