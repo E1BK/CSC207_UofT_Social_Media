@@ -130,14 +130,13 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
             post1.setPreferredSize(new Dimension(300, 200));
 
 
-
-            JLabel post1title = new JLabel(postsToDisplay.getFirst().getTitle());
-            post1title.setFont(new Font("Helvetica", Font.BOLD, 20));
-
-
-            JLabel post1username = new JLabel("by " + postsToDisplay.getFirst().getUsername());
-            post1username.setFont(new Font("Helvetica", Font.ITALIC, 15));
-
+            JPanel post1header = new JPanel();
+                JLabel post1title = new JLabel(postsToDisplay.getFirst().getTitle());
+                post1title.setFont(new Font("Helvetica", Font.BOLD, 20));
+                JLabel post1username = new JLabel("by " + postsToDisplay.getFirst().getUsername());
+                post1username.setFont(new Font("Helvetica", Font.ITALIC, 15));
+            post1header.add(post1title);
+            post1header.add(post1username);
 
             JTextArea post1body = new JTextArea(postsToDisplay.getFirst().getBody());
             post1body.setPreferredSize(new Dimension(200, 150));
