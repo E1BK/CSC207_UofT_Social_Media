@@ -102,6 +102,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         passwordPanel.add(passwordInfo);
 
         // Display Posts: postsPanel
+        // the posts of the user will be displayed inside <postsPanel>
         ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
         ArrayList<Post> postsToDisplay = new ArrayList<>();
 
@@ -138,6 +139,8 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
         JPanel postsPanel = new JPanel();
         postsPanel.add(row1);
+        postsPanel.add(row2);
+
 
         // Add to middle Panel
         middlePanel.add(usernamePanel);
@@ -145,6 +148,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         middlePanel.add(bioPanel);
         middlePanel.add(passwordPanel);
         middlePanel.add(postsPanel);
+
 
 
         // Page Navigation
@@ -162,7 +166,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         bottomPanel.add(searchButton);
         bottomPanel.add(profileButton);
 
-        bottomPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
+        bottomPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
 
         //Creates Frame
