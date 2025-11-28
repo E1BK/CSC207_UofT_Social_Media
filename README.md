@@ -167,7 +167,7 @@ To store extra information we need, such as the bio or posts, we add into the `i
 
 `email` should be an address that ends with "@mail.utoronto.ca", this should be enforced by checking the string.
 
-`post_date` and `comment_date` should be created with `Instant.now().toString();`
+`post_date` and `comment_date` should be created with `LocalDateTime.now().toString()`
 
 Note that all fields should be checked for illegal characters.
 

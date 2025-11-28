@@ -59,7 +59,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     private String currentUsername;
 
-    public DBUserDataAccessObject(UserFactory userFactory, PostFactory postFactory, CommentFactory commentFactory){
+    public DBUserDataAccessObject(UserFactory userFactory, PostFactory postFactory, CommentFactory commentFactory) {
         this.userFactory = userFactory;
         this.postFactory = postFactory;
         this.commentFactory = commentFactory;
@@ -89,12 +89,10 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
                 // success!
-            }
-            else {
+            } else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
             }
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
 
@@ -166,15 +164,14 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                         putResponseBody.getString(MESSAGE));
             }
             // Success!
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
 
 
     @Override
-    public void save(User user){
+    public void save(User user) {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
 
@@ -227,12 +224,10 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
                 // success!
-            }
-            else {
+            } else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
             }
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -248,8 +243,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             final Response response = client.newCall(request).execute();
             final JSONObject responseBody = new JSONObject(response.body().string());
             return responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE;
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -273,12 +267,10 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                 final String password = userJSONObject.getString(PASSWORD);
 
                 return userFactory.create(name, password, "", "", "", new ArrayList<>());
-            }
-            else {
+            } else {
                 return null; // User doesn't exist
             }
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             return null; // Or throw exception based on your error handling
         }
     }
@@ -355,6 +347,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         }
     }
 
+
     @Override
     public void changePassword(User user) {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -378,12 +371,10 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
                 // success!
-            }
-            else {
+            } else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
             }
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -408,3 +399,5 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         return null;
     }
 }
+
+

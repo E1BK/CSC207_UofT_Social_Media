@@ -176,6 +176,9 @@ public class AppBuilder {
         ProfileController controller = new ProfileController(profileInteractor);
         profileView.setProfileController(controller);
         // Change to my profile
+
+        // Russell newly added:
+        searchUserView.setProfileController(controller);
         return this;
 
     }

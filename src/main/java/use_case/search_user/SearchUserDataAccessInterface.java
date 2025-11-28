@@ -5,10 +5,11 @@ import entity.User;
 
 public interface SearchUserDataAccessInterface {
 
-    /**
-     * Search the database for a user whose username matches.
-     * If found, return the User object. Otherwise return null.
-     * @param username
+    /**(NEW)
+     * Look up a user whose username matches the given value.
+     * @param username the username to search for
+     * @return the User object if the user exists
+     * @throws RuntimeException if the user does not exist or if the data source returns an error
      */
     User getUserInfo(String username);
 
