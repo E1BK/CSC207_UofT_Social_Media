@@ -297,55 +297,53 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
         try {
             final Response response = client.newCall(request).execute();
+
             final JSONObject responseBody = new JSONObject(response.body().string());
 
-            if (responseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
-                System.out.println(STR."getUserInfo: user not found or error for username = \{req_username} message = \{responseBody.optString(MESSAGE)}");
-                return null;
-            }
+            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
+                final JSONObject userJSONObject = responseBody.getJSONObject("user");
+                final String username = userJSONObject.getString(USERNAME);
+                final String password = userJSONObject.getString(PASSWORD);
 
-            final JSONObject userJSONObject = responseBody.getJSONObject("user");
-            final String username = userJSONObject.getString(USERNAME);
-            final String password = userJSONObject.getString(PASSWORD);
+                final JSONObject infoJSONObject = userJSONObject.getJSONObject("info");
+                final String bio = infoJSONObject.getString("bio");
+                final String email = infoJSONObject.getString("email");
+                final String name = infoJSONObject.getString("name");
 
-            final JSONObject infoJSONObject = userJSONObject.getJSONObject("info");
-            final String bio = infoJSONObject.getString("bio");
-            final String email = infoJSONObject.getString("email");
-            final String name = infoJSONObject.getString("name");
+                final JSONArray postsJSONArray = infoJSONObject.getJSONArray("posts");
+                final ArrayList<Post> posts = new ArrayList<>();
 
-            final JSONArray postsJSONArray = infoJSONObject.getJSONArray("posts");
-            final ArrayList<Post> posts = new ArrayList<>();
+                for  (int i = 0; i < postsJSONArray.length(); i++) {
+                    final JSONObject postJSONObject = postsJSONArray.getJSONObject(i);
 
-            for  (int i = 0; i < postsJSONArray.length(); i++) {
-                final JSONObject postJSONObject = postsJSONArray.getJSONObject(i);
+                    final int post_id = postJSONObject.getInt(POST_ID);
+                    final String post_title = postJSONObject.getString(POST_TITLE);
+                    final String post_body = postJSONObject.getString(POST_BODY);
+                    final String post_date = postJSONObject.getString(POST_DATE);
 
-                final int post_id = postJSONObject.getInt(POST_ID);
-                final String post_title = postJSONObject.getString(POST_TITLE);
-                final String post_body = postJSONObject.getString(POST_BODY);
-                final String post_date = postJSONObject.getString(POST_DATE);
+                    final JSONArray commentsJSONArray = postJSONObject.getJSONArray(COMMENTS);
+                    final ArrayList<Comment> comments = new ArrayList<>();
+                    for  (int j = 0; j < commentsJSONArray.length(); j++) {
+                        final JSONObject commentJSONObject = commentsJSONArray.getJSONObject(j);
+                        final int comment_id = commentJSONObject.getInt(COMMENT_ID);
+                        final String comment_body = commentJSONObject.getString(COMMENT_BODY);
+                        final String comment_date = commentJSONObject.getString(COMMENT_DATE);
+                        final int comment_likes = commentJSONObject.getInt(COMMENT_LIKES);
 
-                final JSONArray commentsJSONArray = postJSONObject.getJSONArray(COMMENTS);
-                final ArrayList<Comment> comments = new ArrayList<>();
-                for  (int j = 0; j < commentsJSONArray.length(); j++) {
-                    final JSONObject commentJSONObject = commentsJSONArray.getJSONObject(j);
-                    final int comment_id = commentJSONObject.getInt(COMMENT_ID);
-                    final String comment_body = commentJSONObject.getString(COMMENT_BODY);
-                    final String comment_date = commentJSONObject.getString(COMMENT_DATE);
-                    final int comment_likes = commentJSONObject.getInt(COMMENT_LIKES);
-
-                    final Comment comment = commentFactory.create(
-                            comment_id, comment_body, comment_date, comment_likes);
-                    comments.add(comment);
+                        final Comment comment = commentFactory.create(comment_id, comment_body, comment_date, comment_likes);
+                        comments.add(comment);
+                    }
+                    final Post post = postFactory.create(username, post_id, post_title, post_body, post_date, comments);
+                    posts.add(post);
                 }
-                final Post post = postFactory.create(username, post_id, post_title, post_body, post_date, comments);
-                posts.add(post);
+                return userFactory.create(username, password, bio, email, name, posts);
             }
-
-            return userFactory.create(username, password, bio, email, name, posts);
+            else {
+                throw new RuntimeException(responseBody.getString(MESSAGE));
+            }
         }
         catch (IOException | JSONException ex) {
-            System.out.println(STR."getUserInfo exception for username = \{req_username}: \{ex.getMessage()}");
-            return null;
+            throw new RuntimeException(ex);
         }
     }
 
