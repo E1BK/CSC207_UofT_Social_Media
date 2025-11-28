@@ -1,14 +1,11 @@
 package view;
 
 import app.GradientPanel;
-import entity.Comment;
 import entity.Post;
-import entity.PostFactory;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
-import use_case.my_profile.MyProfileUserDataAccessInterface;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -39,10 +36,9 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     private final JPanel postContainer;
 
     // Buttons
-    private final JButton back;
     private final JButton bioConfirm;
     private final JButton passwordConfirm;
-    private final JButton postButton;
+    private final JButton homeButton;
     private final JButton searchButton;
     private final JButton profileButton;
     private ArrayList<Map> posts;
@@ -120,23 +116,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         // the posts of the user will be displayed inside <postsPanel>
 
 //        ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
-//        ArrayList<Post> postsToDisplay = new ArrayList<>();
-//
-//        if (allMyPosts.size() < 6) {
-//            PostFactory myPostFactory = new PostFactory();
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
-//        } else {
-//            postsToDisplay.add(allMyPosts.getLast());
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 2));
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 3));
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 4));
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 5));
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 6));
-//        }
 //
 //        JPanel row1 = new JPanel();
 //        JPanel row2 = new JPanel();
@@ -167,16 +146,16 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
-        postButton = new JButton (MyProfileViewModel.HOME_BUTTON_LABEL);
-        postButton.setFont(new Font("Helvetica", Font.BOLD, 15));
-        postButton.setMargin(new Insets(10, 20, 10, 20));
+        homeButton = new JButton (MyProfileViewModel.HOME_BUTTON_LABEL);
+        homeButton.setFont(new Font("Helvetica", Font.BOLD, 15));
+        homeButton.setMargin(new Insets(10, 20, 10, 20));
         searchButton = new JButton (MyProfileViewModel.SEARCH_BUTTON_LABEL);
         searchButton.setFont(new Font("Helvetica", Font.BOLD, 15));
         searchButton.setMargin(new Insets(10, 20, 10, 20));
         profileButton = new JButton (MyProfileViewModel.PROFILE_BUTTON_LABEL);
         profileButton.setFont(new Font("Helvetica", Font.BOLD, 15));
         profileButton.setMargin(new Insets(10, 20, 10, 20));
-        bottomPanel.add(postButton);
+        bottomPanel.add(homeButton);
         bottomPanel.add(searchButton);
         bottomPanel.add(profileButton);
         bottomPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -193,7 +172,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         // Adds functionality to the buttons
-        back.addActionListener(
+        homeButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -243,7 +222,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 }
         );
 
-        postButton.addActionListener(
+        homeButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -347,5 +326,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     public String getViewName() { return viewName; }
 
     public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
-    public void setChangePasswordController(MyProfileChangePasswordController controller) { this.changePasswordController = controller; }
+    public void setChangePasswordController(MyProfileChangePasswordController controller) {
+        this.changePasswordController = controller;
+    }
 }
