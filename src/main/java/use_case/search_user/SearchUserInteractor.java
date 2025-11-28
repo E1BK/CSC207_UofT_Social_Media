@@ -17,13 +17,16 @@ public class SearchUserInteractor implements SearchUserInputBoundary{
 
     }
 
+    // Russel: new execute method
+    @Override
     public void execute(SearchUserInputData searchUserInputData) {
-        User foundUser = searchUserDataAccessObject.getUserInfo(searchUserInputData.getUsername());
-        if (foundUser == null) {
-            searchUserPresenter.prepareFailView();
-        }
-        else {
+        try {
+            User foundUser =
+                    searchUserDataAccessObject.getUserInfo(searchUserInputData.getUsername());
             searchUserPresenter.prepareSuccessView(foundUser);
+        } catch (RuntimeException ex) {
+            System.out.println("SearchUserInteractor error: " + ex.getMessage());
+            searchUserPresenter.prepareFailView();
         }
     }
 
