@@ -275,8 +275,7 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-//        viewManagerModel.setState(loginSignupView.getViewName());
-        viewManagerModel.setState(clubsView.getViewName());
+        viewManagerModel.setState(loginSignupView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;
