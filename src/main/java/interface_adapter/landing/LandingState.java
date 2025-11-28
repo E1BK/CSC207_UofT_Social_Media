@@ -17,6 +17,7 @@ public class LandingState {
     private String newpost_body = "";
     private ArrayList<Post> posts = new ArrayList<Post>();
     private String passwordError = "";
+    private String postError = "";
 
     // the default no-arg constructor:
     public LandingState() {
@@ -31,6 +32,7 @@ public class LandingState {
         newpost_title = copy.newpost_title;
         newpost_body = copy.newpost_body;
         passwordError = copy.passwordError;
+        postError = copy.postError;
     }
 
     public String getUsername() { return username; }
@@ -76,9 +78,11 @@ public class LandingState {
         this.newpost_username = newpost_username;
     }
 
+    public String getpostError() { return postError; }
+    public void setpostError(String postError) { this.postError = postError; }
+
 //    public void addNewPost(Post p) {
 //        posts.add(p);
 //    }
 
-    // HEY, you shouldn't be using entities ANYWHERE OUTSIDE use cases (interactors)!!!
 }

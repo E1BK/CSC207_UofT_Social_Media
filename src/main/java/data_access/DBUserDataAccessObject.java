@@ -40,8 +40,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String POST_ID = "post_id";
-    private static final String POST_TITLE = "title";
-    private static final String POST_BODY = "body";
+    private static final String POST_TITLE = "post_title";
+    private static final String POST_BODY = "post_body";
     private static final String POST_DATE = "post_date";
     private static final String COMMENT_LIKES = "comment_likes";
     private static final String COMMENT_ID = "comment_id";
