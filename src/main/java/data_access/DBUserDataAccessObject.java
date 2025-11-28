@@ -286,7 +286,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     }
 
     @Override
-    public User getUserInfo(String req_username) {
+    public User getUserInfo(String req_username){
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
 
@@ -299,9 +299,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             final Response response = client.newCall(request).execute();
             final JSONObject responseBody = new JSONObject(response.body().string());
 
-            // Russell: if status is not SUCCESS, treat as "user not found" and return null
             if (responseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
-                System.out.println("getUserInfo: user not found or error for username = " + req_username);
+                System.out.println(STR."getUserInfo: user not found or error for username = \{req_username} message = \{responseBody.optString(MESSAGE)}");
                 return null;
             }
 
@@ -309,28 +308,15 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             final String username = userJSONObject.getString(USERNAME);
             final String password = userJSONObject.getString(PASSWORD);
 
-            // Russell: even if registration always sets these fields,
-            // safer to read them with opt... in case the API changes or data is corrupted.
-            final JSONObject infoJSONObject = userJSONObject.optJSONObject("info");
+            final JSONObject infoJSONObject = userJSONObject.getJSONObject("info");
+            final String bio = infoJSONObject.getString("bio");
+            final String email = infoJSONObject.getString("email");
+            final String name = infoJSONObject.getString("name");
 
-            String bio = "";
-            String email = "";
-            String name = "";
-            JSONArray postsJSONArray = new JSONArray();
-
-            if (infoJSONObject != null) {
-                bio = infoJSONObject.optString("bio", "");
-                email = infoJSONObject.optString("email", "");
-                name = infoJSONObject.optString("name", "");
-
-                if (infoJSONObject.has("posts")) {
-                    postsJSONArray = infoJSONObject.getJSONArray("posts");
-                }
-            }
-
+            final JSONArray postsJSONArray = infoJSONObject.getJSONArray("posts");
             final ArrayList<Post> posts = new ArrayList<>();
 
-            for (int i = 0; i < postsJSONArray.length(); i++) {
+            for  (int i = 0; i < postsJSONArray.length(); i++) {
                 final JSONObject postJSONObject = postsJSONArray.getJSONObject(i);
 
                 final int post_id = postJSONObject.getInt(POST_ID);
@@ -338,20 +324,18 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                 final String post_body = postJSONObject.getString(POST_BODY);
                 final String post_date = postJSONObject.getString(POST_DATE);
 
-                // Russell: comments array may be missing; use optJSONArray for safety
-                JSONArray commentsJSONArray = postJSONObject.optJSONArray(COMMENTS);
+                final JSONArray commentsJSONArray = postJSONObject.getJSONArray(COMMENTS);
                 final ArrayList<Comment> comments = new ArrayList<>();
-                if (commentsJSONArray != null) {
-                    for (int j = 0; j < commentsJSONArray.length(); j++) {
-                        final JSONObject commentJSONObject = commentsJSONArray.getJSONObject(j);
-                        final int comment_id = commentJSONObject.getInt(COMMENT_ID);
-                        final String comment_body = commentJSONObject.getString(COMMENT_BODY);
-                        final String comment_date = commentJSONObject.getString(COMMENT_DATE);
-                        final int comment_likes = commentJSONObject.getInt(COMMENT_LIKES);
+                for  (int j = 0; j < commentsJSONArray.length(); j++) {
+                    final JSONObject commentJSONObject = commentsJSONArray.getJSONObject(j);
+                    final int comment_id = commentJSONObject.getInt(COMMENT_ID);
+                    final String comment_body = commentJSONObject.getString(COMMENT_BODY);
+                    final String comment_date = commentJSONObject.getString(COMMENT_DATE);
+                    final int comment_likes = commentJSONObject.getInt(COMMENT_LIKES);
 
-                        final Comment comment = commentFactory.create(comment_id, comment_body, comment_date, comment_likes);
-                        comments.add(comment);
-                    }
+                    final Comment comment = commentFactory.create(
+                            comment_id, comment_body, comment_date, comment_likes);
+                    comments.add(comment);
                 }
                 final Post post = postFactory.create(username, post_id, post_title, post_body, post_date, comments);
                 posts.add(post);
@@ -360,11 +344,11 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             return userFactory.create(username, password, bio, email, name, posts);
         }
         catch (IOException | JSONException ex) {
-            // Russell: in Search use case, treat exceptions as "user not found" instead of crashing the UI
-            System.out.println("getUserInfo error for username = " + req_username + ": " + ex.getMessage());
+            System.out.println(STR."getUserInfo exception for username = \{req_username}: \{ex.getMessage()}");
             return null;
         }
     }
+
 
     @Override
     public void changePassword(User user) {
