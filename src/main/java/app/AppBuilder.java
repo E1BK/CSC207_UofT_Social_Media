@@ -276,6 +276,20 @@ public class AppBuilder {
 
     public JFrame build() {
         final JFrame application = new JFrame("UofT Social Media App");
+
+        Image img = new ImageIcon(
+                getClass().getClassLoader().getResource("img/chatuoft_lg.png")
+        ).getImage();
+
+        application.setIconImage(img);
+
+        if (Taskbar.isTaskbarSupported()) {
+            try {
+                Taskbar.getTaskbar().setIconImage(img);
+            } catch (UnsupportedOperationException ignored) {
+            }
+        }
+
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
