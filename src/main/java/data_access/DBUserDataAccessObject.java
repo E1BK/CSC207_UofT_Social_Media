@@ -395,7 +395,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     }
 
     @Override
-    public Club search(String searchQuery) {
+    public String search(String searchQuery) {
         return null;
     }
 }

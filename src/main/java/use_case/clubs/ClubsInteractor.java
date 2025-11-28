@@ -19,11 +19,6 @@ public class ClubsInteractor implements ClubsInputBoundary{
     @Override
     public void execute(ClubsInputData clubsInputData) {
 
-    }
-
-    @Override
-    public void findClub(String searchQuery) {
-
         // this line is what calls the database
         // Club foundClub = clubsDataAccessObject.search(searchQuery);
 
@@ -34,15 +29,16 @@ public class ClubsInteractor implements ClubsInputBoundary{
         Club foundClub = null;
 
         for (Club c: allClubs) {
-            if (c.getName().equals(searchQuery)) {
+            if (c.getName().equals(clubsInputData.getSearchQuery())) {
                 foundClub = c;
             }
         }
 
         if (foundClub == null) {
-            clubsPresenter.prepareFailView(searchQuery);
+            clubsPresenter.prepareFailView(clubsInputData);
         } else {
-            clubsPresenter.prepareSuccessView(foundClub);
+            ClubsOutputData outputData = new ClubsOutputData(foundClub.getName(), foundClub.getStatementOfPurpose());
+            clubsPresenter.prepareSuccessView(outputData);
         }
     }
 
