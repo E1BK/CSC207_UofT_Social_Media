@@ -151,6 +151,17 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         JLabel password2Prompt = new JLabel("Re-enter your password: ");
         passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+
+        signupNameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupNameInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupEmailInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupEmailInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupUsernameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupUsernameInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupPassword1InputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupPassword1InputField.setMargin(new Insets(10, 20, 10, 20));
+        signupPassword2InputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupPassword2InputField.setMargin(new Insets(10, 20, 10, 20));
         // inputPanel ends
 
         // sloganPanel begins
