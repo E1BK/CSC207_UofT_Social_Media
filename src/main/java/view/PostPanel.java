@@ -36,7 +36,9 @@ public class PostPanel extends JPanel {
         JLabel post1username = new JLabel("by " + post.getUsername());
         post1username.setFont(new Font("Helvetica", Font.ITALIC, 15));
         post1username.setForeground(Color.GRAY);
-        JLabel post1date = new JLabel(post.getPost_date());
+        String date = post.getPost_date();
+        date = date.substring(0, date.indexOf("T"));
+        JLabel post1date = new JLabel(date);
         post1date.setFont(new Font("Helvetica", Font.ITALIC, 15));
         post1date.setForeground(Color.GRAY);
         post1header.add(post1title, BorderLayout.NORTH);

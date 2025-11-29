@@ -21,6 +21,7 @@ public class PostData {
 
         for (int i = 1; i <= loops; i++) {
             HashMap<String, String> postInfo = new HashMap<>();
+            postInfo.put(MyProfileViewModel.USERNAME, userPosts.get(userPosts.size() - i).getUsername());
             postInfo.put(MyProfileViewModel.TITLE, userPosts.get(userPosts.size() - i).getTitle());
             postInfo.put(MyProfileViewModel.BODY, userPosts.get(userPosts.size() - i).getBody());
             postInfo.put(MyProfileViewModel.DATE, userPosts.get(userPosts.size() - i).getPost_date());
