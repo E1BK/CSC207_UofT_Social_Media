@@ -412,7 +412,6 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         if (!found) {
             throw new RuntimeException("Post not found.");
         }
-        // Persist entire user (including updated posts/comments)
         save(user);
     }
 

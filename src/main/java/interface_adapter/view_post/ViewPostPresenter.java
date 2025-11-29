@@ -31,7 +31,6 @@ public class ViewPostPresenter implements ViewPostOutputBoundary {
         viewModel.setState(state);
         viewModel.firePropertyChange();
 
-        // Show PostView
         viewManagerModel.setState(viewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }

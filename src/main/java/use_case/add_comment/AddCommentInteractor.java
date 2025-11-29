@@ -1,3 +1,4 @@
+//Ioane
 package use_case.add_comment;
 
 import entity.Comment;
@@ -28,7 +29,6 @@ public class AddCommentInteractor implements AddCommentInputBoundary {
     @Override
     public void execute(AddCommentInputData inputData) {
         try {
-            // Get current post to compute new comment id
             Post post = dataAccess.getPost(inputData.getUsername(), inputData.getPostId());
             if (post == null) {
                 throw new RuntimeException("Post not found.");
@@ -51,7 +51,6 @@ public class AddCommentInteractor implements AddCommentInputBoundary {
 
             dataAccess.addCommentToPost(inputData.getUsername(), inputData.getPostId(), newComment);
 
-            // Reload updated post
             Post updatedPost = dataAccess.getPost(inputData.getUsername(), inputData.getPostId());
             if (updatedPost == null) {
                 throw new RuntimeException("Post not found after adding comment.");
