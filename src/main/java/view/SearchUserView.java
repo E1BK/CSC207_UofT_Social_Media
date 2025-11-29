@@ -26,7 +26,7 @@ import interface_adapter.search_user.SearchUserViewModel;
 import interface_adapter.search_user.SearchUserState;
 import entity.User;
 import interface_adapter.profile.ProfileController;
-
+import use_case.my_profile.PostData;
 
 
 import javax.swing.*;
@@ -36,6 +36,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class SearchUserView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -210,11 +212,17 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                     if (selected != null) {
                         System.out.println("View Profile clicked for: " + selected.getUsername());
                         // to Profile use case
-                        profileController.execute(selected);
+                        PostData postData = new PostData();
+                        postData.setPostList(selected.getPosts());
+
+                        profileController.execute(selected.getUsername(),
+                                                  selected.getEmail(),
+                                                  selected.getBio(),
+                                                  postData.getPosts());
                         // to ProfileView
                         profileController.switchToProfileView();
                     } else {
-                        System.out.println("View Profile clicked but no selectedUser in state");
+                        System.out.println("View Profile clicked but no selected User in state");
                     }
                 } else {
                     System.out.println("SearchUserController is null (not set yet)");

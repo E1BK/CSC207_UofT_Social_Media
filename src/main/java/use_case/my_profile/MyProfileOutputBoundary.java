@@ -13,5 +13,4 @@ public interface MyProfileOutputBoundary {
     void switchToMyProfileView();
     void switchToLoginSignupView();
     void refreshPosts(ArrayList<Map> posts);
-
 }

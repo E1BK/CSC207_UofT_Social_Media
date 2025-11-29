@@ -31,15 +31,12 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
     public void switchToLandingView() {
         myProfilePresenter.switchToLandingView();
     }
-
     public void switchToSearchView() {
         myProfilePresenter.switchToSearchView();
     }
-
     public void switchToPostView() {
         myProfilePresenter.switchToPostView();
     }
-
     public void switchToLoginSignupView() { myProfilePresenter.switchToLoginSignupView(); }
 
     public void refreshPosts(String username) {

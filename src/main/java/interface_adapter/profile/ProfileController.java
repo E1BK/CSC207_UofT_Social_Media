@@ -1,13 +1,10 @@
 package interface_adapter.profile;
 
-// import use_case. <<< data boundries to controll data between two things >>>
-
-import entity.User;
-import use_case.make_post.MakePostInteractor;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInputData;
-import use_case.profile.ProfileInteractor;
-import use_case.search_user.SearchUserInteractor;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class ProfileController {
 
@@ -17,22 +14,20 @@ public class ProfileController {
         this.profileInteractor = profileInteractor;
     }
 
-    public void execute(User user) {
-        final ProfileInputData profileInputData = new ProfileInputData(user.getUsername(),
-                                                                           user.getEmail(),
-                                                                           user.getBio(),
-                                                                           user.getPosts());
-
+    public void execute(String username, String email, String bio, ArrayList<Map> posts) {
+        final ProfileInputData profileInputData = new ProfileInputData(username, email, bio, posts);
         profileInteractor.execute(profileInputData);
-    }
-
-    public void switchToProfileView() {
-        ProfileInteractor temp = (ProfileInteractor) profileInteractor;
-        temp.switchToProfileView();
     }
 
     public void switchToLandingView() { profileInteractor.switchToLandingView(); }
     public void switchToSearchView() { profileInteractor.switchToSearchView(); }
     public void switchToPostView() { profileInteractor.switchToPostView(); }
     public void switchToMyProfileView() { profileInteractor.switchToMyProfileView(); }
+    public void switchToProfileView() { profileInteractor.switchToProfileView(); }
+    public void switchToCurrentPost(int postID) {
+    }
+
+    public void refreshPosts(String username) {
+        profileInteractor.refreshPosts(username);
+    }
 }

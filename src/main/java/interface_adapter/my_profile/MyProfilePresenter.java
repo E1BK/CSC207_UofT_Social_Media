@@ -2,11 +2,9 @@ package interface_adapter.my_profile;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.login.LoginViewModel;
 import interface_adapter.search_user.SearchUserViewModel;
 import use_case.my_profile.MyProfileOutputBoundary;
 import use_case.my_profile.MyProfileOutputData;
-import view.LoginSignupView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -15,7 +13,7 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
 
     private final MyProfileViewModel myProfileViewModel;
     private final SearchUserViewModel searchUserViewModel;
-    // To implement
+    // TODO implement
 //    private final PostViewModel postViewModel;
 //    private final MyProfileModel myMyProfileModel;
     private final ViewManagerModel viewManagerModel;

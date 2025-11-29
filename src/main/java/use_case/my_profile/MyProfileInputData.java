@@ -24,7 +24,6 @@ public class MyProfileInputData{
         password = user.getPassword();
         email = user.getEmail();
         bio = user.getBio();
-
     }
 
     public String getUsername(){ return username; }
