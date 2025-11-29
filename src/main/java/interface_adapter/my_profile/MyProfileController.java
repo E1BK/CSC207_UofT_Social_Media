@@ -23,6 +23,7 @@ public class MyProfileController {
     public void switchToSearchView() { myProfileInteractor.switchToSearchView(); }
     public void switchToPostView() { myProfileInteractor.switchToPostView(); }
     public void switchToMyProfileView() { myProfileInteractor.switchToMyProfileView(); }
+    public void switchToLoginSignupView() {myProfileInteractor.switchToLoginSignupView();}
     public void switchToCurrentPost(int postID) {
     }
 

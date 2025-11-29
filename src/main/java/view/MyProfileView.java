@@ -299,6 +299,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                     public void actionPerformed(ActionEvent e) {
                         System.out.println(e.getActionCommand());
                         logoutController.execute();
+                        myProfileController.switchToLoginSignupView();
                     }
                 }
         );
