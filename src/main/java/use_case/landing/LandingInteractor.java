@@ -2,6 +2,7 @@ package use_case.landing;
 
 import entity.Post;
 import entity.User;
+import interface_adapter.make_post.MakePostPresenter;
 import use_case.make_post.MakePostInputBoundary;
 import use_case.make_post.MakePostInteractor;
 import use_case.make_post.PostViewData;
@@ -44,5 +45,17 @@ public class LandingInteractor implements LandingInputBoundary{
         }
         LandingOutputData output = new LandingOutputData(posts);
         landingPresenter.prepareSuccessView(output);
+    }
+
+    public void switchToPeopleView() {
+        landingPresenter.switchToPeopleView();
+    }
+
+    public void switchToMeView() {
+        landingPresenter.switchToMeView();
+    }
+
+    public void switchToClubsView() {
+        landingPresenter.switchToClubsView();
     }
 }

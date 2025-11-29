@@ -83,21 +83,4 @@ public class MakePostInteractor implements MakePostInputBoundary{
         MakePostOutputData output = new MakePostOutputData(newPostViewData);
         makePostPresenter.prepareSuccessView(output);
     }
-
-    // hasan: this method must be here, because "making a post" and
-    // "switching to People view" occur on the same screen (i.e. on the Landing Page!)
-    public void switchToPeopleView() {
-        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
-        temp.switchToPeopleView();
-    }
-
-    public void switchToMeView() {
-        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
-        temp.switchToMeView();
-    }
-
-    public void switchToClubsView() {
-        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
-        temp.switchToClubsView();
-    }
 }

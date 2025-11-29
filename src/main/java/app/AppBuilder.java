@@ -218,7 +218,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addLandingUseCase() {
-        final LandingOutputBoundary landingOutputBoundary = new LandingPresenter(landingViewModel);
+        final LandingOutputBoundary landingOutputBoundary = new LandingPresenter(viewManagerModel, landingViewModel, searchUserViewModel, myProfileViewModel, clubsViewModel);
         final LandingInputBoundary landingInteractor = new LandingInteractor(userDataAccessObject, landingOutputBoundary);
         LandingController controller = new LandingController(landingInteractor);
         landingView.setLandingController(controller);
@@ -258,8 +258,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addMakePostUseCase() {
-        final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                landingViewModel, makePostViewModel, searchUserViewModel, myProfileViewModel, clubsViewModel);
+        final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(landingViewModel, makePostViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 

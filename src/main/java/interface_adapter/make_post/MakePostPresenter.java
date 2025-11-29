@@ -18,24 +18,12 @@ public class MakePostPresenter implements MakePostOutputBoundary {
 
     private final LandingViewModel landingViewModel;
     private final MakePostViewModel makePostViewModel;
-    private final SearchUserViewModel searchUserViewModel;
-    private final ViewManagerModel viewManagerModel;
-    private final MyProfileViewModel myProfileViewModel;
-    private final ClubsViewModel clubsViewModel;
 
-    public MakePostPresenter(ViewManagerModel viewManagerModel,
-                             LandingViewModel landingViewModel,
-                             MakePostViewModel makePostViewModel,
-                             SearchUserViewModel searchUserViewModel,
-                             MyProfileViewModel myProfileViewModel,
-                             ClubsViewModel clubsViewModel) {
+    public MakePostPresenter(LandingViewModel landingViewModel,
+                             MakePostViewModel makePostViewModel) {
 
         this.landingViewModel = landingViewModel;
-        this.viewManagerModel = viewManagerModel;
         this.makePostViewModel = makePostViewModel;
-        this.searchUserViewModel = searchUserViewModel;
-        this.myProfileViewModel = myProfileViewModel;
-        this.clubsViewModel = clubsViewModel;
     }
 
     @Override
@@ -63,18 +51,4 @@ public class MakePostPresenter implements MakePostOutputBoundary {
 
     }
 
-    public void switchToPeopleView() {
-        viewManagerModel.setState(searchUserViewModel.getViewName());
-        viewManagerModel.firePropertyChange();
-    }
-
-    public void switchToMeView() {
-        viewManagerModel.setState(myProfileViewModel.getViewName());
-        viewManagerModel.firePropertyChange();
-    }
-
-    public void switchToClubsView() {
-        viewManagerModel.setState(clubsViewModel.getViewName());
-        viewManagerModel.firePropertyChange();
-    }
 }

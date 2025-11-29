@@ -1,6 +1,9 @@
 package use_case.landing;
 
 public interface LandingOutputBoundary {
-    public void prepareSuccessView(LandingOutputData landingOutputData);
-    public void prepareFailView(String errorMessage);
+    void prepareSuccessView(LandingOutputData landingOutputData);
+    void prepareFailView(String errorMessage);
+    void switchToPeopleView();
+    void switchToMeView();
+    void switchToClubsView();
 }

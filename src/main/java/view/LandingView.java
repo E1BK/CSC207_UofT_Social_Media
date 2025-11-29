@@ -201,7 +201,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(people)) {
                             System.out.println("CLICKED 'PEOPLE'!");
-                            makePostController.switchToPeopleView();
+                            landingController.switchToPeopleView();
                         }
                     }
                 }
@@ -227,7 +227,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(clubsButton)) {
                             System.out.println("CLICKED 'SEE CLUBS'!");
-                            makePostController.switchToClubsView();
+                            landingController.switchToClubsView();
                         }
                     }
                 }
