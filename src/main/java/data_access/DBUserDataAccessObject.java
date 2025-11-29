@@ -381,6 +381,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     @Override
     public Post getPost(String username, int postId) {
+        // Reuse existing helper that pulls user + posts from Grade API
         User user = getUserInfo(username);
         if (user == null) {
             throw new RuntimeException("User not found: " + username);
@@ -391,6 +392,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                 return post;
             }
         }
+        // Not throwing here so the interactor can decide how to report "not found"
         return null;
     }
 

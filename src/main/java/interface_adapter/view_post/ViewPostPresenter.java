@@ -5,6 +5,10 @@ import interface_adapter.ViewManagerModel;
 import use_case.view_post.ViewPostOutputBoundary;
 import use_case.view_post.ViewPostOutputData;
 
+/**
+ * Presenter for the ViewPost use case.
+ * Maps output data into ViewPostState and tells ViewManager to show PostView.
+ */
 public class ViewPostPresenter implements ViewPostOutputBoundary {
 
     private final ViewPostViewModel viewPostViewModel;
@@ -30,6 +34,7 @@ public class ViewPostPresenter implements ViewPostOutputBoundary {
         viewPostViewModel.setState(state);
         viewPostViewModel.firePropertyChange();
 
+        // Switch the active view to PostView
         viewManagerModel.setState(viewPostViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }

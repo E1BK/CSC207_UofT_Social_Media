@@ -51,14 +51,7 @@ public class PostPanel extends JPanel {
 
         viewButton.addActionListener(e -> {
             if (viewPostController != null) {
-                try {
-                    // Make sure Post has a getter:
-                    // public int getPost_id() { return post_id; }
-                    viewPostController.viewPost(post.getUsername(), post.getPost_id());
-                } catch (Exception ex) {
-                    System.err.println("Error calling viewPost: " + ex.getMessage());
-                    ex.printStackTrace();
-                }
+                viewPostController.viewPost("E1", 1);
             } else {
                 System.err.println("ViewPostController not set in PostPanel");
             }

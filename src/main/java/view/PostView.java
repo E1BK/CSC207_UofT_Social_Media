@@ -14,6 +14,10 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * View that shows a single post: title, body, and up to 3 random comments
+ * with like buttons.
+ */
 public class PostView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "post";
@@ -32,25 +36,31 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
     public PostView(ViewPostViewModel viewModel) {
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
-
         setupUI();
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setViewPostController(ViewPostController controller) {
+        this.controller = controller;
     }
 
     private void setupUI() {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Post title
+        // Top: post title on a gradient panel
         GradientPanel topPanel = new GradientPanel();
         topPanel.setLayout(new BorderLayout());
 
         titleLabel = new JLabel("Post Title");
         titleLabel.setFont(new Font("Helvetica", Font.BOLD, 24));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
         topPanel.add(titleLabel, BorderLayout.CENTER);
 
-        // Post body + comments
+        // Center: body + 3 comment rows
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setOpaque(false);
@@ -88,14 +98,6 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    public void setViewPostController(ViewPostController controller) {
-        this.controller = controller;
-    }
-
-    public String getViewName() {
-        return viewName;
-    }
-
     private void updateFromState(ViewPostState state) {
         titleLabel.setText(state.getPostTitle());
         bodyArea.setText(state.getPostBody());
@@ -119,9 +121,10 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // For now, just bump like count locally.
+        // Later you can replace this with a real LikeComment use case.
         for (int i = 0; i < likeButtons.length; i++) {
             if (e.getSource() == likeButtons[i] && commentIds[i] != -1) {
-
                 int currentLikes;
                 try {
                     currentLikes = Integer.parseInt(likeCountLabels[i].getText());
@@ -130,13 +133,19 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
                 }
                 currentLikes++;
                 likeCountLabels[i].setText(String.valueOf(currentLikes));
+
+                // Future:
+                // if (controller != null) {
+                //     controller.likeComment(username, postId, commentIds[i]);
+                // }
             }
         }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("state".equals(evt.getPropertyName()) && evt.getNewValue() instanceof ViewPostState) {
+        if ("state".equals(evt.getPropertyName())
+                && evt.getNewValue() instanceof ViewPostState) {
             ViewPostState state = (ViewPostState) evt.getNewValue();
             updateFromState(state);
         }

@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LandingView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -34,6 +35,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private ViewPostController viewPostController = null;
 
     //    private final JTextField postBody;
+    private final List<PostPanel> postPanels = new ArrayList<>();
     private final JTextField postTitle;
     private final JTextArea postBody;
     private final JButton makePost;
@@ -132,9 +134,10 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         PostPanel post2 = new PostPanel(postsToDisplay.get(1));
         PostPanel post3 = new PostPanel(postsToDisplay.get(2));
 
-        post1.setViewPostController(viewPostController);
-        post2.setViewPostController(viewPostController);
-        post3.setViewPostController(viewPostController);
+        postPanels.clear();
+        postPanels.add(post1);
+        postPanels.add(post2);
+        postPanels.add(post3);
 
         JPanel displayPanel = new JPanel();
         displayPanel.add(post1.panel);
@@ -293,5 +296,9 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     public void setViewPostController(ViewPostController controller) {
         this.viewPostController = controller;
+
+        for (PostPanel postPanel : postPanels) {
+            postPanel.setViewPostController(controller);
+        }
     }
 }

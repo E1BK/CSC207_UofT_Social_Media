@@ -2,6 +2,7 @@
 package use_case.view_post;
 
 public class ViewPostOutputData {
+
     private final String postTitle;
     private final String postBody;
     private final int[] commentIds;

@@ -1,6 +1,10 @@
 // Ioane
 package interface_adapter.view_post;
 
+/**
+ * State object held inside ViewPostViewModel.
+ * Presenter writes into this, PostView reads from it.
+ */
 public class ViewPostState {
 
     private String postTitle = "";
@@ -69,4 +73,3 @@ public class ViewPostState {
         this.errorMessage = errorMessage;
     }
 }
-

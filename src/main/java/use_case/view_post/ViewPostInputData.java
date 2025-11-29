@@ -2,6 +2,7 @@
 package use_case.view_post;
 
 public class ViewPostInputData {
+
     private final String username;
     private final int postId;
 
