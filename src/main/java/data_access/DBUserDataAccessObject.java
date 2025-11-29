@@ -552,8 +552,4 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         }
     }
 
-    @Override
-    public String search(String searchQuery) {
-        return null;
-    }
 }
