@@ -1,6 +1,6 @@
 package app;
 
-
+import entity.ClubFactory;
 import entity.CommentFactory;
 import entity.PostFactory;
 import entity.UserFactory;
@@ -74,11 +74,12 @@ public class AppBuilder {
     final UserFactory userFactory = new UserFactory();
     final PostFactory postFactory = new PostFactory();
     final CommentFactory commentFactory = new CommentFactory();
+    final ClubFactory clubFactory = new ClubFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     public ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
 
-    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory);
+    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory, clubFactory);
 
     // Add View Models
     private SignupViewModel signupViewModel;
@@ -180,6 +181,9 @@ public class AppBuilder {
         ProfileController controller = new ProfileController(profileInteractor);
         profileView.setProfileController(controller);
         // Change to my profile
+
+        // Russell newly added:
+        searchUserView.setProfileController(controller);
         return this;
 
     }
@@ -283,6 +287,20 @@ public class AppBuilder {
 
     public JFrame build() {
         final JFrame application = new JFrame("UofT Social Media App");
+
+        Image img = new ImageIcon(
+                getClass().getClassLoader().getResource("img/chatuoft_lg.png")
+        ).getImage();
+
+        application.setIconImage(img);
+
+        if (Taskbar.isTaskbarSupported()) {
+            try {
+                Taskbar.getTaskbar().setIconImage(img);
+            } catch (UnsupportedOperationException ignored) {
+            }
+        }
+
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);

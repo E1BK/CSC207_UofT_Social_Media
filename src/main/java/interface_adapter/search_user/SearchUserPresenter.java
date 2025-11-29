@@ -1,4 +1,4 @@
-// hasan
+// hasan, Russell
 package interface_adapter.search_user;
 
 import entity.User;
@@ -28,11 +28,23 @@ public class SearchUserPresenter implements SearchUserOutputBoundary {
 
     @Override
     public void prepareSuccessView(User user) {
+        // Russell: update state with a success message and the found user,
+        // then notify the view.
+        SearchUserState state = searchUserViewModel.getState();
+        state.setMessage("Found user: " + user.getUsername());
+        state.setSelectedUser(user);  // store the found user
+        searchUserViewModel.setState(state);
         searchUserViewModel.firePropertyChange();
     }
 
     @Override
     public void prepareFailView() {
+        // Russell: update state with a failure message,
+        // empty the selectedUser / and clear selectedUser.
+        SearchUserState state = searchUserViewModel.getState();
+        state.setMessage("User Not Found");
+        state.setSelectedUser(null);  // 没找到，不保留上一次的用户
+        searchUserViewModel.setState(state);
         searchUserViewModel.firePropertyChange();
     }
 

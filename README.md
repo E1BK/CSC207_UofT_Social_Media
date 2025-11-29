@@ -167,7 +167,7 @@ To store extra information we need, such as the bio or posts, we add into the `i
 
 `email` should be an address that ends with "@mail.utoronto.ca", this should be enforced by checking the string.
 
-`post_date` and `comment_date` should be created with `Instant.now().toString();`
+`post_date` and `comment_date` should be created with `LocalDateTime.now().toString()`
 
 Note that all fields should be checked for illegal characters.
 
@@ -191,6 +191,27 @@ Additionally, we also need a "*repository*" user to store all the users that cur
     }
 }
 
+```
+
+Similarly, we further define a repository user for storing clubs:
+
+```json
+{
+    "username": "CLUB_REPO_CTG3",
+    "password": "CTG3CTG3",
+    "info": {
+        "clubs": [
+            {
+                "club_name": "UTRG",
+                "club_description": "The University of Toronto Rhythm Game Club"
+            },
+            {
+                "club_name": "PhySU",
+                "club_description": "Physics Student Union"
+            }
+        ]
+    }
+}
 ```
 
 # Entities

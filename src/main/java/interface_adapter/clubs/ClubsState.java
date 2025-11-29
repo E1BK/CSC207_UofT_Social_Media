@@ -1,23 +1,33 @@
 package interface_adapter.clubs;
 
-import entity.Club;
-
-import java.util.ArrayList;
 
 public class ClubsState {
 
-    private ArrayList<Club> clubs;
+    private String foundClubName;
+    private String foundClubDescription;
 
     // default no-arg constructor
     public ClubsState() {}
 
-    public ClubsState(ArrayList<Club> clubs) {
-        this.clubs = clubs;
-    }
-
-    public ArrayList<Club> getClubs() {
-        return clubs;
+    public ClubsState(String foundClubName, String foundClubDescription) {
+        this.setFoundClubName(foundClubName);
+        this.setFoundClubDescription(foundClubDescription);
     }
 
 
+    public String getFoundClubName() {
+        return foundClubName;
+    }
+
+    public void setFoundClubName(String foundClubName) {
+        this.foundClubName = foundClubName;
+    }
+
+    public String getFoundClubDescription() {
+        return foundClubDescription;
+    }
+
+    public void setFoundClubDescription(String foundClubDescription) {
+        this.foundClubDescription = foundClubDescription;
+    }
 }

@@ -40,8 +40,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String POST_ID = "post_id";
-    private static final String POST_TITLE = "title";
-    private static final String POST_BODY = "body";
+    private static final String POST_TITLE = "post_title";
+    private static final String POST_BODY = "post_body";
     private static final String POST_DATE = "post_date";
     private static final String COMMENT_LIKES = "comment_likes";
     private static final String COMMENT_ID = "comment_id";
@@ -52,17 +52,20 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     private static final String REPO_USERNAME = "USER_REPO_CTG3";
     private static final String REPO_PASSWORD = "CTG3CTG3";
+    private static final String CLUB_REPO_USERNAME = "CLUB_REPO_CTG3";
 
     private final UserFactory userFactory;
     private final PostFactory postFactory;
     private final CommentFactory commentFactory;
+    private final ClubFactory clubFactory;
 
     private String currentUsername;
 
-    public DBUserDataAccessObject(UserFactory userFactory, PostFactory postFactory, CommentFactory commentFactory){
+    public DBUserDataAccessObject(UserFactory userFactory, PostFactory postFactory, CommentFactory commentFactory, ClubFactory clubFactory) {
         this.userFactory = userFactory;
         this.postFactory = postFactory;
         this.commentFactory = commentFactory;
+        this.clubFactory = clubFactory;
         this.currentUsername = null;
     }
 
@@ -279,7 +282,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             }
         }
         catch (IOException | JSONException ex) {
-            return null; // Or throw exception based on your error handling
+            throw new RuntimeException(ex);
         }
     }
 
@@ -408,8 +411,110 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         return null;
     }
 
-    @Override
-    public Club search(String searchQuery) {
-        return null;
+    public ArrayList<Club> getClubs() {
+        ArrayList<Club> clubs = new ArrayList<>();
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+
+        try {
+            // get existing repo
+            Request getRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + CLUB_REPO_USERNAME)
+                    .get()
+                    .build();
+
+            Response getResponse = client.newCall(getRequest).execute();
+            JSONObject responseJson = new JSONObject(getResponse.body().string());
+
+            if (responseJson.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to fetch repo user: " +
+                        responseJson.getString(MESSAGE));
+            }
+
+            JSONObject userJson = responseJson.getJSONObject("user");
+            JSONObject userInfoJson = userJson.getJSONObject("info");
+
+            JSONArray clubsArray = userInfoJson.getJSONArray("clubs");
+            for (int i = 0; i < clubsArray.length(); i++) {
+                JSONObject clubJson = clubsArray.getJSONObject(i);
+                clubs.add(clubFactory.create(clubJson.getString("club_name"),
+                        clubJson.getString("club_description")));
+            }
+
+            return clubs;
+
+        } catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+
     }
+
+    public void addClub(Club club) {
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+
+        try {
+            // get existing repo
+            Request getRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + CLUB_REPO_USERNAME)
+                    .get()
+                    .build();
+
+            Response getResponse = client.newCall(getRequest).execute();
+            JSONObject responseJson = new JSONObject(getResponse.body().string());
+
+            if (responseJson.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to fetch repo user: " +
+                        responseJson.getString(MESSAGE));
+            }
+
+            JSONObject userJson = responseJson.getJSONObject("user");
+            JSONObject userInfoJson = userJson.getJSONObject("info");
+
+            // Ensure "users" array exists
+            JSONArray clubsArray;
+            if (userInfoJson.has("clubs")) {
+                clubsArray = userInfoJson.getJSONArray("clubs");
+            } else {
+                clubsArray = new JSONArray();
+                userInfoJson.put("clubs", clubsArray);
+            }
+
+            // append
+            JSONObject newEntry = new JSONObject()
+                    .put("club_name", club.getName())
+                    .put("club_description", club.getStatementOfPurpose());
+
+            clubsArray.put(newEntry);
+
+            // put
+            JSONObject requestBodyJson = new JSONObject()
+                    .put("username", CLUB_REPO_USERNAME)
+                    .put("password", REPO_PASSWORD)
+                    .put("info", userInfoJson);
+
+            RequestBody body = RequestBody.create(
+                    requestBodyJson.toString(), mediaType
+            );
+
+            Request putRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
+                    .method("PUT", body)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            Response putResponse = client.newCall(putRequest).execute();
+            JSONObject putResponseBody = new JSONObject(putResponse.body().string());
+
+            if (putResponseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to update repo user: " +
+                        putResponseBody.getString(MESSAGE));
+            }
+            // Success!
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
 }

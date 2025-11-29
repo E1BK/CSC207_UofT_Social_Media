@@ -36,16 +36,26 @@ public class MakePostPresenter implements MakePostOutputBoundary {
     @Override
     public void prepareSuccessView(MakePostOutputData makePostOutputData) {
         LandingState state = landingViewModel.getState();
-        state.setNewpost_username(makePostOutputData.getUsername());
-        state.setNewpost_title(makePostOutputData.getTitle());
-        state.setNewpost_body(makePostOutputData.getBody());
+
+        state.setNewpost_title("");
+        state.setNewpost_body("");
+
+        // TODO: show the new post on landing
+
+        landingViewModel.setState(state);
         landingViewModel.firePropertyChange();
         myProfileViewModel.firePropertyChange();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
+        LandingState state = landingViewModel.getState();
+
+        state.setpostError(errorMessage);
+        landingViewModel.setState(state);
+
         landingViewModel.firePropertyChange();
+
     }
 
     public void switchToPeopleView() {

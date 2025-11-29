@@ -40,6 +40,11 @@ public class MakePostInteractor implements MakePostInputBoundary{
 
         User user;
 
+        if (title.isBlank() || body.isBlank()) {
+            makePostPresenter.prepareFailView("Title or Body cannot be blank");
+            return;
+        }
+
         try {
             user = makePostUserDataAccess.getUserInfo(username);
             if (user == null) {
