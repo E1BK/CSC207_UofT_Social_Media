@@ -1,24 +1,21 @@
 package interface_adapter.my_profile;
 
-import entity.Post;
-import entity.User;
 import use_case.my_profile.MyProfileInputBoundary;
 import use_case.my_profile.MyProfileInputData;
+import use_case.my_profile.MyProfileUserDataAccessInterface;
 
 public class MyProfileController {
 
     private final MyProfileInputBoundary myProfileInteractor;
+    private final MyProfileUserDataAccessInterface dataAccess;
 
-    public MyProfileController(MyProfileInputBoundary myProfileInteractor) {
+    public MyProfileController(MyProfileInputBoundary myProfileInteractor, MyProfileUserDataAccessInterface dataAccess) {
         this.myProfileInteractor = myProfileInteractor;
+        this.dataAccess = dataAccess;
     }
 
-    public void execute(User user) {
-        final MyProfileInputData myMyProfileInputData = new MyProfileInputData(user.getUsername(),
-                user.getEmail(),
-                user.getBio(),
-                user.getPosts());
-
+    public void execute(String username) {
+        final MyProfileInputData myMyProfileInputData = new MyProfileInputData(dataAccess, username);
         myProfileInteractor.execute(myMyProfileInputData);
     }
 
@@ -26,6 +23,11 @@ public class MyProfileController {
     public void switchToSearchView() { myProfileInteractor.switchToSearchView(); }
     public void switchToPostView() { myProfileInteractor.switchToPostView(); }
     public void switchToMyProfileView() { myProfileInteractor.switchToMyProfileView(); }
-    public void switchToCurrentPost(Post post) {
+    public void switchToLoginSignupView() {myProfileInteractor.switchToLoginSignupView();}
+    public void switchToCurrentPost(int postID) {
+    }
+
+    public void refreshPosts(String username) {
+        myProfileInteractor.refreshPosts(username);
     }
 }

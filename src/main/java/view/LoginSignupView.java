@@ -372,7 +372,8 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
     private void handleLoginStateChange() {
         var state = loginViewModel.getState();
-
+        loginPasswordInputField.setText(state.getPassword());
+        loginUsernameInputField.setText(state.getUsername());
         if (state.getLoginError() != null) {
             JOptionPane.showMessageDialog(this, state.getLoginError());
             state.setLoginError(null);

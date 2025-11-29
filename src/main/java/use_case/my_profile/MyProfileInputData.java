@@ -1,24 +1,35 @@
 package use_case.my_profile;
 
-import entity.Post;
-import java.util.ArrayList;
+import entity.User;
 
 public class MyProfileInputData{
+    private MyProfileUserDataAccessInterface myProfileUserDataAccess;
+
     private final String username;
+    private final String name;
+    private final String password;
     private final String email;
     private final String bio;
-    private final ArrayList<Post> posts;
 
 
-    public MyProfileInputData(String username, String email, String bio, ArrayList<Post> posts) {
+    public MyProfileInputData(MyProfileUserDataAccessInterface myProfileUserDataAccessInterface, String username) {
+        this.myProfileUserDataAccess = myProfileUserDataAccessInterface;
+
         this.username = username;
-        this.email = email;
-        this.bio = bio;
-        this.posts = posts;
+        User user;
+
+        user = myProfileUserDataAccess.getUserInfo(username);
+
+        name = user.getName();
+        password = user.getPassword();
+        email = user.getEmail();
+        bio = user.getBio();
+
     }
 
     public String getUsername(){ return username; }
+    public String getPassword(){ return password; }
+    public String getName(){ return name; }
     public String getEmail(){ return email; }
     public String getBio(){ return bio; }
-    public ArrayList<Post> getPosts(){ return posts; }
 }

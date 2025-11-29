@@ -1,28 +1,20 @@
 package use_case.my_profile;
 
-import entity.PostFactory;
-import entity.UserFactory;
+import entity.Post;
 import interface_adapter.my_profile.MyProfilePresenter;
-import use_case.my_profile.MyProfileInputBoundary;
-import use_case.my_profile.MyProfileInputData;
-import use_case.my_profile.MyProfileOutputBoundary;
-import use_case.my_profile.MyProfileUserDataAccessInterface;
+import entity.User;
+
+import java.util.ArrayList;
 
 public class MyProfileInteractor implements MyProfileInputBoundary {
     private final MyProfileUserDataAccessInterface myProfileUserDataAccess;
     private final MyProfileOutputBoundary myProfilePresenter;
-    private final UserFactory userFactory;
-    private final PostFactory postFactory;
 
     public MyProfileInteractor(
             MyProfileUserDataAccessInterface myProfileUserDataAccessInterface,
-            MyProfileOutputBoundary myProfilePresenter,
-            UserFactory userFactory,
-            PostFactory postFactory) {
+            MyProfileOutputBoundary myProfilePresenter) {
         this.myProfileUserDataAccess = myProfileUserDataAccessInterface;
         this.myProfilePresenter = myProfilePresenter;
-        this.userFactory = userFactory;
-        this.postFactory = postFactory;
     }
 
     @Override
@@ -33,7 +25,6 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
     // Switches between views
     public void switchToMyProfileView() {
         MyProfilePresenter temp = (MyProfilePresenter) myProfilePresenter;
-        System.out.println("bye");
         temp.switchToMyProfileView();
     }
 
@@ -47,5 +38,15 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
 
     public void switchToPostView() {
         myProfilePresenter.switchToPostView();
+    }
+
+    public void switchToLoginSignupView() { myProfilePresenter.switchToLoginSignupView(); }
+
+    public void refreshPosts(String username) {
+        User user = myProfileUserDataAccess.getUserInfo(username);
+        ArrayList<Post> posts = user.getPosts();
+        PostData postData = new PostData();
+        postData.setPostList(posts);
+        myProfilePresenter.refreshPosts(postData.getPosts());
     }
 }

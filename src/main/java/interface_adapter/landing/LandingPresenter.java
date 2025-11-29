@@ -35,6 +35,7 @@ public class LandingPresenter implements LandingOutputBoundary {
         landingState.setPosts(landingOutputData.getPosts());
         landingViewModel.setState(landingState);
         landingViewModel.firePropertyChange();
+        myProfileViewModel.firePropertyChange();
     }
 
     @Override

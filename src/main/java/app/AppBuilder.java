@@ -1,7 +1,9 @@
 package app;
 
-//import data_access.FileUserDataAccessObject;
 import entity.ClubFactory;
+import entity.CommentFactory;
+import entity.PostFactory;
+import entity.UserFactory;
 import interface_adapter.clubs.ClubsController;
 import interface_adapter.clubs.ClubsPresenter;
 import interface_adapter.clubs.ClubsViewModel;
@@ -10,6 +12,8 @@ import interface_adapter.landing.LandingPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.logout.LogoutController;
+import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.make_post.MakePostViewModel;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordPresenter;
@@ -19,6 +23,9 @@ import use_case.clubs.ClubsOutputBoundary;
 import use_case.landing.LandingInputBoundary;
 import use_case.landing.LandingInteractor;
 import use_case.landing.LandingOutputBoundary;
+import use_case.logout.LogoutInputBoundary;
+import use_case.logout.LogoutInteractor;
+import use_case.logout.LogoutOutputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInteractor;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputBoundary;
@@ -35,11 +42,7 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
-//import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
-import entity.CommentFactory;
-import entity.PostFactory;
-import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.make_post.MakePostController;
@@ -208,10 +211,8 @@ public class AppBuilder {
                 myProfileViewModel);
         final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
                 userDataAccessObject,
-                myProfileOutputBoundary,
-                userFactory,
-                postFactory);
-        MyProfileController controller = new MyProfileController(myProfileInteractor);
+                myProfileOutputBoundary);
+        MyProfileController controller = new MyProfileController(myProfileInteractor, userDataAccessObject);
         myProfileView.setMyProfileController(controller);
         landingView.setMyProfileController(controller);
         return this;
@@ -275,6 +276,16 @@ public class AppBuilder {
 
         SearchUserController searchUserController = new SearchUserController(searchUserInteractor);
         searchUserView.setSearchUserController(searchUserController);
+        return this;
+    }
+
+    public AppBuilder addLogoutUseCase() {
+        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+                                                                              myProfileViewModel,
+                                                                              loginViewModel);
+        final LogoutInputBoundary logoutInteractor = new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        myProfileView.setLogoutController(logoutController);
         return this;
     }
 

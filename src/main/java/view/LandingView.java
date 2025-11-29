@@ -54,9 +54,6 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     ArrayList<PostViewData> postsToDisplay;
 
-
-
-
     public LandingView(LandingViewModel landingViewModel, MakePostViewModel makePostViewModel) {
 
         this.landingViewModel = landingViewModel;
@@ -164,7 +161,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
-                            System.out.println("CLICKED 'ME'!");
+                            System.out.println(evt.getActionCommand());
                             myProfileController.switchToMyProfileView();
                         }
                     }
@@ -175,7 +172,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(people)) {
-                            System.out.println("CLICKED 'PEOPLE'!");
+                            System.out.println(evt.getActionCommand());
                             landingController.switchToPeopleView();
                         }
                     }
@@ -186,7 +183,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(makePost)) {
-                            System.out.println("CLICKED 'MAKE POST'!");
+                            System.out.println(evt.getActionCommand());
                             final MakePostState makePostState = makePostViewModel.getState();
                             final LandingState landingState = landingViewModel.getState();
                             makePostController.execute(landingState.getUsername(),

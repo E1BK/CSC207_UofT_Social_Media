@@ -11,28 +11,39 @@ public class MyProfileChangePasswordInteractor implements MyProfileChangePasswor
     private final MyProfileChangePasswordOutputBoundary userPresenter;
     private final UserFactory userFactory;
 
-    public MyProfileChangePasswordInteractor(MyProfileChangePasswordUserDataAccessInterface myProfileChangePasswordDataAccessInterface,
+    public MyProfileChangePasswordInteractor(MyProfileChangePasswordUserDataAccessInterface myProfileChangePasswordDataAccess,
                                     MyProfileChangePasswordOutputBoundary myProfileChangePasswordOutputBoundary,
                                     UserFactory userFactory) {
-        this.userDataAccessObject = myProfileChangePasswordDataAccessInterface;
+        this.userDataAccessObject = myProfileChangePasswordDataAccess;
         this.userPresenter = myProfileChangePasswordOutputBoundary;
         this.userFactory = userFactory;
     }
 
     @Override
-    public void execute(MyProfileChangePasswordInputData myProfileChangePasswordInputData) {
-        if ("".equals(myProfileChangePasswordInputData.getPassword())) {
+    public void execute(MyProfileChangePasswordInputData inputData) {
+        if ("".equals(inputData.getPassword())) {
             userPresenter.prepareFailView("New password cannot be empty");
         }
         else {
-            final User user = userFactory.create(myProfileChangePasswordInputData.getUsername(),
-                    myProfileChangePasswordInputData.getPassword(),
-                    myProfileChangePasswordInputData.getBio(),
-                    myProfileChangePasswordInputData.getEmail(),
-                    myProfileChangePasswordInputData.getName(),
-                    myProfileChangePasswordInputData.getPosts());
+            User user = userDataAccessObject.getUserInfo(inputData.getUsername());
 
-            userDataAccessObject.changePassword(user);
+            if (inputData.getPassOrBio().equals("password")) {
+                final User newUser = userFactory.create(inputData.getUsername(),
+                        inputData.getPassword(),
+                        user.getBio(),
+                        user.getEmail(),
+                        user.getName(),
+                        user.getPosts());
+                userDataAccessObject.changePassword(newUser);
+            } else if (inputData.getPassOrBio().equals("bio")) {
+                final User newUser = userFactory.create(inputData.getUsername(),
+                        user.getPassword(),
+                        inputData.getBio(),
+                        user.getEmail(),
+                        user.getName(),
+                        user.getPosts());
+                userDataAccessObject.changeBio(newUser);
+            }
 
             final MyProfileChangePasswordOutputData myProfileChangePasswordOutputData =
                     new MyProfileChangePasswordOutputData(user.getName());
