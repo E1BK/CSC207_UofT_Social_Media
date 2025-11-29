@@ -143,14 +143,14 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
         JLabel fullNamePrompt = new JLabel("Full Name: ");
         fullNamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
-        JLabel passwordPrompt = new JLabel("UofT Email: ");
-        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel emailPrompt = new JLabel("UofT Email: ");
+        emailPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         JLabel usernamePrompt = new JLabel("Username: ");
-        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        usernamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         JLabel password1Prompt = new JLabel("Enter your password: ");
-        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        password1Prompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         JLabel password2Prompt = new JLabel("Re-enter your password: ");
-        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        password2Prompt.setFont(new Font("Helvetica", Font.BOLD, 20));
 
         signupNameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
         signupNameInputField.setMargin(new Insets(10, 20, 10, 20));
@@ -166,6 +166,14 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
         LabelTextPanel fullNameProcessingPanel = new LabelTextPanel(fullNamePrompt, signupNameInputField);
         inputPanel.add(fullNameProcessingPanel);
+        LabelTextPanel emailProcessingPanel = new LabelTextPanel(emailPrompt, signupEmailInputField);
+        inputPanel.add(emailProcessingPanel);
+        LabelTextPanel usernameProcessingPanel = new LabelTextPanel(usernamePrompt, signupUsernameInputField);
+        inputPanel.add(usernameProcessingPanel);
+        LabelTextPanel password1ProcessingPanel = new LabelTextPanel(password1Prompt, signupPassword1InputField);
+        inputPanel.add(password1ProcessingPanel);
+        LabelTextPanel password2ProcessingPanel = new LabelTextPanel(password2Prompt, signupPassword2InputField;
+        inputPanel.add(password2ProcessingPanel);
 //        LabelTextPanel usernameProcessingPanel = new LabelTextPanel(usernamePrompt, loginUsernameInputField);
 //        inputPanel.add(usernameProcessingPanel);
 //        LabelTextPanel passwordProcessingPanel = new LabelTextPanel(passwordPrompt, loginPasswordInputField);
