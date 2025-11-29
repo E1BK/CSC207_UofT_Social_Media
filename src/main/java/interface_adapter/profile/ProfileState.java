@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class ProfileState {
     private String username = "";
-    private String password = "";
     private String bio = "";
     private String email = "";
     private String name = "";
@@ -13,7 +12,6 @@ public class ProfileState {
 
     public ProfileState(ProfileState copy) {
         username = copy.username;
-        password = copy.password;
         bio = copy.bio;
         email = copy.email;
         name = copy.name;
@@ -27,13 +25,6 @@ public class ProfileState {
     }
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getBio() {
@@ -62,7 +53,6 @@ public class ProfileState {
 
     public void logout() {
         username = "";
-        password = "";
         bio = "";
         email = "";
         name = "";

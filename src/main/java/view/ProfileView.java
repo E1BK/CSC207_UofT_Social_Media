@@ -192,8 +192,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         if (e.getPropertyName().equals("state")) {
             final ProfileState state = (ProfileState) e.getNewValue();
             username.setText(state.getUsername());
-            passwordInputField.setText(state.getPassword());
-            bioInputField.setText(state.getBio());
+            bio.setText(state.getBio());
             email.setText(state.getEmail());
 
             int row1Count = row1.getComponentCount();
