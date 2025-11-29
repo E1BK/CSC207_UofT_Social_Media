@@ -17,6 +17,7 @@ import use_case.my_profile.profile_change_password.MyProfileChangePasswordUserDa
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.view_post.ViewPostDataAccessInterface;
+import use_case.add_comment.AddCommentDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         LandingDataAccessInterface,
         MyProfileChangePasswordUserDataAccessInterface,
         ViewPostDataAccessInterface,
+        AddCommentDataAccessInterface,
         ClubsDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
@@ -555,6 +557,28 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public void addCommentToPost(String username, int postId, Comment comment) {
+        User user = getUserInfo(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        Post targetPost = null;
+        for (Post p : user.getPosts()) {
+            if (p.getPost_id() == postId) {
+                targetPost = p;
+                break;
+            }
+        }
+        if (targetPost == null) {
+            throw new RuntimeException("Post not found: id=" + postId);
+        }
+
+        targetPost.getComments().add(comment);
+        save(user);
     }
 
 }
