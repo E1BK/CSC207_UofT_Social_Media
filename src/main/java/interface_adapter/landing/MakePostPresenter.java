@@ -2,6 +2,7 @@
 package interface_adapter.landing;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.clubs.ClubsViewModel;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.search_user.SearchUserViewModel;
 import use_case.make_post.MakePostOutputBoundary;
@@ -17,16 +18,19 @@ public class MakePostPresenter implements MakePostOutputBoundary {
     private final SearchUserViewModel searchUserViewModel;
     private final ViewManagerModel viewManagerModel;
     private final MyProfileViewModel myProfileViewModel;
+    private final ClubsViewModel clubsViewModel;
 
     public MakePostPresenter(ViewManagerModel viewManagerModel,
                              LandingViewModel landingViewModel,
                              SearchUserViewModel searchUserViewModel,
-                             MyProfileViewModel myProfileViewModel) {
+                             MyProfileViewModel myProfileViewModel,
+                             ClubsViewModel clubsViewModel) {
 
         this.landingViewModel = landingViewModel;
         this.viewManagerModel = viewManagerModel;
         this.searchUserViewModel = searchUserViewModel;
         this.myProfileViewModel = myProfileViewModel;
+        this.clubsViewModel = clubsViewModel;
     }
 
     @Override
@@ -50,6 +54,11 @@ public class MakePostPresenter implements MakePostOutputBoundary {
 
     public void switchToMeView() {
         viewManagerModel.setState(myProfileViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
+    }
+
+    public void switchToClubsView() {
+        viewManagerModel.setState(clubsViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
 }
