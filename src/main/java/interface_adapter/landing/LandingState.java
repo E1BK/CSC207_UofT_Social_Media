@@ -1,7 +1,6 @@
 // hasan
 package interface_adapter.landing;
 
-import entity.Post;
 import use_case.make_post.PostViewData;
 
 import java.util.ArrayList;
@@ -15,7 +14,8 @@ public class LandingState {
     private String password = "";
     private ArrayList<PostViewData> posts = new ArrayList<PostViewData>();
     private String passwordError = "";
-    private String postError = "";
+    private boolean isInitialized = false;
+
 
     // the default no-arg constructor:
     public LandingState() {
@@ -27,7 +27,7 @@ public class LandingState {
         password = copy.password;
         posts = copy.posts;
         passwordError = copy.passwordError;
-        postError = copy.postError;
+        isInitialized = copy.isInitialized;
     }
 
     public String getUsername() { return username; }
@@ -55,14 +55,11 @@ public class LandingState {
     public void setPosts(ArrayList<PostViewData> posts) {this.posts = posts;}
 
     public void addPost(PostViewData post) {
-        posts.add(post);
+        posts.addFirst(post);
     }
 
-    public String getpostError() { return postError; }
-    public void setpostError(String postError) { this.postError = postError; }
+    public boolean isInitialized() {return isInitialized;}
 
-//    public void addNewPost(Post p) {
-//        posts.add(p);
-//    }
+    public void setInitialized(boolean isInitialized) { this.isInitialized = isInitialized; }
 
 }

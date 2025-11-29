@@ -26,6 +26,7 @@ public class Main {
                 .addPostView()
                 .addViewPostUseCase()
                 .addClubsUseCase()
+                .addLandingUseCase()
                 .build();
 
         application.pack();

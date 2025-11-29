@@ -1,4 +1,11 @@
 package interface_adapter.make_post;
 
-public class MakePostViewModel {
+import interface_adapter.ViewModel;
+
+public class MakePostViewModel extends ViewModel<MakePostState> {
+
+    public MakePostViewModel() {
+        super("make_post");
+        setState(new MakePostState());
+    }
 }

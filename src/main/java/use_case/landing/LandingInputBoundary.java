@@ -1,4 +1,5 @@
 package use_case.landing;
 
-public class LandingInputBoundary {
+public interface LandingInputBoundary {
+    void execute();
 }

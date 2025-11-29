@@ -1,8 +1,10 @@
 // hasan
-package interface_adapter.landing;
+package interface_adapter.make_post;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.clubs.ClubsViewModel;
+import interface_adapter.landing.LandingState;
+import interface_adapter.landing.LandingViewModel;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.search_user.SearchUserViewModel;
 import use_case.make_post.MakePostOutputBoundary;
@@ -15,6 +17,7 @@ import use_case.make_post.MakePostOutputData;
 public class MakePostPresenter implements MakePostOutputBoundary {
 
     private final LandingViewModel landingViewModel;
+    private final MakePostViewModel makePostViewModel;
     private final SearchUserViewModel searchUserViewModel;
     private final ViewManagerModel viewManagerModel;
     private final MyProfileViewModel myProfileViewModel;
@@ -22,12 +25,14 @@ public class MakePostPresenter implements MakePostOutputBoundary {
 
     public MakePostPresenter(ViewManagerModel viewManagerModel,
                              LandingViewModel landingViewModel,
+                             MakePostViewModel makePostViewModel,
                              SearchUserViewModel searchUserViewModel,
                              MyProfileViewModel myProfileViewModel,
                              ClubsViewModel clubsViewModel) {
 
         this.landingViewModel = landingViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.makePostViewModel = makePostViewModel;
         this.searchUserViewModel = searchUserViewModel;
         this.myProfileViewModel = myProfileViewModel;
         this.clubsViewModel = clubsViewModel;
@@ -35,25 +40,26 @@ public class MakePostPresenter implements MakePostOutputBoundary {
 
     @Override
     public void prepareSuccessView(MakePostOutputData makePostOutputData) {
-        LandingState state = landingViewModel.getState();
-
-        state.setNewpost_title("");
-        state.setNewpost_body("");
-
-        // TODO: show the new post on landing
-
-        landingViewModel.setState(state);
+        LandingState landingState = landingViewModel.getState();
+        landingState.addPost(makePostOutputData.getNewPost());
+        landingViewModel.setState(landingState);
         landingViewModel.firePropertyChange();
+
+        MakePostState makePostState = makePostViewModel.getState();
+        makePostState.setNewpost_title("");
+        makePostState.setNewpost_body("");
+        makePostViewModel.setState(makePostState);
+        makePostViewModel.firePropertyChange();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        LandingState state = landingViewModel.getState();
+        MakePostState makePostState = makePostViewModel.getState();
 
-        state.setpostError(errorMessage);
-        landingViewModel.setState(state);
+        makePostState.setpostError(errorMessage);
+        makePostViewModel.setState(makePostState);
 
-        landingViewModel.firePropertyChange();
+        makePostViewModel.firePropertyChange();
 
     }
 

@@ -1,7 +1,6 @@
 // hasan
-package interface_adapter.landing;
+package interface_adapter.make_post;
 
-import entity.Post;
 import use_case.make_post.MakePostInputBoundary;
 import use_case.make_post.MakePostInputData;
 import use_case.make_post.MakePostInteractor;

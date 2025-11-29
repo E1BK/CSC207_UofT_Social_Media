@@ -4,7 +4,7 @@ import entity.Post;
 import entity.PostFactory;
 import entity.User;
 import entity.UserFactory;
-import interface_adapter.landing.MakePostPresenter;
+import interface_adapter.make_post.MakePostPresenter;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -74,11 +74,13 @@ public class MakePostInteractor implements MakePostInputBoundary{
             return;
         }
 
-        MakePostOutputData output = new MakePostOutputData(newPost.getPost_id(),
-                                                            newPost.getUsername(),
-                                                            newPost.getTitle(),
-                                                            newPost.getBody(),
-                                                            newPost.getPost_date());
+        PostViewData newPostViewData = new PostViewData(newPost.getUsername(),
+                                                        newPost.getPost_id(),
+                                                        newPost.getTitle(),
+                                                        newPost.getBody(),
+                                                        newPost.getPost_date(),
+                                                        newPost.getComments());
+        MakePostOutputData output = new MakePostOutputData(newPostViewData);
         makePostPresenter.prepareSuccessView(output);
     }
 
