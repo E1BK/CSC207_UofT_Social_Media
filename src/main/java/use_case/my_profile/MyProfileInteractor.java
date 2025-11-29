@@ -40,6 +40,8 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
         myProfilePresenter.switchToPostView();
     }
 
+    public void switchToLoginSignupView() { myProfilePresenter.switchToLoginSignupView(); }
+
     public void refreshPosts(String username) {
         User user = myProfileUserDataAccess.getUserInfo(username);
         ArrayList<Post> posts = user.getPosts();
