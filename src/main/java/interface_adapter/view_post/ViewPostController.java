@@ -1,28 +1,29 @@
 // Ioane
 package interface_adapter.view_post;
 
+import use_case.add_comment.AddCommentInputBoundary;
+import use_case.add_comment.AddCommentInputData;
 import use_case.view_post.ViewPostInputBoundary;
 import use_case.view_post.ViewPostInputData;
 
-/**
- * Controller for ViewPost use case.
- * Called by views (LandingView/PostPanel/etc.).
- */
 public class ViewPostController {
 
-    private final ViewPostInputBoundary interactor;
+    private final ViewPostInputBoundary viewPostInteractor;
+    private final AddCommentInputBoundary addCommentInteractor;
 
-    public ViewPostController(ViewPostInputBoundary interactor) {
-        this.interactor = interactor;
+    public ViewPostController(ViewPostInputBoundary viewPostInteractor,
+                              AddCommentInputBoundary addCommentInteractor) {
+        this.viewPostInteractor = viewPostInteractor;
+        this.addCommentInteractor = addCommentInteractor;
     }
 
     public void viewPost(String username, int postId) {
-        ViewPostInputData inputData = new ViewPostInputData(username, postId);
-        interactor.execute(inputData);
+        ViewPostInputData input = new ViewPostInputData(username, postId);
+        viewPostInteractor.execute(input);
     }
 
-    // placeholder for future like-comment use case
-    public void likeComment(String username, int postId, int commentId) {
-        // to be implemented later if needed
+    public void addComment(String username, int postId, String commentBody) {
+        AddCommentInputData input = new AddCommentInputData(username, postId, commentBody);
+        addCommentInteractor.execute(input);
     }
 }

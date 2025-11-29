@@ -1,11 +1,10 @@
 // Ioane
 package interface_adapter.view_post;
 
-/**
- * State object held inside ViewPostViewModel.
- * Presenter writes into this, PostView reads from it.
- */
 public class ViewPostState {
+
+    private String username = "";
+    private int postId = -1;
 
     private String postTitle = "";
     private String postBody = "";
@@ -17,6 +16,8 @@ public class ViewPostState {
     public ViewPostState() {}
 
     public ViewPostState(ViewPostState copy) {
+        this.username = copy.username;
+        this.postId = copy.postId;
         this.postTitle = copy.postTitle;
         this.postBody = copy.postBody;
         this.commentIds = copy.commentIds;
@@ -25,51 +26,27 @@ public class ViewPostState {
         this.errorMessage = copy.errorMessage;
     }
 
-    public String getPostTitle() {
-        return postTitle;
-    }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public void setPostTitle(String postTitle) {
-        this.postTitle = postTitle;
-    }
+    public int getPostId() { return postId; }
+    public void setPostId(int postId) { this.postId = postId; }
 
-    public String getPostBody() {
-        return postBody;
-    }
+    public String getPostTitle() { return postTitle; }
+    public void setPostTitle(String postTitle) { this.postTitle = postTitle; }
 
-    public void setPostBody(String postBody) {
-        this.postBody = postBody;
-    }
+    public String getPostBody() { return postBody; }
+    public void setPostBody(String postBody) { this.postBody = postBody; }
 
-    public int[] getCommentIds() {
-        return commentIds;
-    }
+    public int[] getCommentIds() { return commentIds; }
+    public void setCommentIds(int[] commentIds) { this.commentIds = commentIds; }
 
-    public void setCommentIds(int[] commentIds) {
-        this.commentIds = commentIds;
-    }
+    public String[] getCommentBodies() { return commentBodies; }
+    public void setCommentBodies(String[] commentBodies) { this.commentBodies = commentBodies; }
 
-    public String[] getCommentBodies() {
-        return commentBodies;
-    }
+    public int[] getCommentLikes() { return commentLikes; }
+    public void setCommentLikes(int[] commentLikes) { this.commentLikes = commentLikes; }
 
-    public void setCommentBodies(String[] commentBodies) {
-        this.commentBodies = commentBodies;
-    }
-
-    public int[] getCommentLikes() {
-        return commentLikes;
-    }
-
-    public void setCommentLikes(int[] commentLikes) {
-        this.commentLikes = commentLikes;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
+    public String getErrorMessage() { return errorMessage; }
+    public void setErrorMessage(String errorMessage) { this.errorMessage = errorMessage; }
 }

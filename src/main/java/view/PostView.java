@@ -14,10 +14,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/**
- * View that shows a single post: title, body, and up to 3 random comments
- * with like buttons.
- */
 public class PostView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "post";
@@ -32,6 +28,12 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
     private final JButton[] likeButtons = new JButton[3];
     private final JLabel[] likeCountLabels = new JLabel[3];
     private final int[] commentIds = new int[3];
+
+    private JTextArea newCommentArea;
+    private JButton postCommentButton;
+
+    private String currentUsername = "";
+    private int currentPostId = -1;
 
     public PostView(ViewPostViewModel viewModel) {
         this.viewModel = viewModel;
@@ -51,7 +53,6 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Top: post title on a gradient panel
         GradientPanel topPanel = new GradientPanel();
         topPanel.setLayout(new BorderLayout());
 
@@ -60,7 +61,6 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         topPanel.add(titleLabel, BorderLayout.CENTER);
 
-        // Center: body + 3 comment rows
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setOpaque(false);
@@ -94,11 +94,31 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
             centerPanel.add(commentRow);
         }
 
+        centerPanel.add(Box.createVerticalStrut(20));
+
+        JPanel addCommentPanel = new JPanel(new BorderLayout());
+        addCommentPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
+
+        newCommentArea = new JTextArea(3, 40);
+        newCommentArea.setLineWrap(true);
+        newCommentArea.setWrapStyleWord(true);
+
+        postCommentButton = new JButton("Post Comment");
+        postCommentButton.addActionListener(this);
+
+        addCommentPanel.add(new JScrollPane(newCommentArea), BorderLayout.CENTER);
+        addCommentPanel.add(postCommentButton, BorderLayout.EAST);
+
+        centerPanel.add(addCommentPanel);
+
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
     }
 
     private void updateFromState(ViewPostState state) {
+        currentUsername = state.getUsername();
+        currentPostId = state.getPostId();
+
         titleLabel.setText(state.getPostTitle());
         bodyArea.setText(state.getPostBody());
 
@@ -121,8 +141,16 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // For now, just bump like count locally.
-        // Later you can replace this with a real LikeComment use case.
+        if (e.getSource() == postCommentButton) {
+            String text = newCommentArea.getText().trim();
+            if (!text.isEmpty() && controller != null && currentPostId != -1) {
+                controller.addComment(currentUsername, currentPostId, text);
+                newCommentArea.setText("");
+            }
+            return;
+        }
+
+        // like buttons: for now just local UI increment
         for (int i = 0; i < likeButtons.length; i++) {
             if (e.getSource() == likeButtons[i] && commentIds[i] != -1) {
                 int currentLikes;
@@ -133,11 +161,6 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
                 }
                 currentLikes++;
                 likeCountLabels[i].setText(String.valueOf(currentLikes));
-
-                // Future:
-                // if (controller != null) {
-                //     controller.likeComment(username, postId, commentIds[i]);
-                // }
             }
         }
     }

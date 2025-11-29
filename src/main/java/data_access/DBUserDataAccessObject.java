@@ -16,6 +16,7 @@ import use_case.my_profile.profile_change_password.MyProfileChangePasswordUserDa
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.view_post.ViewPostDataAccessInterface;
+import use_case.add_comment.AddCommentDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +30,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         SignupUserDataAccessInterface,
         MyProfileChangePasswordUserDataAccessInterface,
         ViewPostDataAccessInterface,
-        ClubsDataAccessInterface {
+        ClubsDataAccessInterface,
+        AddCommentDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
@@ -381,19 +383,37 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     @Override
     public Post getPost(String username, int postId) {
-        // Reuse existing helper that pulls user + posts from Grade API
         User user = getUserInfo(username);
         if (user == null) {
             throw new RuntimeException("User not found: " + username);
         }
-
         for (Post post : user.getPosts()) {
             if (post.getPost_id() == postId) {
                 return post;
             }
         }
-        // Not throwing here so the interactor can decide how to report "not found"
         return null;
+    }
+
+    @Override
+    public void addCommentToPost(String username, int postId, Comment comment) {
+        User user = getUserInfo(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        boolean found = false;
+        for (Post post : user.getPosts()) {
+            if (post.getPost_id() == postId) {
+                post.getComments().add(comment);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            throw new RuntimeException("Post not found.");
+        }
+        // Persist entire user (including updated posts/comments)
+        save(user);
     }
 
     @Override

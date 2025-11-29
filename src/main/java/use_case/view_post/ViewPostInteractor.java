@@ -8,12 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Use case interactor for viewing a single post:
- * - fetches the post from the DAO
- * - chooses up to 3 random comments
- * - passes them to the presenter
- */
 public class ViewPostInteractor implements ViewPostInputBoundary {
 
     private final ViewPostDataAccessInterface dataAccess;
@@ -50,6 +44,8 @@ public class ViewPostInteractor implements ViewPostInputBoundary {
             }
 
             ViewPostOutputData output = new ViewPostOutputData(
+                    inputData.getUsername(),
+                    inputData.getPostId(),
                     post.getTitle(),
                     post.getBody(),
                     ids,
