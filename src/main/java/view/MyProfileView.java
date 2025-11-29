@@ -341,50 +341,11 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     }
 
     private void addPosts(ArrayList<Map> posts) {
-//        for (int i = 0; i < posts.size(); i++) {
-//            JLabel postTitle = new JLabel((String) posts.get(i).get(myProfileViewModel.TITLE));
-//            String date = (String) posts.get(i).get(myProfileViewModel.DATE);
-//            date = date.substring(0, date.indexOf("T"));
-//
-//            JLabel postDate = new JLabel(date);
-//            JPanel postBody = new JPanel();
-//            JLabel postInfo = new JLabel((String) posts.get(i).get(myProfileViewModel.BODY));
-//
-//            postBody.setLayout(new BoxLayout(postBody, BoxLayout.X_AXIS));
-//            postBody.add(postInfo,  BorderLayout.LINE_START);
-//            postBody.add(Box.createHorizontalGlue());
-//
-//            JPanel postHeader = new JPanel();
-//            postHeader.setLayout(new BoxLayout(postHeader, BoxLayout.X_AXIS));
-//            postHeader.add(postTitle, BorderLayout.LINE_START);
-//            postHeader.add(Box.createHorizontalGlue());
-//            postHeader.add(postDate, BorderLayout.LINE_END);
-//
-//            JButton seePostButton = new JButton(STR."View \{i + 1}");
-//            seePostButton.setFont(new Font("Helvetica", Font.BOLD, 15));
-//
-//            JPanel postInfoPanel = new JPanel();
-//            postInfoPanel.setLayout(new BoxLayout(postInfoPanel, BoxLayout.Y_AXIS));
-//            postInfoPanel.add(postHeader);
-//            postInfoPanel.add(postBody);
-//            postInfoPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
-//
-//            JPanel postPanel = new JPanel();
-//            postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.X_AXIS));
-//            JPanel postSpacer = new JPanel();
-//            postSpacer.setMinimumSize(new Dimension(5, 5));
-//            postPanel.add(postInfoPanel);
-//            postPanel.add(postSpacer);
-//            postPanel.add(seePostButton);
-//
-//            postContainer.add(postPanel);
-//        }
-
         int row1Size = 3;
         int row2Size = 3;
 
         if (posts.size() < 3) { row1Size = posts.size(); }
-        else if (posts.size() < 6) { row2Size = posts.size() - 3; }
+        if (posts.size() < 6) { row2Size = posts.size() - 3;}
 
         for (int i = 0; i < row1Size; i++) {
             PostPanel post = new  PostPanel(posts.get(i));
