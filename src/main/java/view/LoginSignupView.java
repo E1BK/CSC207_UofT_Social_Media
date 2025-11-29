@@ -89,6 +89,7 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
         inputPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
+
         JLabel usernamePrompt = new JLabel("Username: ");
         usernamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         JLabel passwordPrompt = new JLabel("Password: ");
@@ -133,26 +134,70 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     }
 
     private void setupSignupPanel() {
-        signupPanel.setLayout(new GridLayout(0, 2, 10, 10));
+        signupPanel.setLayout(new BorderLayout());
 
-        signupPanel.add(new JLabel("Full Name:"));
-        signupPanel.add(signupNameInputField);
+        // inputPanel begins
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+        inputPanel.setBorder(new EmptyBorder(20, 0, 0, 80));
 
-        signupPanel.add(new JLabel("UofT Email:"));
-        signupPanel.add(signupEmailInputField);
+        JLabel fullNamePrompt = new JLabel("                     Full Name: ");
+        fullNamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel emailPrompt = new JLabel("                    UofT Email: ");
+        emailPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel usernamePrompt = new JLabel("                     Username: ");
+        usernamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel password1Prompt = new JLabel("     Enter your password: ");
+        password1Prompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel password2Prompt = new JLabel("Re-enter your password: ");
+        password2Prompt.setFont(new Font("Helvetica", Font.BOLD, 20));
 
-        signupPanel.add(new JLabel("Username:"));
-        signupPanel.add(signupUsernameInputField);
+        signupNameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupNameInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupEmailInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupEmailInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupUsernameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupUsernameInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupPassword1InputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupPassword1InputField.setMargin(new Insets(10, 20, 10, 20));
+        signupPassword2InputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupPassword2InputField.setMargin(new Insets(10, 20, 10, 20));
 
-        signupPanel.add(new JLabel("Password1:"));
-        signupPanel.add(signupPassword1InputField);
 
-        signupPanel.add(new JLabel("Password2:"));
-        signupPanel.add(signupPassword2InputField);
+        LabelTextPanel fullNameProcessingPanel = new LabelTextPanel(fullNamePrompt, signupNameInputField);
+        inputPanel.add(fullNameProcessingPanel);
+        LabelTextPanel emailProcessingPanel = new LabelTextPanel(emailPrompt, signupEmailInputField);
+        inputPanel.add(emailProcessingPanel);
+        LabelTextPanel usernameProcessingPanel = new LabelTextPanel(usernamePrompt, signupUsernameInputField);
+        inputPanel.add(usernameProcessingPanel);
+        LabelTextPanel password1ProcessingPanel = new LabelTextPanel(password1Prompt, signupPassword1InputField);
+        inputPanel.add(password1ProcessingPanel);
+        LabelTextPanel password2ProcessingPanel = new LabelTextPanel(password2Prompt, signupPassword2InputField);
+        inputPanel.add(password2ProcessingPanel);
+        // inputPanel ends
 
+        // sloganPanel begins
+        JPanel sloganPanel = new JPanel();
+        JLabel slogan = new JLabel("Where UofT comes to chat");
+        slogan.setFont(new Font("Helvetica", Font.BOLD, 80));
+        sloganPanel.add(slogan);
+        sloganPanel.setBorder(new EmptyBorder(40, 0, 0, 0));
+        // sloganPanel ends
+
+        // signUpButtonPanel begins
+        JPanel signUpButtonPanel = new JPanel();
         signUp = new JButton("Sign Up");
-        signupPanel.add(new JLabel());
-        signupPanel.add(signUp);
+        signUp.setFont(new Font("Helvetica", Font.BOLD, 20));
+        signUp.setMargin(new Insets(10, 20, 10, 20));
+        signUp.setMaximumSize(new Dimension(80, 50));
+        signUp.setMinimumSize(new Dimension(80, 50));
+        signUp.setPreferredSize(new Dimension(140, 50));
+        signUpButtonPanel.add(signUp);
+        // signUpButtonPanel ends
+
+        signupPanel.add(inputPanel, BorderLayout.NORTH);
+        signupPanel.add(sloganPanel, BorderLayout.CENTER);
+        signupPanel.add(signUpButtonPanel, BorderLayout.SOUTH);
 
         addSignupListeners();
         signUp.addActionListener(this);
