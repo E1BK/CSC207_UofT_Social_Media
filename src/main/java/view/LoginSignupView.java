@@ -133,26 +133,28 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     }
 
     private void setupSignupPanel() {
-        signupPanel.setLayout(new GridLayout(0, 2, 10, 10));
+        loginPanel.setLayout(new BorderLayout());
 
-        signupPanel.add(new JLabel("Full Name:"));
-        signupPanel.add(signupNameInputField);
-
-        signupPanel.add(new JLabel("UofT Email:"));
-        signupPanel.add(signupEmailInputField);
-
-        signupPanel.add(new JLabel("Username:"));
-        signupPanel.add(signupUsernameInputField);
-
-        signupPanel.add(new JLabel("Password1:"));
-        signupPanel.add(signupPassword1InputField);
-
-        signupPanel.add(new JLabel("Password2:"));
-        signupPanel.add(signupPassword2InputField);
-
-        signUp = new JButton("Sign Up");
-        signupPanel.add(new JLabel());
-        signupPanel.add(signUp);
+//        signupPanel.setLayout(new GridLayout(0, 2, 10, 10));
+//
+//        signupPanel.add(new JLabel("Full Name:"));
+//        signupPanel.add(signupNameInputField);
+//
+//        signupPanel.add(new JLabel("UofT Email:"));
+//        signupPanel.add(signupEmailInputField);
+//
+//        signupPanel.add(new JLabel("Username:"));
+//        signupPanel.add(signupUsernameInputField);
+//
+//        signupPanel.add(new JLabel("Password1:"));
+//        signupPanel.add(signupPassword1InputField);
+//
+//        signupPanel.add(new JLabel("Password2:"));
+//        signupPanel.add(signupPassword2InputField);
+//
+//        signUp = new JButton("Sign Up");
+//        signupPanel.add(new JLabel());
+//        signupPanel.add(signUp);
 
         addSignupListeners();
         signUp.addActionListener(this);
