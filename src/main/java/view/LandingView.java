@@ -10,6 +10,7 @@ import interface_adapter.landing.LandingState;
 import interface_adapter.landing.MakePostController;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.my_profile.MyProfileController;
+import interface_adapter.view_post.ViewPostController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -30,6 +31,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private LandingViewModel landingViewModel;
     private MakePostController makePostController = null;
     private MyProfileController myProfileController = null;
+    private ViewPostController viewPostController = null;
 
     //    private final JTextField postBody;
     private final JTextField postTitle;
@@ -129,6 +131,11 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
         PostPanel post2 = new PostPanel(postsToDisplay.get(1));
         PostPanel post3 = new PostPanel(postsToDisplay.get(2));
+
+        post1.setViewPostController(viewPostController);
+        post2.setViewPostController(viewPostController);
+        post3.setViewPostController(viewPostController);
+
         JPanel displayPanel = new JPanel();
         displayPanel.add(post1.panel);
         displayPanel.add(post2.panel);
@@ -280,5 +287,11 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         this.makePostController = controller;
     }
 
-    public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
+    public void setMyProfileController(MyProfileController controller) {
+        this.myProfileController = controller;
+    }
+
+    public void setViewPostController(ViewPostController controller) {
+        this.viewPostController = controller;
+    }
 }

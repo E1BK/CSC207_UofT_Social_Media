@@ -235,6 +235,7 @@ public class AppBuilder {
 
         ViewPostController viewPostController = new ViewPostController(viewPostInteractor);
         postView.setViewPostController(viewPostController);
+        landingView.setViewPostController(viewPostController);
 
         return this;
     }
