@@ -414,7 +414,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         try {
             // get existing repo
             Request getRequest = new Request.Builder()
-                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + REPO_USERNAME)
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + CLUB_REPO_USERNAME)
                     .get()
                     .build();
 
@@ -451,7 +451,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         try {
             // get existing repo
             Request getRequest = new Request.Builder()
-                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + REPO_USERNAME)
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + CLUB_REPO_USERNAME)
                     .get()
                     .build();
 
