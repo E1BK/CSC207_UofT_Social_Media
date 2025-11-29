@@ -8,7 +8,7 @@ import org.json.JSONArray;
 
 import use_case.clubs.ClubsDataAccessInterface;
 import use_case.login_signup.login.LoginUserDataAccessInterface;
-import use_case.login_signup.logout.LogoutUserDataAccessInterface;
+import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.login_signup.signup.SignupUserDataAccessInterface;
 import use_case.make_post.MakePostUserDataAccessInterface;
 import use_case.my_profile.MyProfileUserDataAccessInterface;

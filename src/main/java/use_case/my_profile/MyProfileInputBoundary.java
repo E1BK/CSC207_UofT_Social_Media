@@ -7,4 +7,5 @@ public interface MyProfileInputBoundary {
     void switchToSearchView();
     void switchToPostView();
     void switchToMyProfileView();
+    void refreshPosts(String username);
 }

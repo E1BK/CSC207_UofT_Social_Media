@@ -40,6 +40,7 @@ public class MakePostPresenter implements MakePostOutputBoundary {
         state.setNewpost_title(makePostOutputData.getTitle());
         state.setNewpost_body(makePostOutputData.getBody());
         landingViewModel.firePropertyChange();
+        myProfileViewModel.firePropertyChange();
     }
 
     @Override

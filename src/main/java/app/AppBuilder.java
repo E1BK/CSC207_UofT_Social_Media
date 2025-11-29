@@ -10,11 +10,16 @@ import interface_adapter.clubs.ClubsViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.logout.LogoutController;
+import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordPresenter;
 import use_case.clubs.ClubsInputBoundary;
 import use_case.clubs.ClubsInteractor;
 import use_case.clubs.ClubsOutputBoundary;
+import use_case.logout.LogoutInputBoundary;
+import use_case.logout.LogoutInteractor;
+import use_case.logout.LogoutOutputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInteractor;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputBoundary;
@@ -252,6 +257,16 @@ public class AppBuilder {
 
         SearchUserController searchUserController = new SearchUserController(searchUserInteractor);
         searchUserView.setSearchUserController(searchUserController);
+        return this;
+    }
+
+    public AppBuilder addLogoutUseCase() {
+        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+                                                                              myProfileViewModel,
+                                                                              loginViewModel);
+        final LogoutInputBoundary logoutInteractor = new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        myProfileView.setLogoutController(logoutController);
         return this;
     }
 

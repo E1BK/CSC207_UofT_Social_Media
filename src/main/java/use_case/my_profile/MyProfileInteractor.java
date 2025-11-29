@@ -1,6 +1,10 @@
 package use_case.my_profile;
 
+import entity.Post;
 import interface_adapter.my_profile.MyProfilePresenter;
+import entity.User;
+
+import java.util.ArrayList;
 
 public class MyProfileInteractor implements MyProfileInputBoundary {
     private final MyProfileUserDataAccessInterface myProfileUserDataAccess;
@@ -34,5 +38,13 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
 
     public void switchToPostView() {
         myProfilePresenter.switchToPostView();
+    }
+
+    public void refreshPosts(String username) {
+        User user = myProfileUserDataAccess.getUserInfo(username);
+        ArrayList<Post> posts = user.getPosts();
+        PostData postData = new PostData();
+        postData.setPostList(posts);
+        myProfilePresenter.refreshPosts(postData.getPosts());
     }
 }

@@ -1,4 +1,4 @@
-package use_case.login_signup.logout;
+package use_case.logout;
 
 /**
  * The Logout Interactor.

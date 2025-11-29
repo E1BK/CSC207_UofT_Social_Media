@@ -40,11 +40,6 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final JButton people;
     private final JButton home;
 
-
-
-
-
-
     public LandingView(LandingViewModel landingViewModel) {
 
         this.landingViewModel = landingViewModel;

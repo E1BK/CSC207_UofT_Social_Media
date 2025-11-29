@@ -59,4 +59,13 @@ public class MyProfileState {
     public ArrayList<Map> getPosts() {
         return posts;
     }
+
+    public void logout() {
+        username = "";
+        password = "";
+        bio = "";
+        email = "";
+        name = "";
+        posts = new ArrayList<>();
+    }
 }
