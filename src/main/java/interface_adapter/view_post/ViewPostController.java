@@ -1,6 +1,8 @@
 // Ioane
 package interface_adapter.view_post;
 
+import interface_adapter.ViewManagerModel;
+import interface_adapter.landing.LandingViewModel;
 import use_case.add_comment.AddCommentInputBoundary;
 import use_case.add_comment.AddCommentInputData;
 import use_case.view_post.ViewPostInputBoundary;
@@ -10,11 +12,17 @@ public class ViewPostController {
 
     private final ViewPostInputBoundary viewPostInteractor;
     private final AddCommentInputBoundary addCommentInteractor;
+    private final ViewManagerModel viewManagerModel;
+    private final LandingViewModel landingViewModel;
 
     public ViewPostController(ViewPostInputBoundary viewPostInteractor,
-                              AddCommentInputBoundary addCommentInteractor) {
+                              AddCommentInputBoundary addCommentInteractor,
+                              ViewManagerModel viewManagerModel,
+                              LandingViewModel landingViewModel) {
         this.viewPostInteractor = viewPostInteractor;
         this.addCommentInteractor = addCommentInteractor;
+        this.viewManagerModel = viewManagerModel;
+        this.landingViewModel = landingViewModel;
     }
 
     public void viewPost(String username, int postId) {
@@ -25,5 +33,10 @@ public class ViewPostController {
     public void addComment(String username, int postId, String commentBody) {
         AddCommentInputData input = new AddCommentInputData(username, postId, commentBody);
         addCommentInteractor.execute(input);
+    }
+
+    public void goHome() {
+        viewManagerModel.setState(landingViewModel.getViewName()); // "landing"
+        viewManagerModel.firePropertyChange();
     }
 }

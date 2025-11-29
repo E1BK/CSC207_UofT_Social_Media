@@ -235,7 +235,12 @@ public class AppBuilder {
                 new AddCommentInteractor(userDataAccessObject, commentFactory, viewPostOutputBoundary);
 
         ViewPostController controller =
-                new ViewPostController(viewPostInteractor, addCommentInteractor);
+                new ViewPostController(
+                        viewPostInteractor,
+                        addCommentInteractor,
+                        viewManagerModel,
+                        landingViewModel
+                );
 
         postView.setViewPostController(controller);
         landingView.setViewPostController(controller);   // assuming you already have this setter

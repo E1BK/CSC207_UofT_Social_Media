@@ -31,6 +31,7 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
     private JTextArea newCommentArea;
     private JButton postCommentButton;
+    private JButton homeButton;
 
     private String currentUsername = "";
     private int currentPostId = -1;
@@ -55,6 +56,10 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
         GradientPanel topPanel = new GradientPanel();
         topPanel.setLayout(new BorderLayout());
+
+        homeButton = new JButton("Home");
+        homeButton.addActionListener(this);
+        topPanel.add(homeButton, BorderLayout.WEST);
 
         titleLabel = new JLabel("Post Title");
         titleLabel.setFont(new Font("Helvetica", Font.BOLD, 24));
@@ -141,6 +146,14 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == homeButton) {
+            if (controller != null) {
+                controller.goHome();
+            }
+            return;
+        }
+
         if (e.getSource() == postCommentButton) {
             String text = newCommentArea.getText().trim();
             if (!text.isEmpty() && controller != null && currentPostId != -1) {
