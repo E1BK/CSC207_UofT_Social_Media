@@ -89,6 +89,7 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
         inputPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
+
         JLabel usernamePrompt = new JLabel("Username: ");
         usernamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
         JLabel passwordPrompt = new JLabel("Password: ");
@@ -134,6 +135,34 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
     private void setupSignupPanel() {
         loginPanel.setLayout(new BorderLayout());
+
+        // inputPanel begins
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+        inputPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
+
+        JLabel fullNamePrompt = new JLabel("Full Name: ");
+        fullNamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel passwordPrompt = new JLabel("UofT Email: ");
+        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel usernamePrompt = new JLabel("Username: ");
+        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel password1Prompt = new JLabel("Enter your password: ");
+        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel password2Prompt = new JLabel("Re-enter your password: ");
+        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        // inputPanel ends
+
+        // sloganPanel begins
+        JPanel sloganPanel = new JPanel();
+        JLabel slogan = new JLabel("Where UofT comes to chat");
+        slogan.setFont(new Font("Helvetica", Font.BOLD, 80));
+        sloganPanel.add(slogan);
+        sloganPanel.setBorder(new EmptyBorder(130, 0, 0, 0));
+        // sloganPanel ends
+
+        // signUpButtonPanel begins
+        // signUpButtonPanel ends
 
 //        signupPanel.setLayout(new GridLayout(0, 2, 10, 10));
 //
