@@ -309,12 +309,27 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     public void refreshPosts(LandingState landingState) {
         displayPanel.removeAll();
         postsToDisplay = landingState.getPosts();
-        post1 = new PostPanel(postsToDisplay.getFirst());
-        post2 = new PostPanel(postsToDisplay.get(1));
-        post3 = new PostPanel(postsToDisplay.get(2));
-        displayPanel.add(post1.panel);
-        displayPanel.add(post2.panel);
-        displayPanel.add(post3.panel);
+
+        if (postsToDisplay == null || postsToDisplay.isEmpty()) {
+            JLabel noPosts = new JLabel("No posts yet. Be the first to post!");
+            noPosts.setFont(new Font("Helvetica", Font.ITALIC, 14));
+            displayPanel.add(noPosts);
+        } else {
+            int n = Math.min(3, postsToDisplay.size());
+
+            for (int i = 0; i < n; i++) {
+                PostViewData pvd = postsToDisplay.get(i);
+                PostPanel card = new PostPanel(pvd);
+
+                // 🔗 hook up the controller so the View button works
+                if (viewPostController != null) {
+                    card.setViewPostController(viewPostController);
+                }
+
+                displayPanel.add(card.panel);
+            }
+        }
+
         displayPanel.revalidate();
         displayPanel.repaint();
     }
