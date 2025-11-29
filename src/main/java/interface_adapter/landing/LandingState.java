@@ -1,7 +1,7 @@
 // hasan
 package interface_adapter.landing;
 
-import entity.Post;
+import use_case.make_post.PostViewData;
 
 import java.util.ArrayList;
 
@@ -12,12 +12,10 @@ public class LandingState {
 
     private String username = "";
     private String password = "";
-    private String newpost_username = "";
-    private String newpost_title = "";
-    private String newpost_body = "";
-    private ArrayList<Post> posts = new ArrayList<Post>();
+    private ArrayList<PostViewData> posts = new ArrayList<PostViewData>();
     private String passwordError = "";
-    private String postError = "";
+    private boolean isInitialized = false;
+
 
     // the default no-arg constructor:
     public LandingState() {
@@ -28,11 +26,8 @@ public class LandingState {
         username = copy.username;
         password = copy.password;
         posts = copy.posts;
-        newpost_username = copy.newpost_username;
-        newpost_title = copy.newpost_title;
-        newpost_body = copy.newpost_body;
         passwordError = copy.passwordError;
-        postError = copy.postError;
+        isInitialized = copy.isInitialized;
     }
 
     public String getUsername() { return username; }
@@ -55,34 +50,16 @@ public class LandingState {
         return passwordError;
     }
 
-    public ArrayList<Post> getPosts() {return posts;}
+    public ArrayList<PostViewData> getPosts() {return posts;}
 
-    public void setPosts(ArrayList<Post> newPosts) {
-        posts.clear();
-        posts.addAll(newPosts);
+    public void setPosts(ArrayList<PostViewData> posts) {this.posts = posts;}
+
+    public void addPost(PostViewData post) {
+        posts.addFirst(post);
     }
 
-    public String getNewpost_title() { return newpost_title; }
+    public boolean isInitialized() {return isInitialized;}
 
-    public void setNewpost_title(String newpost_title) { this.newpost_title = newpost_title; }
-
-    public String getNewpost_body() { return newpost_body; }
-
-    public void setNewpost_body(String newpost_body) { this.newpost_body = newpost_body; }
-
-    public String getNewpost_username() {
-        return newpost_username;
-    }
-
-    public void setNewpost_username(String newpost_username) {
-        this.newpost_username = newpost_username;
-    }
-
-    public String getpostError() { return postError; }
-    public void setpostError(String postError) { this.postError = postError; }
-
-//    public void addNewPost(Post p) {
-//        posts.add(p);
-//    }
+    public void setInitialized(boolean isInitialized) { this.isInitialized = isInitialized; }
 
 }

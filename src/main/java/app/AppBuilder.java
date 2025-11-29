@@ -5,14 +5,20 @@ import entity.ClubFactory;
 import interface_adapter.clubs.ClubsController;
 import interface_adapter.clubs.ClubsPresenter;
 import interface_adapter.clubs.ClubsViewModel;
+import interface_adapter.landing.LandingController;
+import interface_adapter.landing.LandingPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.make_post.MakePostViewModel;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordPresenter;
 import use_case.clubs.ClubsInputBoundary;
 import use_case.clubs.ClubsInteractor;
 import use_case.clubs.ClubsOutputBoundary;
+import use_case.landing.LandingInputBoundary;
+import use_case.landing.LandingInteractor;
+import use_case.landing.LandingOutputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInteractor;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputBoundary;
@@ -36,8 +42,8 @@ import entity.PostFactory;
 import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.landing.MakePostController;
-import interface_adapter.landing.MakePostPresenter;
+import interface_adapter.make_post.MakePostController;
+import interface_adapter.make_post.MakePostPresenter;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserPresenter;
 import interface_adapter.search_user.SearchUserViewModel;
@@ -84,6 +90,7 @@ public class AppBuilder {
     private LoginSignupView loginSignupView;
     private LandingView landingView;
     private LandingViewModel landingViewModel;
+    private MakePostViewModel makePostViewModel;
 
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
@@ -140,7 +147,8 @@ public class AppBuilder {
 
     public AppBuilder addLandingView() {
         landingViewModel = new LandingViewModel();
-        landingView = new LandingView(landingViewModel);
+        makePostViewModel = new MakePostViewModel();
+        landingView = new LandingView(landingViewModel, makePostViewModel);
         cardPanel.add(landingView, landingView.getViewName());
         return this;
     }
@@ -209,6 +217,14 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addLandingUseCase() {
+        final LandingOutputBoundary landingOutputBoundary = new LandingPresenter(viewManagerModel, landingViewModel, searchUserViewModel, myProfileViewModel, clubsViewModel);
+        final LandingInputBoundary landingInteractor = new LandingInteractor(userDataAccessObject, landingOutputBoundary);
+        LandingController controller = new LandingController(landingInteractor);
+        landingView.setLandingController(controller);
+        return this;
+    }
+
     public AppBuilder addMyProfileChangePasswordUseCase() {
         final MyProfileChangePasswordOutputBoundary myProfileChangePasswordOutputBoundary =
                 new MyProfileChangePasswordPresenter(viewManagerModel,
@@ -242,8 +258,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addMakePostUseCase() {
-        final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel, myProfileViewModel, clubsViewModel);
+        final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(landingViewModel, makePostViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 

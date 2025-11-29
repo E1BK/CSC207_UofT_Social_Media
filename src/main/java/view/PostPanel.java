@@ -1,6 +1,7 @@
 package view;
 
 import entity.Post;
+import use_case.make_post.PostViewData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,7 +16,7 @@ public class PostPanel extends JPanel {
 
     public JPanel panel = new JPanel();
 
-    public PostPanel(Post post) {
+    public PostPanel(PostViewData post) {
 
         panel.setLayout(new BorderLayout());
         panel.setBackground(Color.white);

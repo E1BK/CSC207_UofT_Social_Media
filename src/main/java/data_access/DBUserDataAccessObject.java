@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 import use_case.clubs.ClubsDataAccessInterface;
+import use_case.landing.LandingDataAccessInterface;
 import use_case.login_signup.login.LoginUserDataAccessInterface;
 import use_case.login_signup.logout.LogoutUserDataAccessInterface;
 import use_case.login_signup.signup.SignupUserDataAccessInterface;
@@ -27,6 +28,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         MyProfileUserDataAccessInterface,
         SignupUserDataAccessInterface,
+        LandingDataAccessInterface,
         MyProfileChangePasswordUserDataAccessInterface,
         ViewPostDataAccessInterface,
         ClubsDataAccessInterface {
@@ -175,6 +177,44 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         }
     }
 
+    @Override
+    public ArrayList<String> getExistingUsernames(){
+        ArrayList<String> usernames = new ArrayList<>();
+
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+
+        try {
+            // get existing repo
+            Request getRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + REPO_USERNAME)
+                    .get()
+                    .build();
+
+            Response getResponse = client.newCall(getRequest).execute();
+            JSONObject responseJson = new JSONObject(getResponse.body().string());
+
+            if (responseJson.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to fetch repo user: " +
+                        responseJson.getString(MESSAGE));
+            }
+
+            JSONObject userJson = responseJson.getJSONObject("user");
+            JSONObject userInfoJson = userJson.getJSONObject("info");
+
+            JSONArray usersArray;
+            usersArray = userInfoJson.getJSONArray("users");
+
+            for (int i = 0; i < usersArray.length(); i++) {
+                usernames.add(usersArray.getJSONObject(i).getString("username"));
+            }
+
+            return usernames;
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     @Override
     public void save(User user){
