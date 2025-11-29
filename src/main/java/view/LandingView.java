@@ -3,10 +3,13 @@
 package view;
 
 import app.GradientPanel;
+import entity.Comment;
+import entity.Post;
+import entity.PostFactory;
 import interface_adapter.landing.LandingState;
-import interface_adapter.landing.LandingViewModel;
 import interface_adapter.landing.MakePostController;
-import interface_adapter.profile.ProfileController;
+import interface_adapter.landing.LandingViewModel;
+import interface_adapter.my_profile.MyProfileController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 public class LandingView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -25,9 +29,9 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final String viewName = "landing";
     private LandingViewModel landingViewModel;
     private MakePostController makePostController = null;
-    private ProfileController profileController = null;
+    private MyProfileController myProfileController = null;
 
-//    private final JTextField postBody;
+    //    private final JTextField postBody;
     private final JTextField postTitle;
     private final JTextArea postBody;
     private final JButton makePost;
@@ -37,13 +41,17 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final JButton home;
 
 
+
+
+
+
     public LandingView(LandingViewModel landingViewModel) {
 
         this.landingViewModel = landingViewModel;
         landingViewModel.addPropertyChangeListener(this);
 
         // top panel
-        JLabel name = new JLabel("UofTeam");
+        JLabel name = new JLabel("ChatUofT");
         name.setFont(new Font("Helvetica", Font.PLAIN, 30));
         GradientPanel topPanel = new GradientPanel();
         topPanel.add(name);
@@ -59,16 +67,17 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         titlePanel.add(title);
         titlePanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-        postTitle = new JTextField();
+        postTitle = new JTextField(20);
         postTitle.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        postTitle.setMaximumSize(new Dimension(300, 40));
-        postTitle.setPreferredSize(new Dimension(300, 40));
+        postTitle.setMargin(new Insets(10, 20, 10, 20));
+        postTitle.setMaximumSize(new Dimension(300, 30));
+        postTitle.setMinimumSize(new Dimension(300, 30));
 
         postBody = new JTextArea();
         postBody.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        postBody.setMinimumSize(new Dimension(300, 200));
-        postBody.setMaximumSize(new Dimension(300, 200));
-        postBody.setMargin(new Insets(10, 20, 10, 20));
+        postBody.setMinimumSize(new Dimension(300, 150));
+        postBody.setMaximumSize(new Dimension(300, 150));
+        postBody.setMargin(new Insets(5, 5, 5, 5));
 
         makePost = new JButton(LandingViewModel.MAKE_POST_BUTTON_LABEL);
         makePost.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -77,15 +86,59 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postBody.setAlignmentX(Component.CENTER_ALIGNMENT);
         makePost.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        JPanel gapPanel = new JPanel();
+        gapPanel.setMinimumSize(new Dimension(20, 4));
+        gapPanel.setMaximumSize(new Dimension(20, 4));
+
+        // detour: clubs!
+        JButton clubsButton = new JButton("See Clubs");
+        clubsButton.setFont(new Font("Helvetica", Font.BOLD, 20));
+        clubsButton.setMargin(new Insets(10, 30, 10, 30));
+        clubsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // detour: clubs complete
+
+        // postPanel is where you can make a post:
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
         postPanel.add(postTitle);
+        postPanel.add(gapPanel);
         postPanel.add(postBody);
         postPanel.add(makePost);
+        postPanel.add(clubsButton);
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
+
+        // Now, let's display the top 3 posts!
+            ArrayList<Post> allPosts = landingViewModel.getState().getPosts();
+            ArrayList<Post> postsToDisplay = new ArrayList<Post>();
+
+            if (allPosts.size() < 3) {
+                PostFactory myPostFactory = new PostFactory();
+
+                postsToDisplay.add(myPostFactory.create("julian", 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
+                postsToDisplay.add(myPostFactory.create("ioane", 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
+                postsToDisplay.add(myPostFactory.create("hayden", 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
+                postsToDisplay.add(myPostFactory.create("sophia", 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
+                postsToDisplay.add(myPostFactory.create("mike", 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
+            } else {
+                postsToDisplay.add(allPosts.getLast());
+                postsToDisplay.add(allPosts.get(allPosts.size() - 2));
+                postsToDisplay.add(allPosts.get(allPosts.size() - 3));
+            }
+
+
+        PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
+        PostPanel post2 = new PostPanel(postsToDisplay.get(1));
+        PostPanel post3 = new PostPanel(postsToDisplay.get(2));
+        JPanel displayPanel = new JPanel();
+        displayPanel.add(post1.panel);
+        displayPanel.add(post2.panel);
+        displayPanel.add(post3.panel);
+        displayPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
+
 
         middlePanel.add(titlePanel, BorderLayout.NORTH);
         middlePanel.add(postPanel, BorderLayout.CENTER);
+        middlePanel.add(displayPanel, BorderLayout.SOUTH);
 
         // bottom panel
         GradientPanel bottomPanel = new GradientPanel();
@@ -120,7 +173,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
                             System.out.println("CLICKED 'ME'!");
-                            profileController.switchToProfileView();
+                            myProfileController.switchToMyProfileView();
                         }
                     }
                 }
@@ -144,8 +197,19 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                             System.out.println("CLICKED 'MAKE POST'!");
                             final LandingState landingState = landingViewModel.getState();
                             makePostController.execute(landingState.getUsername(),
-                                                        landingState.getNewpost_title(),
-                                                        landingState.getNewpost_body());
+                                    landingState.getNewpost_title(),
+                                    landingState.getNewpost_body());
+                        }
+                    }
+                }
+        );
+
+        clubsButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(clubsButton)) {
+                            System.out.println("CLICKED 'SEE CLUBS'!");
+                            makePostController.switchToClubsView();
                         }
                     }
                 }
@@ -212,9 +276,19 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final LandingState state = (LandingState) evt.getNewValue();
+        postTitle.setText(state.getNewpost_title());
+        postBody.setText(state.getNewpost_body());
+
+        if (state.getpostError() != null && !state.getpostError().isBlank()) {
+            JOptionPane.showMessageDialog(this, state.getpostError());
+            state.setpostError("");  // prevent repeat popup
+            landingViewModel.setState(state);
+        }
     }
 
     public void setMakePostController(MakePostController controller) {
         this.makePostController = controller;
     }
+
+    public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
 }

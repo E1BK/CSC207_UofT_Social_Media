@@ -26,6 +26,11 @@ public class MakePostInteractor implements MakePostInputBoundary{
         this.postFactory = postFactory;
     }
 
+    /**
+     * This method makes a post using the <title>, <body>, etc
+     * from <makePostInputData>.
+     * @param makePostInputData
+     */
     @Override
     public void execute(MakePostInputData makePostInputData) {
         String username = makePostInputData.getUsername();
@@ -34,6 +39,11 @@ public class MakePostInteractor implements MakePostInputBoundary{
         String time = Instant.now().toString();
 
         User user;
+
+        if (title.isBlank() || body.isBlank()) {
+            makePostPresenter.prepareFailView("Title or Body cannot be blank");
+            return;
+        }
 
         try {
             user = makePostUserDataAccess.getUserInfo(username);
@@ -76,7 +86,16 @@ public class MakePostInteractor implements MakePostInputBoundary{
     // "switching to People view" occur on the same screen (i.e. on the Landing Page!)
     public void switchToPeopleView() {
         MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
-        System.out.println("bye");
         temp.switchToPeopleView();
+    }
+
+    public void switchToMeView() {
+        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
+        temp.switchToMeView();
+    }
+
+    public void switchToClubsView() {
+        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
+        temp.switchToClubsView();
     }
 }

@@ -193,6 +193,27 @@ Additionally, we also need a "*repository*" user to store all the users that cur
 
 ```
 
+Similarly, we further define a repository user for storing clubs:
+
+```json
+{
+    "username": "CLUB_REPO_CTG3",
+    "password": "CTG3CTG3",
+    "info": {
+        "clubs": [
+            {
+                "club_name": "UTRG",
+                "club_description": "The University of Toronto Rhythm Game Club"
+            },
+            {
+                "club_name": "PhySU",
+                "club_description": "Physics Student Union"
+            }
+        ]
+    }
+}
+```
+
 # Entities
 
 ## User

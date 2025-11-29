@@ -2,7 +2,7 @@ package interface_adapter.profile;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.searchUser.SearchUserViewModel;
+import interface_adapter.search_user.SearchUserViewModel;
 import use_case.profile.ProfileOutputBoundary;
 import use_case.profile.ProfileOutputData;
 
@@ -21,7 +21,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
                             SearchUserViewModel searchUserViewModel,
                             ProfileViewModel profileViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.profileViewModel = profileViewModel;
+        this.profileViewModel = profileViewModel; //TODO change this to myprofile
         this.searchUserViewModel = searchUserViewModel;
         this.landingViewModel = landingViewModel;
     }
@@ -50,8 +50,8 @@ public class ProfilePresenter implements ProfileOutputBoundary {
 
     @Override
     public void switchToMyProfileView() {
-//        viewManagerModel.setState(myProfileModel.getViewName());
-//        viewManagerModel.firePropertyChange();
+        viewManagerModel.setState(profileViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
     }
 
     public void switchToLandingView() {

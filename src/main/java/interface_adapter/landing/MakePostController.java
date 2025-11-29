@@ -29,4 +29,15 @@ public class MakePostController {
         MakePostInteractor temp = (MakePostInteractor) makePostInteractor;
         temp.switchToPeopleView();
     }
+
+    public void switchToMeView() {
+        MakePostInteractor temp = (MakePostInteractor) makePostInteractor;
+        temp.switchToMeView();
+    }
+
+    public void switchToClubsView() {
+        MakePostInteractor temp = (MakePostInteractor) makePostInteractor;
+        temp.switchToClubsView();
+    }
+
 }
