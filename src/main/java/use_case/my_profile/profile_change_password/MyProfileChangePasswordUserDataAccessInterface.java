@@ -12,4 +12,6 @@ public interface MyProfileChangePasswordUserDataAccessInterface {
      * @param user the user whose password is to be updated
      */
     void changePassword(User user);
+    void changeBio(User user);
+    User getUserInfo(String username);
 }

@@ -1,31 +1,27 @@
-// hasan
 package interface_adapter.landing;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.clubs.ClubsViewModel;
+import interface_adapter.make_post.MakePostViewModel;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.search_user.SearchUserViewModel;
-import use_case.make_post.MakePostOutputBoundary;
+import use_case.landing.LandingOutputBoundary;
+import use_case.landing.LandingOutputData;
+import interface_adapter.landing.LandingState;
 import use_case.make_post.MakePostOutputData;
 
-/**
- * Controller for the Change Password Use Case.
- */
-
-public class MakePostPresenter implements MakePostOutputBoundary {
-
+public class LandingPresenter implements LandingOutputBoundary {
     private final LandingViewModel landingViewModel;
     private final SearchUserViewModel searchUserViewModel;
     private final ViewManagerModel viewManagerModel;
     private final MyProfileViewModel myProfileViewModel;
     private final ClubsViewModel clubsViewModel;
 
-    public MakePostPresenter(ViewManagerModel viewManagerModel,
-                             LandingViewModel landingViewModel,
-                             SearchUserViewModel searchUserViewModel,
-                             MyProfileViewModel myProfileViewModel,
-                             ClubsViewModel clubsViewModel) {
-
+    public LandingPresenter(ViewManagerModel viewManagerModel,
+                            LandingViewModel landingViewModel,
+                            SearchUserViewModel searchUserViewModel,
+                            MyProfileViewModel myProfileViewModel,
+                            ClubsViewModel clubsViewModel) {
         this.landingViewModel = landingViewModel;
         this.viewManagerModel = viewManagerModel;
         this.searchUserViewModel = searchUserViewModel;
@@ -34,17 +30,17 @@ public class MakePostPresenter implements MakePostOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(MakePostOutputData makePostOutputData) {
-        LandingState state = landingViewModel.getState();
-        state.setNewpost_username(makePostOutputData.getUsername());
-        state.setNewpost_title(makePostOutputData.getTitle());
-        state.setNewpost_body(makePostOutputData.getBody());
+    public void prepareSuccessView(LandingOutputData landingOutputData) {
+        LandingState landingState = landingViewModel.getState();
+        landingState.setPosts(landingOutputData.getPosts());
+        landingViewModel.setState(landingState);
         landingViewModel.firePropertyChange();
+        myProfileViewModel.firePropertyChange();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        landingViewModel.firePropertyChange();
+
     }
 
     public void switchToPeopleView() {
@@ -61,4 +57,5 @@ public class MakePostPresenter implements MakePostOutputBoundary {
         viewManagerModel.setState(clubsViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
+
 }

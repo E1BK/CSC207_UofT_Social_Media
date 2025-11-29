@@ -1,14 +1,11 @@
 package view;
 
 import app.GradientPanel;
-import entity.Comment;
-import entity.Post;
-import entity.PostFactory;
+import interface_adapter.logout.LogoutController;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
-import interface_adapter.profile.ProfileViewModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 
 public class MyProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     // Variables
@@ -27,6 +26,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     // Controllers
     private MyProfileController myProfileController;
     private MyProfileChangePasswordController changePasswordController = null;
+    private LogoutController logoutController = null;
 
     // Textfields
     private final JTextField bioInputField = new JTextField(15);
@@ -35,14 +35,18 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     // Labels
     private final JLabel username;
     private final JLabel email;
+//    private final JPanel postContainer;
+    private final JPanel row1;
+    private final JPanel row2;
 
     // Buttons
-//    private final JButton back;
     private final JButton bioConfirm;
     private final JButton passwordConfirm;
-    private final JButton postButton;
+    private final JButton homeButton;
     private final JButton searchButton;
     private final JButton profileButton;
+    private final JButton logoutButton;
+    private ArrayList<Map> posts;
 
     public MyProfileView(MyProfileViewModel myProfileViewModel) {
         this.myProfileViewModel = myProfileViewModel;
@@ -67,8 +71,15 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         usernameInfo.setFont(new Font("Helvetica", Font.BOLD, 40));
         username = new JLabel();
         username.setFont(new Font("Helvetica", Font.BOLD, 40));
+        logoutButton = new JButton("Logout");
+        logoutButton.setFont(new Font("Helvetica", Font.BOLD, 20));
+        logoutButton.setMargin(new Insets(10, 30, 10, 30));
+        JPanel usernameSpacer = new JPanel();
+        usernameSpacer.setMinimumSize(new Dimension(100, 100));
         usernamePanel.add(usernameInfo);
         usernamePanel.add(username);
+        usernamePanel.add(logoutButton);
+
 
         // Add ID
         final JPanel idPanel = new JPanel();
@@ -101,65 +112,91 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                                                                passwordConfirm);
         passwordPanel.add(passwordInfo);
 
+        // Julian
+        // Display Posts
+        //posts = new ArrayList<Post>();
+//        final JPanel postsPanel = new JPanel();
+//        postContainer = new JPanel();
+//        postContainer.setLayout(new BoxLayout(postContainer, BoxLayout.Y_AXIS));
+//        postsPanel.add(new JScrollPane(postContainer),  BorderLayout.CENTER);
+//
+//        postsPanel.add(postContainer);
+//        postsPanel.setSize(new Dimension(300, 200));
+//        postsPanel.setVisible(true);
+        // Julian End
+
+        //Hasan Edit
         // Display Posts: postsPanel
         // the posts of the user will be displayed inside <postsPanel>
-        ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
-        ArrayList<Post> postsToDisplay = new ArrayList<>();
 
-        if (allMyPosts.size() < 6) {
-            PostFactory myPostFactory = new PostFactory();
-            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
-            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
-            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
-            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
-            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
-        } else {
-            postsToDisplay.add(allMyPosts.getLast());
-            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 2));
-            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 3));
-            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 4));
-            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 5));
-            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 6));
-        }
-
-        JPanel row1 = new JPanel();
-        JPanel row2 = new JPanel();
-        PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
-        PostPanel post2 = new PostPanel(postsToDisplay.get(1));
-        PostPanel post3 = new PostPanel(postsToDisplay.get(2));
-        PostPanel post4 = new PostPanel(postsToDisplay.get(3));
-        PostPanel post5 = new PostPanel(postsToDisplay.get(4));
-        PostPanel post6 = new PostPanel(postsToDisplay.getLast());
-        row1.add(post1.panel);
-        row1.add(post2.panel);
-        row1.add(post3.panel);
-        row2.add(post4.panel);
-        row2.add(post5.panel);
-        row2.add(post6.panel);
-
+//        ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
+//        ArrayList<Post> postsToDisplay = new ArrayList<>();
+//
+//        if (allMyPosts.size() < 6) {
+//            PostFactory myPostFactory = new PostFactory();
+//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
+//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
+//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
+//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
+//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
+//        } else {
+//            postsToDisplay.add(allMyPosts.getLast());
+//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 2));
+//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 3));
+//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 4));
+//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 5));
+//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 6));
+//        }
+//
+//        JPanel row1 = new JPanel();
+//        JPanel row2 = new JPanel();
+//        PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
+//        PostPanel post2 = new PostPanel(postsToDisplay.get(1));
+//        PostPanel post3 = new PostPanel(postsToDisplay.get(2));
+//        PostPanel post4 = new PostPanel(postsToDisplay.get(3));
+//        PostPanel post5 = new PostPanel(postsToDisplay.get(4));
+//        PostPanel post6 = new PostPanel(postsToDisplay.getLast());
+//        row1.add(post1.panel);
+//        row1.add(post2.panel);
+//        row1.add(post3.panel);
+//        row2.add(post4.panel);
+//        row2.add(post5.panel);
+//        row2.add(post6.panel);
+//
+//        JPanel postsPanel = new JPanel();
         JPanel postsPanel = new JPanel();
+        postsPanel.setLayout(new BoxLayout(postsPanel, BoxLayout.Y_AXIS));
+        row1 = new JPanel();
         postsPanel.add(row1);
+        row2 = new JPanel();
         postsPanel.add(row2);
+        postsPanel.add(Box.createRigidArea(new Dimension(0, 0)));
+        // End of Hasan Edit
+
+        JPanel bioPasswordPanel = new JPanel();
+        bioPasswordPanel.setLayout(new BoxLayout(bioPasswordPanel, BoxLayout.X_AXIS));
+        bioPasswordPanel.add(bioPanel);
+        bioPasswordPanel.add(passwordPanel);
+
 
         // Add to middle Panel
         middlePanel.add(usernamePanel);
         middlePanel.add(idPanel);
-        middlePanel.add(bioPanel);
-        middlePanel.add(passwordPanel);
+        middlePanel.add(bioPasswordPanel);
         middlePanel.add(postsPanel);
 
         // Page Navigation
         GradientPanel bottomPanel = new GradientPanel();
-        postButton = new JButton (MyProfileViewModel.HOME_BUTTON_LABEL);
-        postButton.setFont(new Font("Helvetica", Font.BOLD, 15));
-        postButton.setMargin(new Insets(10, 20, 10, 20));
+        homeButton = new JButton (MyProfileViewModel.HOME_BUTTON_LABEL);
+        homeButton.setFont(new Font("Helvetica", Font.BOLD, 15));
+        homeButton.setMargin(new Insets(10, 20, 10, 20));
         searchButton = new JButton (MyProfileViewModel.SEARCH_BUTTON_LABEL);
         searchButton.setFont(new Font("Helvetica", Font.BOLD, 15));
         searchButton.setMargin(new Insets(10, 20, 10, 20));
         profileButton = new JButton (MyProfileViewModel.PROFILE_BUTTON_LABEL);
         profileButton.setFont(new Font("Helvetica", Font.BOLD, 15));
         profileButton.setMargin(new Insets(10, 20, 10, 20));
-        bottomPanel.add(postButton);
+        bottomPanel.add(homeButton);
         bottomPanel.add(searchButton);
         bottomPanel.add(profileButton);
         bottomPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -176,10 +213,11 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         // Adds functionality to the buttons
-        postButton.addActionListener(
+        homeButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
                         myProfileController.switchToLandingView();
                     }
                 }
@@ -191,6 +229,16 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                     public void actionPerformed(ActionEvent e) {
                         final MyProfileState state = myProfileViewModel.getState();
                         state.setBio(bioInputField.getText());
+
+                        System.out.println(e.getActionCommand());
+                        changePasswordController.execute(
+                                state.getUsername(),
+                                passwordInputField.getText(),
+                                state.getBio(),
+                                state.getEmail(),
+                                state.getName(),
+                                "bio"
+                        );
                     }
                 }
         );
@@ -202,22 +250,24 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                         final MyProfileState state = myProfileViewModel.getState();
                         state.setPassword(passwordInputField.getText());
 
+                        System.out.println(e.getActionCommand());
                         changePasswordController.execute(
                                 state.getUsername(),
                                 passwordInputField.getText(),
                                 state.getBio(),
                                 state.getEmail(),
                                 state.getName(),
-                                state.getPosts()
+                                "password"
                         );
                     }
                 }
         );
 
-        postButton.addActionListener(
+        homeButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
                         myProfileController.switchToPostView();
                     }
                 }
@@ -227,6 +277,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
                         myProfileController.switchToSearchView();
                     }
                 }
@@ -236,7 +287,19 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
                         myProfileController.switchToMyProfileView();
+                    }
+                }
+        );
+
+        logoutButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println(e.getActionCommand());
+                        logoutController.execute();
+                        myProfileController.switchToLoginSignupView();
                     }
                 }
         );
@@ -247,13 +310,14 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
 
-//        if (e.getActionCommand().contains("View")) {
-//            for (int i = 0; i < posts.size(); i++) {
-//                if (e.getActionCommand().contains (STR."\{i}")) {
-//                    myProfileController.switchToCurrentPost(posts.get(i));
-//                }
-//            }
-//        }
+        if (e.getActionCommand().contains("View")) {
+            for (int i = 0; i < posts.size(); i++) {
+                if (e.getActionCommand().contains (STR."\{i}")) {
+                    System.out.println(e.getActionCommand());
+                    myProfileController.switchToCurrentPost((int) posts.get(i).get(myProfileViewModel.ID));
+                }
+            }
+        }
     }
 
     @Override
@@ -264,54 +328,44 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             passwordInputField.setText(state.getPassword());
             bioInputField.setText(state.getBio());
             email.setText(state.getEmail());
-//            addPosts(state.getPosts());
+
+            int row1Count = row1.getComponentCount();
+            int row2Count = row2.getComponentCount();
+            for (int i = 0; i < row1Count; i++) { row1.remove(0); }
+            for (int i = 0; i < row2Count; i++) { row2.remove(0); }
+
+            if (!Objects.equals(username.getText(), "")) {
+                myProfileController.refreshPosts(state.getUsername());
+                addPosts(state.getPosts());
+            }
         }
     }
 
-//    private void addPosts(ArrayList<Post> posts) {
-//        // Creates post preview to display on profile
-//        // TODO Make it display the 5 most recent/random posts
-//        for (int i = 0; i < posts.size(); i++) {
-//            JLabel postTitle = new JLabel(posts.get(i).getTitle());
-//            JLabel postDate = new JLabel(posts.get(i).getPost_date());
-//            JPanel postBody = new JPanel();
-//            JLabel postInfo = new JLabel(posts.get(i).getBody());
-//
-//            postBody.setLayout(new BoxLayout(postBody, BoxLayout.X_AXIS));
-//            postBody.add(postInfo,  BorderLayout.LINE_START);
-//            postBody.add(Box.createHorizontalGlue());
-//
-//            JPanel postHeader = new JPanel();
-//            postHeader.setLayout(new BoxLayout(postHeader, BoxLayout.X_AXIS));
-//            postHeader.add(postTitle, BorderLayout.LINE_START);
-//            postHeader.add(Box.createHorizontalGlue());
-//            postHeader.add(postDate, BorderLayout.LINE_END);
-//
-//            JButton seePostButton = new JButton(STR."View \{i}");
-//            seePostButton.setFont(new Font("Helvetica", Font.BOLD, 15));
-//
-//            JPanel postInfoPanel = new JPanel();
-//            postInfoPanel.setLayout(new BoxLayout(postInfoPanel, BoxLayout.Y_AXIS));
-//            postInfoPanel.add(postHeader);
-//            postInfoPanel.add(postBody);
-//            postInfoPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
-//
-//            JPanel postPanel = new JPanel();
-//            postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.X_AXIS));
-//            JPanel postSpacer = new JPanel();
-//            postSpacer.setMinimumSize(new Dimension(5, 5));
-//            postPanel.add(postInfoPanel);
-//            postPanel.add(postSpacer);
-//            postPanel.add(seePostButton);
-//
-//            postContainer.add(postPanel);
-//        }
-//
-//        this.posts = posts;
-//    }
+    private void addPosts(ArrayList<Map> posts) {
+        int row1Size = 3;
+        int row2Size = 3;
+
+        if (posts.size() < 3) { row1Size = posts.size(); }
+        if (posts.size() < 6) { row2Size = posts.size() - 3;}
+
+        for (int i = 0; i < row1Size; i++) {
+            PostPanel post = new  PostPanel(posts.get(i));
+            row1.add(post.panel);
+        }
+
+        for  (int i = 0; i < row2Size; i++) {
+            PostPanel post = new  PostPanel(posts.get(i+3));
+            row2.add(post.panel);
+        }
+
+        this.posts = posts;
+    }
 
     public String getViewName() { return viewName; }
 
     public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
-    public void setChangePasswordController(MyProfileChangePasswordController controller) { this.changePasswordController = controller; }
+    public void setChangePasswordController(MyProfileChangePasswordController controller) {
+        this.changePasswordController = controller;
+    }
+    public void setLogoutController(LogoutController controller) { this.logoutController = controller; }
 }

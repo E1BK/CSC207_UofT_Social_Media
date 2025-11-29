@@ -30,4 +30,6 @@ public interface LoginUserDataAccessInterface {
     void setCurrentUsername(String name);
 
     String getCurrentUsername();
+
+    User getUserInfo(String username);
 }

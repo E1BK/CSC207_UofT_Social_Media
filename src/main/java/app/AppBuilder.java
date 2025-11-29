@@ -1,17 +1,31 @@
 package app;
 
-//import data_access.FileUserDataAccessObject;
+import entity.ClubFactory;
+import entity.CommentFactory;
+import entity.PostFactory;
+import entity.UserFactory;
 import interface_adapter.clubs.ClubsController;
 import interface_adapter.clubs.ClubsPresenter;
 import interface_adapter.clubs.ClubsViewModel;
+import interface_adapter.landing.LandingController;
+import interface_adapter.landing.LandingPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.logout.LogoutController;
+import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.make_post.MakePostViewModel;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordPresenter;
 import use_case.clubs.ClubsInputBoundary;
 import use_case.clubs.ClubsInteractor;
 import use_case.clubs.ClubsOutputBoundary;
+import use_case.landing.LandingInputBoundary;
+import use_case.landing.LandingInteractor;
+import use_case.landing.LandingOutputBoundary;
+import use_case.logout.LogoutInputBoundary;
+import use_case.logout.LogoutInteractor;
+import use_case.logout.LogoutOutputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInputBoundary;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordInteractor;
 import use_case.my_profile.profile_change_password.MyProfileChangePasswordOutputBoundary;
@@ -28,15 +42,11 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
-//import data_access.FileUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
-import entity.CommentFactory;
-import entity.PostFactory;
-import entity.UserFactory;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.landing.MakePostController;
-import interface_adapter.landing.MakePostPresenter;
+import interface_adapter.make_post.MakePostController;
+import interface_adapter.make_post.MakePostPresenter;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserPresenter;
 import interface_adapter.search_user.SearchUserViewModel;
@@ -68,11 +78,12 @@ public class AppBuilder {
     final UserFactory userFactory = new UserFactory();
     final PostFactory postFactory = new PostFactory();
     final CommentFactory commentFactory = new CommentFactory();
+    final ClubFactory clubFactory = new ClubFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     public ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
 
-    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory);
+    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory, clubFactory);
 
     // Add View Models
     private SignupViewModel signupViewModel;
@@ -80,6 +91,7 @@ public class AppBuilder {
     private LoginSignupView loginSignupView;
     private LandingView landingView;
     private LandingViewModel landingViewModel;
+    private MakePostViewModel makePostViewModel;
 
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
@@ -136,7 +148,8 @@ public class AppBuilder {
 
     public AppBuilder addLandingView() {
         landingViewModel = new LandingViewModel();
-        landingView = new LandingView(landingViewModel);
+        makePostViewModel = new MakePostViewModel();
+        landingView = new LandingView(landingViewModel, makePostViewModel);
         cardPanel.add(landingView, landingView.getViewName());
         return this;
     }
@@ -196,12 +209,18 @@ public class AppBuilder {
                 myProfileViewModel);
         final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
                 userDataAccessObject,
-                myProfileOutputBoundary,
-                userFactory,
-                postFactory);
-        MyProfileController controller = new MyProfileController(myProfileInteractor);
+                myProfileOutputBoundary);
+        MyProfileController controller = new MyProfileController(myProfileInteractor, userDataAccessObject);
         myProfileView.setMyProfileController(controller);
         landingView.setMyProfileController(controller);
+        return this;
+    }
+
+    public AppBuilder addLandingUseCase() {
+        final LandingOutputBoundary landingOutputBoundary = new LandingPresenter(viewManagerModel, landingViewModel, searchUserViewModel, myProfileViewModel, clubsViewModel);
+        final LandingInputBoundary landingInteractor = new LandingInteractor(userDataAccessObject, landingOutputBoundary);
+        LandingController controller = new LandingController(landingInteractor);
+        landingView.setLandingController(controller);
         return this;
     }
 
@@ -249,8 +268,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addMakePostUseCase() {
-        final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(viewManagerModel,
-                landingViewModel, searchUserViewModel, myProfileViewModel, clubsViewModel);
+        final MakePostOutputBoundary makePostOutputBoundary = new MakePostPresenter(landingViewModel, makePostViewModel);
         final MakePostInputBoundary makePostInteractor = new MakePostInteractor(
                 userDataAccessObject, makePostOutputBoundary, userFactory, postFactory);
 
@@ -270,6 +288,16 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addLogoutUseCase() {
+        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+                                                                              myProfileViewModel,
+                                                                              loginViewModel);
+        final LogoutInputBoundary logoutInteractor = new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        myProfileView.setLogoutController(logoutController);
+        return this;
+    }
+
     public AppBuilder addClubsUseCase() {
         final ClubsOutputBoundary clubsOutputBoundary = new ClubsPresenter(clubsViewModel,
                 landingViewModel, viewManagerModel);
@@ -283,6 +311,20 @@ public class AppBuilder {
 
     public JFrame build() {
         final JFrame application = new JFrame("UofT Social Media App");
+
+        Image img = new ImageIcon(
+                getClass().getClassLoader().getResource("img/chatuoft_lg.png")
+        ).getImage();
+
+        application.setIconImage(img);
+
+        if (Taskbar.isTaskbarSupported()) {
+            try {
+                Taskbar.getTaskbar().setIconImage(img);
+            } catch (UnsupportedOperationException ignored) {
+            }
+        }
+
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);

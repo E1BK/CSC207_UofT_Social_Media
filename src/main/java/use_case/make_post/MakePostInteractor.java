@@ -4,7 +4,7 @@ import entity.Post;
 import entity.PostFactory;
 import entity.User;
 import entity.UserFactory;
-import interface_adapter.landing.MakePostPresenter;
+import interface_adapter.make_post.MakePostPresenter;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -40,6 +40,11 @@ public class MakePostInteractor implements MakePostInputBoundary{
 
         User user;
 
+        if (title.isBlank() || body.isBlank()) {
+            makePostPresenter.prepareFailView("Title or Body cannot be blank");
+            return;
+        }
+
         try {
             user = makePostUserDataAccess.getUserInfo(username);
             if (user == null) {
@@ -69,28 +74,13 @@ public class MakePostInteractor implements MakePostInputBoundary{
             return;
         }
 
-        MakePostOutputData output = new MakePostOutputData(newPost.getPost_id(),
-                                                            newPost.getUsername(),
-                                                            newPost.getTitle(),
-                                                            newPost.getBody(),
-                                                            newPost.getPost_date());
+        PostViewData newPostViewData = new PostViewData(newPost.getUsername(),
+                                                        newPost.getPost_id(),
+                                                        newPost.getTitle(),
+                                                        newPost.getBody(),
+                                                        newPost.getPost_date(),
+                                                        newPost.getComments());
+        MakePostOutputData output = new MakePostOutputData(newPostViewData);
         makePostPresenter.prepareSuccessView(output);
-    }
-
-    // hasan: this method must be here, because "making a post" and
-    // "switching to People view" occur on the same screen (i.e. on the Landing Page!)
-    public void switchToPeopleView() {
-        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
-        temp.switchToPeopleView();
-    }
-
-    public void switchToMeView() {
-        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
-        temp.switchToMeView();
-    }
-
-    public void switchToClubsView() {
-        MakePostPresenter temp = (MakePostPresenter) makePostPresenter;
-        temp.switchToClubsView();
     }
 }

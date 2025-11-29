@@ -1,5 +1,7 @@
 package use_case.clubs;
 
+import entity.Club;
+
 import java.util.ArrayList;
 
 public interface ClubsDataAccessInterface {
@@ -9,5 +11,6 @@ public interface ClubsDataAccessInterface {
      * @return a String that contains the club's name and description.
      * If not found, return null.
      */
-    public String search(String searchQuery);
+    public ArrayList<Club> getClubs();
+    public void addClub(Club club);
 }

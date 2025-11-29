@@ -1,8 +1,7 @@
 package interface_adapter.my_profile;
 
-import entity.Post;
-
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MyProfileState {
     private String username = "";
@@ -10,7 +9,7 @@ public class MyProfileState {
     private String bio = "";
     private String email = "";
     private String name = "";
-    private ArrayList<Post> posts = new  ArrayList<Post>();
+    private ArrayList<Map> posts = new  ArrayList<>();
 
     public MyProfileState(MyProfileState copy) {
         username = copy.username;
@@ -21,9 +20,7 @@ public class MyProfileState {
         posts = copy.posts;
     }
 
-    public MyProfileState() {
-
-    }
+    public MyProfileState() {}
 
     public String getUsername() {
         return username;
@@ -56,10 +53,19 @@ public class MyProfileState {
     public void setName(String name) { this.name = name; }
     public String getName() { return name; }
 
-    public void setPosts(ArrayList<Post> posts) {
+    public void setPosts(ArrayList<Map> posts) {
         this.posts = posts;
     }
-    public ArrayList<Post> getPosts() {
+    public ArrayList<Map> getPosts() {
         return posts;
+    }
+
+    public void logout() {
+        username = "";
+        password = "";
+        bio = "";
+        email = "";
+        name = "";
+        posts = new ArrayList<>();
     }
 }
