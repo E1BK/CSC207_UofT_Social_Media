@@ -52,6 +52,8 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     PostPanel post3;
     JPanel displayPanel;
 
+    ArrayList<PostViewData> postsToDisplay;
+
 
 
 
@@ -120,36 +122,9 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postPanel.add(clubsButton);
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-        // TODO: UPDATE VIEW POST FUNCTIONALITY
-            ArrayList<PostViewData> allPosts = landingViewModel.getState().getPosts();
-            ArrayList<PostViewData> postsToDisplay = new ArrayList<PostViewData>();
+        postsToDisplay = new ArrayList<PostViewData>();
 
-//            if (allPosts.size() < 3) {
-//                PostFactory myPostFactory = new PostFactory();
-//
-//                postsToDisplay.add(myPostFactory.create("julian", 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
-//                postsToDisplay.add(myPostFactory.create("ioane", 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
-//                postsToDisplay.add(myPostFactory.create("hayden", 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
-//                postsToDisplay.add(myPostFactory.create("sophia", 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
-//                postsToDisplay.add(myPostFactory.create("mike", 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
-//            } else {
-//                postsToDisplay.add(allPosts.getLast());
-//                postsToDisplay.add(allPosts.get(allPosts.size() - 2));
-//                postsToDisplay.add(allPosts.get(allPosts.size() - 3));
-//            }
-
-//        postsToDisplay.add(allPosts.getLast());
-//        postsToDisplay.add(allPosts.get(allPosts.size() - 2));
-//        postsToDisplay.add(allPosts.get(allPosts.size() - 3));
-
-
-//        post1 = new PostPanel(postsToDisplay.getFirst());
-//        post2 = new PostPanel(postsToDisplay.get(1));
-//        post3 = new PostPanel(postsToDisplay.get(2));
         displayPanel = new JPanel();
-//        displayPanel.add(post1.panel);
-//        displayPanel.add(post2.panel);
-//        displayPanel.add(post3.panel);
         displayPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
 
 
@@ -330,7 +305,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     public void refreshPosts(LandingState landingState) {
         displayPanel.removeAll();
-        ArrayList<PostViewData> postsToDisplay = landingState.getPosts();
+        postsToDisplay = landingState.getPosts();
         post1 = new PostPanel(postsToDisplay.getFirst());
         post2 = new PostPanel(postsToDisplay.get(1));
         post3 = new PostPanel(postsToDisplay.get(2));
