@@ -162,6 +162,14 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         signupPassword1InputField.setMargin(new Insets(10, 20, 10, 20));
         signupPassword2InputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
         signupPassword2InputField.setMargin(new Insets(10, 20, 10, 20));
+
+
+        LabelTextPanel fullNameProcessingPanel = new LabelTextPanel(fullNamePrompt, signupNameInputField);
+        inputPanel.add(fullNameProcessingPanel);
+//        LabelTextPanel usernameProcessingPanel = new LabelTextPanel(usernamePrompt, loginUsernameInputField);
+//        inputPanel.add(usernameProcessingPanel);
+//        LabelTextPanel passwordProcessingPanel = new LabelTextPanel(passwordPrompt, loginPasswordInputField);
+//        inputPanel.add(passwordProcessingPanel);
         // inputPanel ends
 
         // sloganPanel begins
