@@ -1,7 +1,6 @@
 // hasan
 package interface_adapter.landing;
 
-import view.LandingView;
 import interface_adapter.ViewModel;
 
 public class LandingViewModel extends ViewModel<LandingState> {

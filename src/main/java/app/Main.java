@@ -27,6 +27,7 @@ public class Main {
                 .addViewPostUseCase()
                 .addClubsUseCase()
                 .addLogoutUseCase()
+                .addLandingUseCase()
                 .build();
 
         application.pack();

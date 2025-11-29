@@ -1,5 +1,5 @@
 // hasan
-package interface_adapter.landing;
+package interface_adapter.make_post;
 
 import use_case.make_post.MakePostInputBoundary;
 import use_case.make_post.MakePostInputData;
@@ -22,21 +22,6 @@ public class MakePostController {
         final MakePostInputData makePostInputData = new MakePostInputData(username, post_title, post_body);
 
         makePostInteractor.execute(makePostInputData);
-    }
-
-    public void switchToPeopleView() {
-        MakePostInteractor temp = (MakePostInteractor) makePostInteractor;
-        temp.switchToPeopleView();
-    }
-
-    public void switchToMeView() {
-        MakePostInteractor temp = (MakePostInteractor) makePostInteractor;
-        temp.switchToMeView();
-    }
-
-    public void switchToClubsView() {
-        MakePostInteractor temp = (MakePostInteractor) makePostInteractor;
-        temp.switchToClubsView();
     }
 
 }
