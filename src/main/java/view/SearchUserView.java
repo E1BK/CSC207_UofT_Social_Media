@@ -23,7 +23,6 @@ import interface_adapter.landing.LandingViewModel;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;
 import interface_adapter.search_user.SearchUserState;
-import entity.User;
 import interface_adapter.profile.ProfileController;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
