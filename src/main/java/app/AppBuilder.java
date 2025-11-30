@@ -63,12 +63,10 @@ import use_case.login_signup.signup.SignupInputBoundary;
 import use_case.login_signup.signup.SignupInteractor;
 import use_case.login_signup.signup.SignupOutputBoundary;
 import view.LoginSignupView;
-import interface_adapter.view_post.ViewPostController;
-import interface_adapter.view_post.ViewPostPresenter;
-import interface_adapter.view_post.ViewPostViewModel;
-import use_case.view_post.ViewPostInputBoundary;
-import use_case.view_post.ViewPostInteractor;
-import use_case.view_post.ViewPostOutputBoundary;
+import interface_adapter.view_post.*;
+import use_case.view_post.*;
+import use_case.add_comment.AddCommentInputBoundary;
+import use_case.add_comment.AddCommentInteractor;
 
 
 import javax.swing.*;
@@ -247,8 +245,21 @@ public class AppBuilder {
         final ViewPostInputBoundary viewPostInteractor =
                 new ViewPostInteractor(userDataAccessObject, viewPostOutputBoundary);
 
-        ViewPostController viewPostController = new ViewPostController(viewPostInteractor);
-        postView.setViewPostController(viewPostController);
+        final AddCommentInputBoundary addCommentInteractor =
+                new AddCommentInteractor(userDataAccessObject, commentFactory, viewPostOutputBoundary);
+
+        ViewPostController controller =
+                new ViewPostController(
+                        viewPostInteractor,
+                        addCommentInteractor,
+                        viewManagerModel,
+                        landingViewModel
+                );
+
+        postView.setViewPostController(controller);
+        landingView.setViewPostController(controller);
+        myProfileView.setViewPostController(controller);
+        profileView.setViewPostController(controller);
 
         return this;
     }

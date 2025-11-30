@@ -6,6 +6,7 @@ import interface_adapter.logout.LogoutController;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
+import interface_adapter.view_post.ViewPostController;
 import use_case.make_post.PostViewData;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     // Controllers
     private MyProfileController myProfileController;
+    private ViewPostController viewPostController;
     private MyProfileChangePasswordController changePasswordController = null;
     private LogoutController logoutController = null;
 
@@ -298,12 +300,18 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         if (posts.size() < 6) { row2Size = posts.size() - 3;}
 
         for (int i = 1; i <= row1Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(posts.size() - i));
+            PostPanel post = new PostPanel(posts.get(posts.size() - i));
+            if (viewPostController != null) {
+                post.setViewPostController(viewPostController);   // NEW
+            }
             row1.add(post.panel);
         }
 
-        for  (int i = 1; i <= row2Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(posts.size() - i - 3));
+        for (int i = 1; i <= row2Size; i++) {
+            PostPanel post = new PostPanel(posts.get(posts.size() - i - 3));
+            if (viewPostController != null) {
+                post.setViewPostController(viewPostController);   // NEW
+            }
             row2.add(post.panel);
         }
 
@@ -317,4 +325,8 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         this.changePasswordController = controller;
     }
     public void setLogoutController(LogoutController controller) { this.logoutController = controller; }
+
+    public void setViewPostController(ViewPostController controller){
+        this.viewPostController = controller;
+    }
 }

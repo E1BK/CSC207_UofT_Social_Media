@@ -6,7 +6,7 @@ import interface_adapter.ViewModel;
 public class ViewPostViewModel extends ViewModel<ViewPostState> {
 
     public ViewPostViewModel() {
-        super("post");  // card name used by ViewManager
+        super("post");
         setState(new ViewPostState());
     }
 }

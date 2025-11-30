@@ -1,4 +1,3 @@
-// Ioane
 package interface_adapter.view_post;
 
 import interface_adapter.ViewManagerModel;
@@ -7,19 +6,21 @@ import use_case.view_post.ViewPostOutputData;
 
 public class ViewPostPresenter implements ViewPostOutputBoundary {
 
-    private final ViewPostViewModel viewPostViewModel;
+    private final ViewPostViewModel viewModel;
     private final ViewManagerModel viewManagerModel;
 
     public ViewPostPresenter(ViewManagerModel viewManagerModel,
-                             ViewPostViewModel viewPostViewModel) {
+                             ViewPostViewModel viewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.viewPostViewModel = viewPostViewModel;
+        this.viewModel = viewModel;
     }
 
     @Override
     public void prepareSuccessView(ViewPostOutputData data) {
-        ViewPostState state = viewPostViewModel.getState();
+        ViewPostState state = viewModel.getState();
 
+        state.setUsername(data.getUsername());
+        state.setPostId(data.getPostId());
         state.setPostTitle(data.getPostTitle());
         state.setPostBody(data.getPostBody());
         state.setCommentIds(data.getCommentIds());
@@ -27,19 +28,18 @@ public class ViewPostPresenter implements ViewPostOutputBoundary {
         state.setCommentLikes(data.getCommentLikes());
         state.setErrorMessage("");
 
-        viewPostViewModel.setState(state);
-        viewPostViewModel.firePropertyChange();
+        viewModel.setState(state);
+        viewModel.firePropertyChange();
 
-        viewManagerModel.setState(viewPostViewModel.getViewName());
+        viewManagerModel.setState(viewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        ViewPostState state = viewPostViewModel.getState();
+        ViewPostState state = viewModel.getState();
         state.setErrorMessage(errorMessage);
-
-        viewPostViewModel.setState(state);
-        viewPostViewModel.firePropertyChange();
+        viewModel.setState(state);
+        viewModel.firePropertyChange();
     }
 }
