@@ -262,7 +262,8 @@ public class AppBuilder {
                 );
 
         postView.setViewPostController(controller);
-        landingView.setViewPostController(controller);   // assuming you already have this setter
+        landingView.setViewPostController(controller);
+        myProfileView.setViewPostController(controller);
 
         return this;
     }

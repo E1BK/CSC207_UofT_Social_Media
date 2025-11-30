@@ -125,6 +125,28 @@ public class PostPanel extends JPanel {
         post1numComments.setFont(new Font("Helvetica", Font.ITALIC, 15));
         post1numComments.setForeground(Color.GRAY);
 
+        JButton viewButton = new JButton("View");
+        viewButton.setMargin(new Insets(2, 10, 2, 10));
+        viewButton.addActionListener(e -> {
+            if (viewPostController != null) {
+                String username = post.get(MyProfileViewModel.USERNAME);
+                String idStr = post.get(MyProfileViewModel.ID); // your ID key
+                try {
+                    int postId = Integer.parseInt(idStr);
+                    viewPostController.viewPost(username, postId);
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid post id in PostPanel map: " + idStr);
+                }
+            } else {
+                System.out.println("ViewPostController not set in PostPanel (MyProfile)");
+            }
+        });
+
+        JPanel headerWrapper = new JPanel(new BorderLayout());
+        headerWrapper.setBackground(Color.white);
+        headerWrapper.add(post1header, BorderLayout.CENTER);
+        headerWrapper.add(viewButton, BorderLayout.EAST);
+
         panel.add(post1header, BorderLayout.NORTH);
         panel.add(post1body, BorderLayout.CENTER);
         panel.add(post1numComments, BorderLayout.SOUTH);

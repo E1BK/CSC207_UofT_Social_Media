@@ -6,6 +6,7 @@ import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
+import interface_adapter.view_post.ViewPostController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -25,6 +26,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     // Controllers
     private MyProfileController myProfileController;
+    private ViewPostController viewPostController;
     private MyProfileChangePasswordController changePasswordController = null;
     private LogoutController logoutController = null;
 
@@ -112,58 +114,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                                                                passwordConfirm);
         passwordPanel.add(passwordInfo);
 
-        // Julian
-        // Display Posts
-        //posts = new ArrayList<Post>();
-//        final JPanel postsPanel = new JPanel();
-//        postContainer = new JPanel();
-//        postContainer.setLayout(new BoxLayout(postContainer, BoxLayout.Y_AXIS));
-//        postsPanel.add(new JScrollPane(postContainer),  BorderLayout.CENTER);
-//
-//        postsPanel.add(postContainer);
-//        postsPanel.setSize(new Dimension(300, 200));
-//        postsPanel.setVisible(true);
-        // Julian End
-
-        //Hasan Edit
-        // Display Posts: postsPanel
-        // the posts of the user will be displayed inside <postsPanel>
-
-//        ArrayList<Post> allMyPosts = myProfileViewModel.getState().getPosts();
-//        ArrayList<Post> postsToDisplay = new ArrayList<>();
-//
-//        if (allMyPosts.size() < 6) {
-//            PostFactory myPostFactory = new PostFactory();
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 17, "Need help with calculus", "I finally understand derivatives after hours of practice!", "2025-11-18", new ArrayList<Comment>()));
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 23, "Java project update", "Implemented the backend today—feels great!", "2025-11-18", new ArrayList<Comment>()));
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 31, "Exam stress", "Can't believe how fast finals are approaching.", "2025-11-18", new ArrayList<Comment>()));
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 56, "Cloud watching", "Did you know the average cloud weighs over a million pounds? It's all about density! Watching those massive, weightless-looking giants drift by is truly mind-boggling. #ScienceFacts #Nature", "2025-11-18", new ArrayList<Comment>()));
-//            postsToDisplay.add(myPostFactory.create(myProfileViewModel.getState().getUsername(), 42, "CSC236 is hard", "Term Test 4 was really difficult! I really wish I had revised deterministic finite automata...", "2025-11-18", new ArrayList<Comment>()));
-//        } else {
-//            postsToDisplay.add(allMyPosts.getLast());
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 2));
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 3));
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 4));
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 5));
-//            postsToDisplay.add(allMyPosts.get(allMyPosts.size() - 6));
-//        }
-//
-//        JPanel row1 = new JPanel();
-//        JPanel row2 = new JPanel();
-//        PostPanel post1 = new PostPanel(postsToDisplay.getFirst());
-//        PostPanel post2 = new PostPanel(postsToDisplay.get(1));
-//        PostPanel post3 = new PostPanel(postsToDisplay.get(2));
-//        PostPanel post4 = new PostPanel(postsToDisplay.get(3));
-//        PostPanel post5 = new PostPanel(postsToDisplay.get(4));
-//        PostPanel post6 = new PostPanel(postsToDisplay.getLast());
-//        row1.add(post1.panel);
-//        row1.add(post2.panel);
-//        row1.add(post3.panel);
-//        row2.add(post4.panel);
-//        row2.add(post5.panel);
-//        row2.add(post6.panel);
-//
-//        JPanel postsPanel = new JPanel();
         JPanel postsPanel = new JPanel();
         postsPanel.setLayout(new BoxLayout(postsPanel, BoxLayout.Y_AXIS));
         row1 = new JPanel();
@@ -171,7 +121,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         row2 = new JPanel();
         postsPanel.add(row2);
         postsPanel.add(Box.createRigidArea(new Dimension(0, 0)));
-        // End of Hasan Edit
 
         JPanel bioPasswordPanel = new JPanel();
         bioPasswordPanel.setLayout(new BoxLayout(bioPasswordPanel, BoxLayout.X_AXIS));
@@ -349,17 +298,24 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         if (posts.size() < 6) { row2Size = posts.size() - 3;}
 
         for (int i = 0; i < row1Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(i));
+            PostPanel post = new PostPanel(posts.get(i));
+            if (viewPostController != null) {
+                post.setViewPostController(viewPostController);   // 🔹 NEW
+            }
             row1.add(post.panel);
         }
 
         for  (int i = 0; i < row2Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(i+3));
+            PostPanel post = new PostPanel(posts.get(i+3));
+            if (viewPostController != null) {
+                post.setViewPostController(viewPostController);   // 🔹 NEW
+            }
             row2.add(post.panel);
         }
 
         this.posts = posts;
     }
+
 
     public String getViewName() { return viewName; }
 
@@ -367,5 +323,12 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     public void setChangePasswordController(MyProfileChangePasswordController controller) {
         this.changePasswordController = controller;
     }
-    public void setLogoutController(LogoutController controller) { this.logoutController = controller; }
+
+    public void setViewPostController(ViewPostController controller) {
+        this.viewPostController = controller;
+    }
+
+    public void setLogoutController(LogoutController controller) {
+        this.logoutController = controller;
+    }
 }
