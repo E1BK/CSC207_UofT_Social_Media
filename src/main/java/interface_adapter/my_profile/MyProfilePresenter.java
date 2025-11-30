@@ -35,6 +35,8 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
         state.setEmail(makePostOutputData.getEmail());
         state.setBio(makePostOutputData.getBio());
         state.setPosts(makePostOutputData.getPosts());
+        myProfileViewModel.setState(state);
+        myProfileViewModel.firePropertyChange();
     }
 
     @Override
