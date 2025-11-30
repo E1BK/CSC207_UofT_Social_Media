@@ -270,7 +270,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     @Override
     public void propertyChange(PropertyChangeEvent e) {
         if (e.getPropertyName().equals("state")) {
-            final MyProfileState state = myProfileViewModel.getState();
+            final MyProfileState state = (MyProfileState) e.getNewValue();
             username.setText(state.getUsername());
             passwordInputField.setText(state.getPassword());
             bioInputField.setText(state.getBio());
@@ -282,7 +282,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             for (int i = 0; i < row2Count; i++) { row2.remove(0); }
 
             if (!Objects.equals(username.getText(), "")) {
-                myProfileController.execute(state.getUsername(), state.getPassword(), state.getEmail(), state.getBio());
+                myProfileController.refreshPosts(state.getUsername());
                 addPosts(state.getPosts());
             }
         }
