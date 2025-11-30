@@ -8,6 +8,9 @@ import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
 import interface_adapter.view_post.ViewPostController;
 
+import entity.Comment;
+import use_case.make_post.PostViewData;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -290,32 +293,79 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         }
     }
 
+    private PostViewData buildPostViewDataFromMap(String username, Map postMap) {
+        // Extract & convert ID
+        Object idObj = postMap.get(myProfileViewModel.ID);
+        int postId;
+        if (idObj instanceof Number n) {
+            postId = n.intValue();
+        } else {
+            postId = Integer.parseInt(String.valueOf(idObj));
+        }
+
+        String title = String.valueOf(postMap.get(myProfileViewModel.TITLE));
+        String body  = String.valueOf(postMap.get(myProfileViewModel.BODY));
+        String date  = String.valueOf(postMap.get(myProfileViewModel.DATE));
+
+        // If date has a time part (like "...T12:34:56Z"), keep only the date
+        int tIndex = date.indexOf("T");
+        if (tIndex > 0) {
+            date = date.substring(0, tIndex);
+        }
+
+        // You can wire real comments later; for now, an empty list is fine.
+        return new PostViewData(
+                username,
+                postId,
+                title,
+                body,
+                date,
+                new ArrayList<Comment>()
+        );
+    }
+
     private void addPosts(ArrayList<Map> posts) {
+        // Clear rows first
+        row1.removeAll();
+        row2.removeAll();
+
+        // All posts here belong to the current profile user
+        String currentUsername = myProfileViewModel.getState().getUsername();
+
         int row1Size = 3;
         int row2Size = 3;
 
         if (posts.size() < 3) { row1Size = posts.size(); }
-        if (posts.size() < 6) { row2Size = posts.size() - 3;}
+        if (posts.size() < 6) { row2Size = posts.size() - 3; }
 
+        // ----- first row -----
         for (int i = 0; i < row1Size; i++) {
-            PostPanel post = new PostPanel(posts.get(i));
+            Map postMap = posts.get(i);
+
+            PostViewData pvd = buildPostViewDataFromMap(currentUsername, postMap);
+            PostPanel postPanel = new PostPanel(pvd);           // **uses working constructor**
             if (viewPostController != null) {
-                post.setViewPostController(viewPostController);   // 🔹 NEW
+                postPanel.setViewPostController(viewPostController);
             }
-            row1.add(post.panel);
+
+            row1.add(postPanel.panel);
         }
 
-        for  (int i = 0; i < row2Size; i++) {
-            PostPanel post = new PostPanel(posts.get(i+3));
+        // ----- second row -----
+        for (int i = 0; i < row2Size; i++) {
+            Map postMap = posts.get(i + 3);
+
+            PostViewData pvd = buildPostViewDataFromMap(currentUsername, postMap);
+            PostPanel postPanel = new PostPanel(pvd);
             if (viewPostController != null) {
-                post.setViewPostController(viewPostController);   // 🔹 NEW
+                postPanel.setViewPostController(viewPostController);
             }
-            row2.add(post.panel);
+
+            row2.add(postPanel.panel);
         }
 
         this.posts = posts;
     }
-
 
     public String getViewName() { return viewName; }
 
