@@ -1,10 +1,10 @@
 package view;
 
 import app.GradientPanel;
+import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
-import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
 import use_case.make_post.PostViewData;
 
@@ -16,7 +16,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MyProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     // Variables
@@ -215,6 +214,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println(e.getActionCommand());
+                        myProfileViewModel.getState().setInactive();
                         myProfileController.switchToPostView();
                     }
                 }
@@ -225,20 +225,21 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println(e.getActionCommand());
+                        myProfileViewModel.getState().setInactive();
                         myProfileController.switchToSearchView();
                     }
                 }
         );
 
-        profileButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.out.println(e.getActionCommand());
-                        myProfileController.switchToMyProfileView();
-                    }
-                }
-        );
+//        profileButton.addActionListener(
+//                new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        System.out.println(e.getActionCommand());
+//                        myProfileController.switchToMyProfileView();
+//                    }
+//                }
+//        );
 
         logoutButton.addActionListener(
                 new ActionListener() {
@@ -271,18 +272,19 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     public void propertyChange(PropertyChangeEvent e) {
         if (e.getPropertyName().equals("state")) {
             final MyProfileState state = (MyProfileState) e.getNewValue();
-            username.setText(state.getUsername());
-            passwordInputField.setText(state.getPassword());
-            bioInputField.setText(state.getBio());
-            email.setText(state.getEmail());
+            if (!state.isActive()) {
+                state.setActive();
+                myProfileController.execute(state.getUsername());
+                username.setText(state.getUsername());
+                passwordInputField.setText(state.getPassword());
+                bioInputField.setText(state.getBio());
+                email.setText(state.getEmail());
 
-            int row1Count = row1.getComponentCount();
-            int row2Count = row2.getComponentCount();
-            for (int i = 0; i < row1Count; i++) { row1.remove(0); }
-            for (int i = 0; i < row2Count; i++) { row2.remove(0); }
+                int row1Count = row1.getComponentCount();
+                int row2Count = row2.getComponentCount();
+                for (int i = 0; i < row1Count; i++) { row1.remove(0); }
+                for (int i = 0; i < row2Count; i++) { row2.remove(0); }
 
-            if (!Objects.equals(username.getText(), "")) {
-                myProfileController.refreshPosts(state.getUsername());
                 addPosts(state.getPosts());
             }
         }

@@ -208,7 +208,8 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                         // to Profile use case
                         profileController.execute(selected.getUsername(),
                                                   selected.getEmail(),
-                                                  selected.getBio());
+                                                  selected.getBio(),
+                                                  state.getUsername());
                         // to ProfileView
                         profileController.switchToProfileView();
                     } else {

@@ -158,7 +158,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
                             System.out.println(evt.getActionCommand());
-                            myProfileController.switchToMyProfileView();
+                            landingController.switchToProfileView();
                         }
                     }
                 }

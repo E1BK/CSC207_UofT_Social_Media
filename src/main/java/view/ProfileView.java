@@ -200,7 +200,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             for (int i = 0; i < row2Count; i++) { row2.remove(0); }
 
             if (!Objects.equals(username.getText(), "")) {
-                profileController.refreshPosts(state.getUsername());
                 addPosts(state.getPosts());
             }
         }

@@ -9,6 +9,7 @@ public class MyProfileState {
     private String bio = "";
     private String email = "";
     private String name = "";
+    private Boolean active;
     private ArrayList<PostViewData> posts = new  ArrayList<>();
 
     public MyProfileState(MyProfileState copy) {
@@ -20,7 +21,9 @@ public class MyProfileState {
         posts = copy.posts;
     }
 
-    public MyProfileState() {}
+    public MyProfileState() {
+        active = false;
+    }
 
     public String getUsername() {
         return username;
@@ -59,6 +62,10 @@ public class MyProfileState {
     public ArrayList<PostViewData> getPosts() {
         return posts;
     }
+
+    public void setActive() { active = true; }
+    public void setInactive() { active = false; }
+    public boolean isActive() { return active; }
 
     public void logout() {
         username = "";

@@ -1,11 +1,11 @@
 package interface_adapter.profile;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import use_case.make_post.PostViewData;
 
 public class ProfileState {
+    private String user = "";
     private String username = "";
     private String bio = "";
     private String email = "";
@@ -13,6 +13,7 @@ public class ProfileState {
     private ArrayList<PostViewData> posts = new  ArrayList<>();
 
     public ProfileState(ProfileState copy) {
+        user = copy.user;
         username = copy.username;
         bio = copy.bio;
         email = copy.email;
@@ -28,6 +29,9 @@ public class ProfileState {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getUser() {return user;}
+    public void setUser(String user) {this.user = user;}
 
     public String getBio() {
         return bio;

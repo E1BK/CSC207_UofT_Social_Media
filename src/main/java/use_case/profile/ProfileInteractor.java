@@ -1,7 +1,6 @@
 package use_case.profile;
 
 import entity.Post;
-import entity.User;
 import use_case.make_post.PostViewData;
 
 import java.util.ArrayList;
@@ -33,9 +32,10 @@ public class ProfileInteractor implements ProfileInputBoundary {
         ProfileOutputData outputData = new ProfileOutputData(inputData.getUsername(),
                 inputData.getEmail(),
                 inputData.getBio(),
-                postData);
+                postData,
+                inputData.getUser());
 
-        profilePresenter.setState(outputData);
+        profilePresenter.prepareSuccessView(outputData);
     }
 
     // Switches between views
@@ -50,21 +50,4 @@ public class ProfileInteractor implements ProfileInputBoundary {
         profilePresenter.switchToPostView();
     }
     public void switchToProfileView() { profilePresenter.switchToProfileView(); }
-
-    public void refreshPosts(String username) {
-        User user = profileUserDataAccess.getUserInfo(username);
-        ArrayList<Post> posts = user.getPosts();
-        ArrayList<PostViewData> postData = new ArrayList<>();
-
-        for (Post post : posts) {
-            postData.add(new PostViewData(post.getUsername(),
-                    post.getPost_id(),
-                    post.getTitle(),
-                    post.getBody(),
-                    post.getPost_date(),
-                    post.getComments()));
-        }
-
-        profilePresenter.refreshPosts(postData);
-    }
 }

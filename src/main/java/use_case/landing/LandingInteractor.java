@@ -2,13 +2,8 @@ package use_case.landing;
 
 import entity.Post;
 import entity.User;
-import interface_adapter.make_post.MakePostPresenter;
-import use_case.make_post.MakePostInputBoundary;
-import use_case.make_post.MakePostInteractor;
 import use_case.make_post.PostViewData;
-import view.PostView;
 
-import java.time.Instant;
 import java.util.*;
 
 public class LandingInteractor implements LandingInputBoundary{
@@ -51,9 +46,7 @@ public class LandingInteractor implements LandingInputBoundary{
         landingPresenter.switchToPeopleView();
     }
 
-    public void switchToMeView() {
-        landingPresenter.switchToMeView();
-    }
+    public void switchToProfileView() {landingPresenter.switchToProfileView();}
 
     public void switchToClubsView() {
         landingPresenter.switchToClubsView();
