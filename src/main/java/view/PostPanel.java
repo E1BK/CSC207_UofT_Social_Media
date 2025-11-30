@@ -1,6 +1,8 @@
 package view;
 
 import use_case.make_post.PostViewData;
+import interface_adapter.view_post.ViewPostController;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,7 +18,11 @@ public class PostPanel extends JPanel {
     public JPanel panel = new JPanel();
     private String title;
 
+    private ViewPostController viewPostController;
+    private final PostViewData post;
+
     public PostPanel(PostViewData post) {
+        this.post = post;
 
         panel.setLayout(new BorderLayout());
         panel.setBackground(Color.white);
@@ -58,8 +64,29 @@ public class PostPanel extends JPanel {
         post1numComments.setFont(new Font("Helvetica", Font.ITALIC, 15));
         post1numComments.setForeground(Color.GRAY);
 
+        JPanel bottomBar = new JPanel(new BorderLayout());
+        bottomBar.setBackground(Color.white);
+        bottomBar.add(post1numComments, BorderLayout.WEST);
+
+        JButton viewButton = new JButton("View");
+        viewButton.setPreferredSize(new Dimension(70, 25));
+        viewButton.addActionListener(e -> {
+            if (viewPostController == null) {
+                System.out.println("ViewPostController not set in PostPanel");
+                return;
+            }
+            // This is the call we were using before
+            viewPostController.viewPost(post.getUsername(), post.getPost_id());
+        });
+        bottomBar.add(viewButton, BorderLayout.EAST);
+
         panel.add(post1header, BorderLayout.NORTH);
         panel.add(post1body, BorderLayout.CENTER);
-        panel.add(post1numComments, BorderLayout.SOUTH);
+        panel.add(bottomBar, BorderLayout.SOUTH);
     }
+
+    public void setViewPostController(ViewPostController controller) {
+        this.viewPostController = controller;
+    }
+
 }

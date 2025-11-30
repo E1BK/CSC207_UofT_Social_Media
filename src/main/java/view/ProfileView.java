@@ -5,6 +5,7 @@ import interface_adapter.logout.LogoutController;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.view_post.ViewPostController;
 import use_case.make_post.PostViewData;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,6 +24,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     // Controllers
     private ProfileController profileController;
+    private ViewPostController viewPostController;
     private LogoutController logoutController = null;
 
     // Textfields
@@ -210,17 +212,19 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         int row2Size = 3;
 
         if (posts.size() < 3) { row1Size = posts.size(); }
-        if (posts.size() < 6) { row2Size = posts.size() - 3;}
+        if (posts.size() < 6) { row2Size = posts.size() - 3; }
 
         for (int i = 1; i <= row1Size; i++) {
-            System.out.println(posts.size());
-            System.out.println(posts.size()-i);
-            PostPanel post = new  PostPanel(posts.get(posts.size()-i));
+            PostViewData data = posts.get(posts.size() - i);
+            PostPanel post = new PostPanel(data);
+            post.setViewPostController(viewPostController);   // ← hook it up
             row1.add(post.panel);
         }
 
-        for  (int i = 1; i <= row2Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(posts.size()-i - 3));
+        for (int i = 1; i <= row2Size; i++) {
+            PostViewData data = posts.get(posts.size() - i - 3);
+            PostPanel post = new PostPanel(data);
+            post.setViewPostController(viewPostController);   // ← hook it up
             row2.add(post.panel);
         }
 
@@ -230,4 +234,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public String getViewName() { return viewName; }
 
     public void setProfileController(ProfileController controller) { this.profileController = controller; }
+
+    public void setViewPostController(ViewPostController controller) {
+        this.viewPostController = controller;
+    }
 }
