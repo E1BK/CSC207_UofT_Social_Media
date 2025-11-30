@@ -23,4 +23,8 @@ public class MyProfileController {
     public void switchToLoginSignupView() {myProfileInteractor.switchToLoginSignupView();}
     public void switchToCurrentPost(int postID) {
     }
+
+    public void refreshPosts(String username) {
+        myProfileInteractor.refreshPosts(username);
+    }
 }

@@ -31,13 +31,7 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(MyProfileOutputData makePostOutputData) {
-        ArrayList<PostViewData> posts = makePostOutputData.getPosts();
-        MyProfileState state = myProfileViewModel.getState();
-        state.setPosts(posts);
-        myProfileViewModel.setState(state);
-        myProfileViewModel.firePropertyChange();
-    }
+    public void prepareSuccessView(MyProfileOutputData makePostOutputData) { myProfileViewModel.firePropertyChange(); }
 
     @Override
     public void prepareFailView(String errorMessage) { myProfileViewModel.firePropertyChange(); }
@@ -67,5 +61,10 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
     public void switchToLoginSignupView() {
         viewManagerModel.setState(loginSignupViewName);
         viewManagerModel.firePropertyChange();
+    }
+
+    public void refreshPosts(ArrayList<PostViewData> posts) {
+        MyProfileState state = myProfileViewModel.getState();
+        state.setPosts(posts);
     }
 }

@@ -270,7 +270,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     @Override
     public void propertyChange(PropertyChangeEvent e) {
         if (e.getPropertyName().equals("state")) {
-            final MyProfileState state = (MyProfileState) e.getNewValue();
+            final MyProfileState state = myProfileViewModel.getState();
             username.setText(state.getUsername());
             passwordInputField.setText(state.getPassword());
             bioInputField.setText(state.getBio());

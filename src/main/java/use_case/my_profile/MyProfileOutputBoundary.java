@@ -13,4 +13,5 @@ public interface MyProfileOutputBoundary {
     void switchToPostView();
     void switchToMyProfileView();
     void switchToLoginSignupView();
+    void refreshPosts(ArrayList<PostViewData> posts);
 }
