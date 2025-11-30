@@ -22,7 +22,7 @@ public class SignupInteractor implements SignupInputBoundary {
     @Override
     public void execute(SignupInputData signupInputData) {
         if (userDataAccessObject.existsByName(signupInputData.getUsername())) {
-            userPresenter.prepareFailView("User already exists.");
+            userPresenter.prepareFailView("User already exists");
         }
         else if (!signupInputData.getEmail().contains("@mail.utoronto.ca")) {
             userPresenter.prepareFailView("Must use UofT email (@mail.utoronto.ca)");
