@@ -20,7 +20,23 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
 
     @Override
     public void execute(MyProfileInputData myProfileInputData) {
+        String username = myProfileInputData.getUsername();
+        User user = myProfileUserDataAccess.getUserInfo(username);
+        ArrayList<Post> posts = user.getPosts();
+        ArrayList<PostViewData> postData = new ArrayList<>();
 
+        for (Post post : posts) {
+            postData.add(new PostViewData(post.getUsername(),
+                    post.getPost_id(),
+                    post.getTitle(),
+                    post.getBody(),
+                    post.getPost_date(),
+                    post.getComments()));
+        }
+
+        MyProfileOutputData outputData = new MyProfileOutputData(postData);
+
+        myProfilePresenter.prepareSuccessView(outputData);
     }
 
     // Switches between views
@@ -39,21 +55,4 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
         myProfilePresenter.switchToPostView();
     }
     public void switchToLoginSignupView() { myProfilePresenter.switchToLoginSignupView(); }
-
-    public void refreshPosts(String username) {
-        User user = myProfileUserDataAccess.getUserInfo(username);
-        ArrayList<Post> posts = user.getPosts();
-        ArrayList<PostViewData> postData = new ArrayList<>();
-
-        for (Post post : posts) {
-            postData.add(new PostViewData(post.getUsername(),
-                    post.getPost_id(),
-                    post.getTitle(),
-                    post.getBody(),
-                    post.getPost_date(),
-                    post.getComments()));
-        }
-
-        myProfilePresenter.refreshPosts(postData);
-    }
 }

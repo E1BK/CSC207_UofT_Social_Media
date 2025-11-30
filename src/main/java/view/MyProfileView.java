@@ -282,7 +282,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             for (int i = 0; i < row2Count; i++) { row2.remove(0); }
 
             if (!Objects.equals(username.getText(), "")) {
-                myProfileController.refreshPosts(state.getUsername());
+                myProfileController.execute(state.getUsername(), state.getPassword(), state.getEmail(), state.getBio());
                 addPosts(state.getPosts());
             }
         }
