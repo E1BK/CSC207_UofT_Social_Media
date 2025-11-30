@@ -315,7 +315,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     public void setLoginController(LoginController controller) {
         this.loginController = controller;
     }
-
     public void setSignupController(SignupController controller) {
         this.signupController = controller;
     }

@@ -2,13 +2,8 @@ package use_case.landing;
 
 import entity.Post;
 import entity.User;
-import interface_adapter.make_post.MakePostPresenter;
-import use_case.make_post.MakePostInputBoundary;
-import use_case.make_post.MakePostInteractor;
 import use_case.make_post.PostViewData;
-import view.PostView;
 
-import java.time.Instant;
 import java.util.*;
 
 public class LandingInteractor implements LandingInputBoundary{
@@ -24,12 +19,15 @@ public class LandingInteractor implements LandingInputBoundary{
     @Override
     public void execute() {
         ArrayList<String> usernames = landingDataAccess.getExistingUsernames();
-
+        Random random = new Random();
         ArrayList<PostViewData> posts = new ArrayList<>();
+        ArrayList<String> addedUsers = new ArrayList<>();
         while(posts.size() < 3){
-            Random random = new Random();
+
             String username = usernames.get(random.nextInt(usernames.size()));
-//            String username = "zhaohayd";
+            if (addedUsers.contains(username)){
+                continue;
+            }
             User currUser = landingDataAccess.getUserInfo(username);
             if (currUser.getPosts().isEmpty()) {
                 continue;
@@ -42,6 +40,7 @@ public class LandingInteractor implements LandingInputBoundary{
                     newestPost.getPost_date(),
                     newestPost.getComments());
             posts.add(newestPostData);
+            addedUsers.add(username);
         }
         LandingOutputData output = new LandingOutputData(posts);
         landingPresenter.prepareSuccessView(output);
@@ -51,9 +50,7 @@ public class LandingInteractor implements LandingInputBoundary{
         landingPresenter.switchToPeopleView();
     }
 
-    public void switchToMeView() {
-        landingPresenter.switchToMeView();
-    }
+    public void switchToProfileView() {landingPresenter.switchToProfileView();}
 
     public void switchToClubsView() {
         landingPresenter.switchToClubsView();

@@ -1,8 +1,8 @@
 package use_case.my_profile;
 
 import entity.Post;
-import interface_adapter.my_profile.MyProfilePresenter;
 import entity.User;
+import use_case.make_post.PostViewData;
 
 import java.util.ArrayList;
 
@@ -18,35 +18,48 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
     }
 
     @Override
-    public void execute(MyProfileInputData myProfileInputData) {
+    public void execute(MyProfileInputData inputData) {
+        try {
+            User user = myProfileUserDataAccess.getUserInfo(inputData.getUsername());
+            ArrayList<Post> posts = user.getPosts();
+            ArrayList<PostViewData> postData = new ArrayList<>();
 
+            for (Post post : posts) {
+                postData.add(new PostViewData(post.getUsername(),
+                        post.getPost_id(),
+                        post.getTitle(),
+                        post.getBody(),
+                        post.getPost_date(),
+                        post.getComments()));
+            }
+
+            MyProfileOutputData outputData = new MyProfileOutputData(user.getUsername(),
+                    user.getPassword(),
+                    user.getEmail(),
+                    user.getBio(),
+                    postData);
+
+            myProfilePresenter.prepareSuccessView(outputData);
+        }
+        catch (RuntimeException ex) {
+            System.out.println("SearchUserInteractor error: " + ex.getMessage());
+            myProfilePresenter.prepareFailView(ex.getMessage());
+        }
     }
 
     // Switches between views
     public void switchToMyProfileView() {
-        MyProfilePresenter temp = (MyProfilePresenter) myProfilePresenter;
-        temp.switchToMyProfileView();
+        myProfilePresenter.switchToMyProfileView();
     }
 
     public void switchToLandingView() {
         myProfilePresenter.switchToLandingView();
     }
-
     public void switchToSearchView() {
         myProfilePresenter.switchToSearchView();
     }
-
     public void switchToPostView() {
         myProfilePresenter.switchToPostView();
     }
-
     public void switchToLoginSignupView() { myProfilePresenter.switchToLoginSignupView(); }
-
-    public void refreshPosts(String username) {
-        User user = myProfileUserDataAccess.getUserInfo(username);
-        ArrayList<Post> posts = user.getPosts();
-        PostData postData = new PostData();
-        postData.setPostList(posts);
-        myProfilePresenter.refreshPosts(postData.getPosts());
-    }
 }

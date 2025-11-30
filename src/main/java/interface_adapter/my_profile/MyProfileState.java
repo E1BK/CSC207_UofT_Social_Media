@@ -1,7 +1,7 @@
 package interface_adapter.my_profile;
 
+import use_case.make_post.PostViewData;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class MyProfileState {
     private String username = "";
@@ -9,7 +9,8 @@ public class MyProfileState {
     private String bio = "";
     private String email = "";
     private String name = "";
-    private ArrayList<Map> posts = new  ArrayList<>();
+    private Boolean active;
+    private ArrayList<PostViewData> posts = new  ArrayList<>();
 
     public MyProfileState(MyProfileState copy) {
         username = copy.username;
@@ -20,7 +21,9 @@ public class MyProfileState {
         posts = copy.posts;
     }
 
-    public MyProfileState() {}
+    public MyProfileState() {
+        active = false;
+    }
 
     public String getUsername() {
         return username;
@@ -53,12 +56,16 @@ public class MyProfileState {
     public void setName(String name) { this.name = name; }
     public String getName() { return name; }
 
-    public void setPosts(ArrayList<Map> posts) {
+    public void setPosts(ArrayList<PostViewData> posts) {
         this.posts = posts;
     }
-    public ArrayList<Map> getPosts() {
+    public ArrayList<PostViewData> getPosts() {
         return posts;
     }
+
+    public void setActive() { active = true; }
+    public void setInactive() { active = false; }
+    public boolean isActive() { return active; }
 
     public void logout() {
         username = "";

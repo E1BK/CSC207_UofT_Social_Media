@@ -4,7 +4,6 @@ import entity.Post;
 import entity.PostFactory;
 import entity.User;
 import entity.UserFactory;
-import interface_adapter.make_post.MakePostPresenter;
 
 import java.time.Instant;
 import java.util.ArrayList;

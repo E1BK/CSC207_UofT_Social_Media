@@ -1,6 +1,8 @@
 package use_case.login_signup.login;
 
 import entity.Post;
+import use_case.make_post.PostViewData;
+
 import java.util.ArrayList;
 
 /**
@@ -12,12 +14,12 @@ public class LoginOutputData {
     private final String password;
     private final String bio;
     private final String email;
-    private final ArrayList<Post> posts;
+    private final ArrayList<PostViewData> posts;
     public LoginOutputData(String username,
-                           String password, 
-                           String bio, 
+                           String password,
+                           String bio,
                            String email,
-                           ArrayList<Post> posts) {
+                           ArrayList<PostViewData> posts) {
         this.username = username;
         this.password = password;
         this.bio = bio;
@@ -31,5 +33,5 @@ public class LoginOutputData {
     public String getPassword() { return password; }
     public String getBio() { return bio; }
     public String getEmail() { return email; }
-    public ArrayList<Post> getPosts() { return posts; }
+    public ArrayList<PostViewData> getPosts() { return posts; }
 }
