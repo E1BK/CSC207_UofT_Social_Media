@@ -4,7 +4,6 @@
 //// responsible for finding the actual User entity.
 package interface_adapter.search_user;
 
-// import entity.User; (deleted)
 import use_case.search_user.SearchUserInputBoundary;
 import use_case.search_user.SearchUserInputData;
 import use_case.search_user.SearchUserInteractor;
