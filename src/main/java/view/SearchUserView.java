@@ -20,15 +20,11 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;
 import interface_adapter.search_user.SearchUserState;
 import entity.User;
 import interface_adapter.profile.ProfileController;
-
-
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -210,11 +206,14 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                     if (selected != null) {
                         System.out.println("View Profile clicked for: " + selected.getUsername());
                         // to Profile use case
-                        profileController.execute(selected);
+                        profileController.execute(selected.getUsername(),
+                                                  selected.getEmail(),
+                                                  selected.getBio(),
+                                                  state.getUsername());
                         // to ProfileView
                         profileController.switchToProfileView();
                     } else {
-                        System.out.println("View Profile clicked but no selectedUser in state");
+                        System.out.println("View Profile clicked but no selected User in state");
                     }
                 } else {
                     System.out.println("SearchUserController is null (not set yet)");

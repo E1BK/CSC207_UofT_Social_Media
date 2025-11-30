@@ -3,10 +3,6 @@
 package view;
 
 import app.GradientPanel;
-import entity.Comment;
-import entity.Post;
-import entity.PostFactory;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingController;
 import interface_adapter.landing.LandingState;
 import interface_adapter.make_post.MakePostController;
@@ -162,7 +158,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
                             System.out.println(evt.getActionCommand());
-                            myProfileController.switchToMyProfileView();
+                            landingController.switchToProfileView();
                         }
                     }
                 }
