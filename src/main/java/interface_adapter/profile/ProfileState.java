@@ -3,12 +3,14 @@ package interface_adapter.profile;
 import java.util.ArrayList;
 import java.util.Map;
 
+import use_case.make_post.PostViewData;
+
 public class ProfileState {
     private String username = "";
     private String bio = "";
     private String email = "";
     private String name = "";
-    private ArrayList<Map> posts = new  ArrayList<>();
+    private ArrayList<PostViewData> posts = new  ArrayList<>();
 
     public ProfileState(ProfileState copy) {
         username = copy.username;
@@ -44,10 +46,10 @@ public class ProfileState {
     public void setName(String name) { this.name = name; }
     public String getName() { return name; }
 
-    public void setPosts(ArrayList<Map> posts) {
+    public void setPosts(ArrayList<PostViewData> posts) {
         this.posts = posts;
     }
-    public ArrayList<Map> getPosts() {
+    public ArrayList<PostViewData> getPosts() {
         return posts;
     }
 

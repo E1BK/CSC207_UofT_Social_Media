@@ -1,7 +1,8 @@
 package use_case.my_profile;
 
+import use_case.make_post.PostViewData;
+
 import java.util.ArrayList;
-import java.util.Map;
 
 public interface MyProfileOutputBoundary {
     void prepareSuccessView(MyProfileOutputData myProfileOutputData);
@@ -12,5 +13,5 @@ public interface MyProfileOutputBoundary {
     void switchToPostView();
     void switchToMyProfileView();
     void switchToLoginSignupView();
-    void refreshPosts(ArrayList<Map> posts);
+    void refreshPosts(ArrayList<PostViewData> posts);
 }

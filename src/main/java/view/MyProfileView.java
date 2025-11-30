@@ -6,6 +6,7 @@ import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
+import use_case.make_post.PostViewData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,7 +16,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Objects;
 
 public class MyProfileView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -46,7 +46,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     private final JButton searchButton;
     private final JButton profileButton;
     private final JButton logoutButton;
-    private ArrayList<Map> posts;
+    private ArrayList<PostViewData> posts;
 
     public MyProfileView(MyProfileViewModel myProfileViewModel) {
         this.myProfileViewModel = myProfileViewModel;
@@ -261,7 +261,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             for (int i = 0; i < posts.size(); i++) {
                 if (e.getActionCommand().contains (STR."\{i}")) {
                     System.out.println(e.getActionCommand());
-                    myProfileController.switchToCurrentPost((int) posts.get(i).get(myProfileViewModel.ID));
+                    //myProfileController.switchToCurrentPost((int) posts.get(i).get(myProfileViewModel.ID));
                 }
             }
         }
@@ -288,20 +288,20 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
         }
     }
 
-    private void addPosts(ArrayList<Map> posts) {
+    private void addPosts(ArrayList<PostViewData> posts) {
         int row1Size = 3;
         int row2Size = 3;
 
         if (posts.size() < 3) { row1Size = posts.size(); }
         if (posts.size() < 6) { row2Size = posts.size() - 3;}
 
-        for (int i = 0; i < row1Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(i));
+        for (int i = 1; i <= row1Size; i++) {
+            PostPanel post = new  PostPanel(posts.get(posts.size() - i));
             row1.add(post.panel);
         }
 
-        for  (int i = 0; i < row2Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(i+3));
+        for  (int i = 1; i <= row2Size; i++) {
+            PostPanel post = new  PostPanel(posts.get(posts.size() - i - 3));
             row2.add(post.panel);
         }
 

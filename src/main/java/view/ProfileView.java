@@ -5,7 +5,7 @@ import interface_adapter.logout.LogoutController;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
-
+import use_case.make_post.PostViewData;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Objects;
 
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -42,7 +41,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JButton homeButton;
     private final JButton searchButton;
     private final JButton profileButton;
-    private ArrayList<Map> posts;
+    private ArrayList<PostViewData> posts;
 
     public ProfileView(ProfileViewModel profileViewModel) {
         this.profileViewModel = profileViewModel;
@@ -181,7 +180,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             for (int i = 0; i < posts.size(); i++) {
                 if (e.getActionCommand().contains (STR."\{i}")) {
                     System.out.println(e.getActionCommand());
-                    profileController.switchToCurrentPost((int) posts.get(i).get(profileViewModel.ID));
+                    //profileController.switchToCurrentPost((int) posts.get(i).get(profileViewModel.ID));
                 }
             }
         }
@@ -207,20 +206,22 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         }
     }
 
-    private void addPosts(ArrayList<Map> posts) {
+    private void addPosts(ArrayList<PostViewData> posts) {
         int row1Size = 3;
         int row2Size = 3;
 
         if (posts.size() < 3) { row1Size = posts.size(); }
         if (posts.size() < 6) { row2Size = posts.size() - 3;}
 
-        for (int i = 0; i < row1Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(i));
+        for (int i = 1; i <= row1Size; i++) {
+            System.out.println(posts.size());
+            System.out.println(posts.size()-i);
+            PostPanel post = new  PostPanel(posts.get(posts.size()-i));
             row1.add(post.panel);
         }
 
-        for  (int i = 0; i < row2Size; i++) {
-            PostPanel post = new  PostPanel(posts.get(i+3));
+        for  (int i = 1; i <= row2Size; i++) {
+            PostPanel post = new  PostPanel(posts.get(posts.size()-i - 3));
             row2.add(post.panel);
         }
 

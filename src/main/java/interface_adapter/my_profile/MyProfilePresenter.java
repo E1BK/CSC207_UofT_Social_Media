@@ -3,11 +3,11 @@ package interface_adapter.my_profile;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.search_user.SearchUserViewModel;
+import use_case.make_post.PostViewData;
 import use_case.my_profile.MyProfileOutputBoundary;
 import use_case.my_profile.MyProfileOutputData;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class MyProfilePresenter implements MyProfileOutputBoundary {
 
@@ -63,7 +63,7 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
         viewManagerModel.firePropertyChange();
     }
 
-    public void refreshPosts(ArrayList<Map> posts) {
+    public void refreshPosts(ArrayList<PostViewData> posts) {
         MyProfileState state = myProfileViewModel.getState();
         state.setPosts(posts);
     }

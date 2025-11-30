@@ -4,7 +4,7 @@ import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInputData;
 
 import java.util.ArrayList;
-import java.util.Map;
+import use_case.make_post.PostViewData;
 
 public class ProfileController {
 
@@ -14,8 +14,8 @@ public class ProfileController {
         this.profileInteractor = profileInteractor;
     }
 
-    public void execute(String username, String email, String bio, ArrayList<Map> posts) {
-        final ProfileInputData profileInputData = new ProfileInputData(username, email, bio, posts);
+    public void execute(String username, String email, String bio) {
+        final ProfileInputData profileInputData = new ProfileInputData(username, email, bio);
         profileInteractor.execute(profileInputData);
     }
 

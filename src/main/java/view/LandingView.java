@@ -3,10 +3,6 @@
 package view;
 
 import app.GradientPanel;
-import entity.Comment;
-import entity.Post;
-import entity.PostFactory;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingController;
 import interface_adapter.landing.LandingState;
 import interface_adapter.make_post.MakePostController;

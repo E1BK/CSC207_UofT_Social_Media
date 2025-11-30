@@ -20,15 +20,11 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;
 import interface_adapter.search_user.SearchUserState;
 import entity.User;
 import interface_adapter.profile.ProfileController;
-import use_case.my_profile.PostData;
-
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -36,8 +32,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class SearchUserView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -212,13 +206,9 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
                     if (selected != null) {
                         System.out.println("View Profile clicked for: " + selected.getUsername());
                         // to Profile use case
-                        PostData postData = new PostData();
-                        postData.setPostList(selected.getPosts());
-
                         profileController.execute(selected.getUsername(),
                                                   selected.getEmail(),
-                                                  selected.getBio(),
-                                                  postData.getPosts());
+                                                  selected.getBio());
                         // to ProfileView
                         profileController.switchToProfileView();
                     } else {

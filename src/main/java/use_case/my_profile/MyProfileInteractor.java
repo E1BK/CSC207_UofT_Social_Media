@@ -3,6 +3,7 @@ package use_case.my_profile;
 import entity.Post;
 import interface_adapter.my_profile.MyProfilePresenter;
 import entity.User;
+import use_case.make_post.PostViewData;
 
 import java.util.ArrayList;
 
@@ -42,8 +43,17 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
     public void refreshPosts(String username) {
         User user = myProfileUserDataAccess.getUserInfo(username);
         ArrayList<Post> posts = user.getPosts();
-        PostData postData = new PostData();
-        postData.setPostList(posts);
-        myProfilePresenter.refreshPosts(postData.getPosts());
+        ArrayList<PostViewData> postData = new ArrayList<>();
+
+        for (Post post : posts) {
+            postData.add(new PostViewData(post.getUsername(),
+                    post.getPost_id(),
+                    post.getTitle(),
+                    post.getBody(),
+                    post.getPost_date(),
+                    post.getComments()));
+        }
+
+        myProfilePresenter.refreshPosts(postData);
     }
 }
