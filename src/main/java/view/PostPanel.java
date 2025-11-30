@@ -1,171 +1,65 @@
 package view;
 
-import interface_adapter.my_profile.MyProfileViewModel;
-import interface_adapter.view_post.ViewPostController;
 import use_case.make_post.PostViewData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Map;
 
 /**
- * Helper panel to render a post card.
- * Used both on Landing (PostViewData) and MyProfile (Map<String, String>).
+ * This is a "helper" class used to make
+ * a panel containing a post
+ * This is used to display posts on the Landing Page
  */
 public class PostPanel extends JPanel {
 
     public JPanel panel = new JPanel();
-    private ViewPostController viewPostController;
+    private String title;
 
-    // ---------- Landing page constructor (PostViewData) ----------
     public PostPanel(PostViewData post) {
+
         panel.setLayout(new BorderLayout());
         panel.setBackground(Color.white);
         panel.setBorder(new EmptyBorder(new Insets(10, 20, 10, 20)));
+//            panel.setMinimumSize(new Dimension(300, 200));
+//            panel.setMaximumSize(new Dimension(300, 200));
         panel.setPreferredSize(new Dimension(300, 200));
 
-        // Header (title, username, date)
-        JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(Color.white);
+        JPanel post1header = new JPanel();
+        post1header.setBackground(Color.white);
+        post1header.setLayout(new BorderLayout());
+        JLabel post1title = new JLabel(post.getTitle());
+        post1title.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel post1username = new JLabel("by " + post.getUsername());
+        post1username.setFont(new Font("Helvetica", Font.ITALIC, 15));
+        post1username.setForeground(Color.GRAY);
+        String date = post.getPost_date();
+        date = date.substring(0, date.indexOf("T"));
+        JLabel post1date = new JLabel(date);
+        post1date.setFont(new Font("Helvetica", Font.ITALIC, 15));
+        post1date.setForeground(Color.GRAY);
+        post1header.add(post1title, BorderLayout.NORTH);
+        post1header.add(post1username, BorderLayout.CENTER);
+        post1header.add(post1date, BorderLayout.SOUTH);
 
-        JLabel titleLabel = new JLabel(post.getTitle());
-        titleLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JTextArea post1body = new JTextArea(post.getBody());
+        post1body.setPreferredSize(new Dimension(200, 150));
+        post1body.setMaximumSize(new Dimension(200, 150));
+        post1body.setMinimumSize(new Dimension(200, 150));
 
-        JLabel userLabel = new JLabel("by " + post.getUsername());
-        userLabel.setFont(new Font("Helvetica", Font.ITALIC, 15));
-        userLabel.setForeground(Color.GRAY);
+        post1body.setLineWrap(true);
+        post1body.setWrapStyleWord(true);
+        post1body.setEditable(false);
+        post1body.setFont(new Font("Helvetica", Font.PLAIN, 15));
+        post1body.setBorder(new EmptyBorder(new Insets(10, 0, 10, 0)));
 
-        JLabel dateLabel = new JLabel(post.getPost_date());
-        dateLabel.setFont(new Font("Helvetica", Font.ITALIC, 15));
-        dateLabel.setForeground(Color.GRAY);
 
-        header.add(titleLabel, BorderLayout.NORTH);
-        header.add(userLabel, BorderLayout.CENTER);
-        header.add(dateLabel, BorderLayout.SOUTH);
+        JLabel post1numComments = new JLabel("Comments: " + post.getComments().size());
+        post1numComments.setFont(new Font("Helvetica", Font.ITALIC, 15));
+        post1numComments.setForeground(Color.GRAY);
 
-        // Body
-        JTextArea bodyArea = new JTextArea(post.getBody());
-        bodyArea.setPreferredSize(new Dimension(200, 150));
-        bodyArea.setMaximumSize(new Dimension(200, 150));
-        bodyArea.setMinimumSize(new Dimension(200, 150));
-        bodyArea.setLineWrap(true);
-        bodyArea.setWrapStyleWord(true);
-        bodyArea.setEditable(false);
-        bodyArea.setFont(new Font("Helvetica", Font.PLAIN, 15));
-        bodyArea.setBorder(new EmptyBorder(new Insets(10, 0, 10, 0)));
-
-        JLabel commentsLabel =
-                new JLabel("Comments: " + post.getComments().size());
-        commentsLabel.setFont(new Font("Helvetica", Font.ITALIC, 15));
-        commentsLabel.setForeground(Color.GRAY);
-
-        // View button
-        JButton viewButton = new JButton("View");
-        viewButton.setMargin(new Insets(2, 10, 2, 10));
-        viewButton.addActionListener(e -> {
-            if (viewPostController != null) {
-                viewPostController.viewPost(post.getUsername(), post.getPost_id());
-            } else {
-                System.out.println("ViewPostController not set in PostPanel (Landing)");
-            }
-        });
-
-        JPanel headerWrapper = new JPanel(new BorderLayout());
-        headerWrapper.setBackground(Color.white);
-        headerWrapper.add(header, BorderLayout.CENTER);
-        headerWrapper.add(viewButton, BorderLayout.EAST);
-
-        panel.add(headerWrapper, BorderLayout.NORTH);
-        panel.add(bodyArea, BorderLayout.CENTER);
-        panel.add(commentsLabel, BorderLayout.SOUTH);
-    }
-
-    // ---------- MyProfile constructor (Map-based) ----------
-    public PostPanel(Map post) {
-        panel.setLayout(new BorderLayout());
-        panel.setBackground(Color.white);
-        panel.setBorder(new EmptyBorder(new Insets(10, 20, 10, 20)));
-        panel.setPreferredSize(new Dimension(300, 200));
-
-        JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(Color.white);
-
-        String title = String.valueOf(post.get(MyProfileViewModel.TITLE));
-        String username = String.valueOf(post.get(MyProfileViewModel.USERNAME));
-        String dateRaw = String.valueOf(post.get(MyProfileViewModel.DATE));
-        String date = dateRaw;
-        int tIndex = dateRaw.indexOf("T");
-        if (tIndex > 0) {
-            date = dateRaw.substring(0, tIndex);
-        }
-
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
-
-        JLabel userLabel = new JLabel("by " + username);
-        userLabel.setFont(new Font("Helvetica", Font.ITALIC, 15));
-        userLabel.setForeground(Color.GRAY);
-
-        JLabel dateLabel = new JLabel(date);
-        dateLabel.setFont(new Font("Helvetica", Font.ITALIC, 15));
-        dateLabel.setForeground(Color.GRAY);
-
-        header.add(titleLabel, BorderLayout.NORTH);
-        header.add(userLabel, BorderLayout.CENTER);
-        header.add(dateLabel, BorderLayout.SOUTH);
-
-        String bodyText = String.valueOf(post.get(MyProfileViewModel.BODY));
-        JTextArea bodyArea = new JTextArea(bodyText);
-        bodyArea.setPreferredSize(new Dimension(200, 150));
-        bodyArea.setMaximumSize(new Dimension(200, 150));
-        bodyArea.setMinimumSize(new Dimension(200, 150));
-        bodyArea.setLineWrap(true);
-        bodyArea.setWrapStyleWord(true);
-        bodyArea.setEditable(false);
-        bodyArea.setFont(new Font("Helvetica", Font.PLAIN, 15));
-        bodyArea.setBorder(new EmptyBorder(new Insets(10, 0, 10, 0)));
-
-        String numComments =
-                String.valueOf(post.get(MyProfileViewModel.NUM_OF_COMMENTS));
-        JLabel commentsLabel = new JLabel("Comments: " + numComments);
-        commentsLabel.setFont(new Font("Helvetica", Font.ITALIC, 15));
-        commentsLabel.setForeground(Color.GRAY);
-
-        // View button for MyProfile
-        JButton viewButton = new JButton("View");
-        viewButton.setMargin(new Insets(2, 10, 2, 10));
-        viewButton.addActionListener(e -> {
-            if (viewPostController != null) {
-                Object idObj = post.get(MyProfileViewModel.ID);
-                int postId;
-                try {
-                    if (idObj instanceof Number n) {
-                        postId = n.intValue();
-                    } else {
-                        postId = Integer.parseInt(String.valueOf(idObj));
-                    }
-                    viewPostController.viewPost(username, postId);
-                } catch (Exception ex) {
-                    System.out.println("Invalid post id in MyProfile PostPanel: " + idObj);
-                }
-            } else {
-                System.out.println("ViewPostController not set in PostPanel (MyProfile)");
-            }
-        });
-
-        JPanel headerWrapper = new JPanel(new BorderLayout());
-        headerWrapper.setBackground(Color.white);
-        headerWrapper.add(header, BorderLayout.CENTER);
-        headerWrapper.add(viewButton, BorderLayout.EAST);
-
-        panel.add(headerWrapper, BorderLayout.NORTH);
-        panel.add(bodyArea, BorderLayout.CENTER);
-        panel.add(commentsLabel, BorderLayout.SOUTH);
-    }
-
-    // ---------- Wiring ----------
-    public void setViewPostController(ViewPostController controller) {
-        this.viewPostController = controller;
+        panel.add(post1header, BorderLayout.NORTH);
+        panel.add(post1body, BorderLayout.CENTER);
+        panel.add(post1numComments, BorderLayout.SOUTH);
     }
 }

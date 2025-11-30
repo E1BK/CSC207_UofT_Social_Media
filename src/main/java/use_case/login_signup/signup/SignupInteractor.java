@@ -42,6 +42,12 @@ public class SignupInteractor implements SignupInputBoundary {
         else if ("".equals(signupInputData.getName())) {
             userPresenter.prepareFailView("Name cannot be empty");
         }
+        else if (!(signupInputData.getUsername().length() > 7)){
+            userPresenter.prepareFailView("Username must be at least 8 characters or digits");
+        }
+        else if (!(signupInputData.getPassword().length() > 5)){
+            userPresenter.prepareFailView("Password must be at least 6 characters or digits");
+        }
         else {
             final User user = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword(), signupInputData.getEmail(), signupInputData.getName());
             userDataAccessObject.createUser(user);

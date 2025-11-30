@@ -4,6 +4,7 @@ package interface_adapter.search_user;
 import entity.User;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
+import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.MyProfileViewModel;
 import use_case.search_user.SearchUserOutputBoundary;
 
@@ -54,7 +55,11 @@ public class SearchUserPresenter implements SearchUserOutputBoundary {
     }
 
     public void switchToMeView() {
+        final SearchUserState searchState = searchUserViewModel.getState();
+        final MyProfileState myProfileState = myProfileViewModel.getState();
+        myProfileState.setUsername(searchState.getUsername());
         viewManagerModel.setState(myProfileViewModel.getViewName());
+        myProfileViewModel.firePropertyChange();
         viewManagerModel.firePropertyChange();
     }
 }

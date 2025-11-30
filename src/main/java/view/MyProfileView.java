@@ -1,14 +1,11 @@
 package view;
 
 import app.GradientPanel;
+import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.my_profile.MyProfileViewModel;
-import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.my_profile_change_password.MyProfileChangePasswordController;
-import interface_adapter.view_post.ViewPostController;
-
-import entity.Comment;
 import use_case.make_post.PostViewData;
 
 import javax.swing.*;
@@ -19,8 +16,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
 
 public class MyProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     // Variables
@@ -29,7 +24,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
 
     // Controllers
     private MyProfileController myProfileController;
-    private ViewPostController viewPostController;
     private MyProfileChangePasswordController changePasswordController = null;
     private LogoutController logoutController = null;
 
@@ -51,7 +45,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     private final JButton searchButton;
     private final JButton profileButton;
     private final JButton logoutButton;
-    private ArrayList<Map> posts;
+    private ArrayList<PostViewData> posts;
 
     public MyProfileView(MyProfileViewModel myProfileViewModel) {
         this.myProfileViewModel = myProfileViewModel;
@@ -220,6 +214,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println(e.getActionCommand());
+                        myProfileViewModel.getState().setInactive();
                         myProfileController.switchToPostView();
                     }
                 }
@@ -230,20 +225,21 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println(e.getActionCommand());
+                        myProfileViewModel.getState().setInactive();
                         myProfileController.switchToSearchView();
                     }
                 }
         );
 
-        profileButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.out.println(e.getActionCommand());
-                        myProfileController.switchToMyProfileView();
-                    }
-                }
-        );
+//        profileButton.addActionListener(
+//                new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        System.out.println(e.getActionCommand());
+//                        myProfileController.switchToMyProfileView();
+//                    }
+//                }
+//        );
 
         logoutButton.addActionListener(
                 new ActionListener() {
@@ -266,7 +262,7 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
             for (int i = 0; i < posts.size(); i++) {
                 if (e.getActionCommand().contains (STR."\{i}")) {
                     System.out.println(e.getActionCommand());
-                    myProfileController.switchToCurrentPost((int) posts.get(i).get(myProfileViewModel.ID));
+                    //myProfileController.switchToCurrentPost((int) posts.get(i).get(myProfileViewModel.ID));
                 }
             }
         }
@@ -276,92 +272,39 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     public void propertyChange(PropertyChangeEvent e) {
         if (e.getPropertyName().equals("state")) {
             final MyProfileState state = (MyProfileState) e.getNewValue();
-            username.setText(state.getUsername());
-            passwordInputField.setText(state.getPassword());
-            bioInputField.setText(state.getBio());
-            email.setText(state.getEmail());
+            if (!state.isActive()) {
+                state.setActive();
+                myProfileController.execute(state.getUsername());
+                username.setText(state.getUsername());
+                passwordInputField.setText(state.getPassword());
+                bioInputField.setText(state.getBio());
+                email.setText(state.getEmail());
 
-            int row1Count = row1.getComponentCount();
-            int row2Count = row2.getComponentCount();
-            for (int i = 0; i < row1Count; i++) { row1.remove(0); }
-            for (int i = 0; i < row2Count; i++) { row2.remove(0); }
+                int row1Count = row1.getComponentCount();
+                int row2Count = row2.getComponentCount();
+                for (int i = 0; i < row1Count; i++) { row1.remove(0); }
+                for (int i = 0; i < row2Count; i++) { row2.remove(0); }
 
-            if (!Objects.equals(username.getText(), "")) {
-                myProfileController.refreshPosts(state.getUsername());
                 addPosts(state.getPosts());
             }
         }
     }
 
-    private PostViewData buildPostViewDataFromMap(String username, Map postMap) {
-        // Extract & convert ID
-        Object idObj = postMap.get(myProfileViewModel.ID);
-        int postId;
-        if (idObj instanceof Number n) {
-            postId = n.intValue();
-        } else {
-            postId = Integer.parseInt(String.valueOf(idObj));
-        }
-
-        String title = String.valueOf(postMap.get(myProfileViewModel.TITLE));
-        String body  = String.valueOf(postMap.get(myProfileViewModel.BODY));
-        String date  = String.valueOf(postMap.get(myProfileViewModel.DATE));
-
-        // If date has a time part (like "...T12:34:56Z"), keep only the date
-        int tIndex = date.indexOf("T");
-        if (tIndex > 0) {
-            date = date.substring(0, tIndex);
-        }
-
-        // You can wire real comments later; for now, an empty list is fine.
-        return new PostViewData(
-                username,
-                postId,
-                title,
-                body,
-                date,
-                new ArrayList<Comment>()
-        );
-    }
-
-    private void addPosts(ArrayList<Map> posts) {
-        // Clear rows first
-        row1.removeAll();
-        row2.removeAll();
-
-        // All posts here belong to the current profile user
-        String currentUsername = myProfileViewModel.getState().getUsername();
-
+    private void addPosts(ArrayList<PostViewData> posts) {
         int row1Size = 3;
         int row2Size = 3;
 
         if (posts.size() < 3) { row1Size = posts.size(); }
-        if (posts.size() < 6) { row2Size = posts.size() - 3; }
+        if (posts.size() < 6) { row2Size = posts.size() - 3;}
 
-        // ----- first row -----
-        for (int i = 0; i < row1Size; i++) {
-            Map postMap = posts.get(i);
-
-            PostViewData pvd = buildPostViewDataFromMap(currentUsername, postMap);
-            PostPanel postPanel = new PostPanel(pvd);           // **uses working constructor**
-            if (viewPostController != null) {
-                postPanel.setViewPostController(viewPostController);
-            }
-
-            row1.add(postPanel.panel);
+        for (int i = 1; i <= row1Size; i++) {
+            PostPanel post = new  PostPanel(posts.get(posts.size() - i));
+            row1.add(post.panel);
         }
 
-        // ----- second row -----
-        for (int i = 0; i < row2Size; i++) {
-            Map postMap = posts.get(i + 3);
-
-            PostViewData pvd = buildPostViewDataFromMap(currentUsername, postMap);
-            PostPanel postPanel = new PostPanel(pvd);
-            if (viewPostController != null) {
-                postPanel.setViewPostController(viewPostController);
-            }
-
-            row2.add(postPanel.panel);
+        for  (int i = 1; i <= row2Size; i++) {
+            PostPanel post = new  PostPanel(posts.get(posts.size() - i - 3));
+            row2.add(post.panel);
         }
 
         this.posts = posts;
@@ -373,12 +316,5 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
     public void setChangePasswordController(MyProfileChangePasswordController controller) {
         this.changePasswordController = controller;
     }
-
-    public void setViewPostController(ViewPostController controller) {
-        this.viewPostController = controller;
-    }
-
-    public void setLogoutController(LogoutController controller) {
-        this.logoutController = controller;
-    }
+    public void setLogoutController(LogoutController controller) { this.logoutController = controller; }
 }
