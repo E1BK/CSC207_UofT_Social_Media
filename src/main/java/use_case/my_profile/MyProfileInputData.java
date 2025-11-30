@@ -1,34 +1,21 @@
 package use_case.my_profile;
 
-import entity.User;
-
 public class MyProfileInputData{
-    private MyProfileUserDataAccessInterface myProfileUserDataAccess;
-
     private final String username;
-    private final String name;
     private final String password;
     private final String email;
     private final String bio;
 
 
-    public MyProfileInputData(MyProfileUserDataAccessInterface myProfileUserDataAccessInterface, String username) {
-        this.myProfileUserDataAccess = myProfileUserDataAccessInterface;
-
+    public MyProfileInputData(String username, String password, String email, String bio) {
         this.username = username;
-        User user;
-
-        user = myProfileUserDataAccess.getUserInfo(username);
-
-        name = user.getName();
-        password = user.getPassword();
-        email = user.getEmail();
-        bio = user.getBio();
+        this.password = password;
+        this.email = email;
+        this.bio = bio;
     }
 
     public String getUsername(){ return username; }
     public String getPassword(){ return password; }
-    public String getName(){ return name; }
     public String getEmail(){ return email; }
     public String getBio(){ return bio; }
 }

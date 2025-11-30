@@ -208,7 +208,7 @@ public class AppBuilder {
         final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
                 userDataAccessObject,
                 myProfileOutputBoundary);
-        MyProfileController controller = new MyProfileController(myProfileInteractor, userDataAccessObject);
+        MyProfileController controller = new MyProfileController(myProfileInteractor);
         myProfileView.setMyProfileController(controller);
         landingView.setMyProfileController(controller);
         return this;

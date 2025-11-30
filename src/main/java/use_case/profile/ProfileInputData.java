@@ -1,8 +1,5 @@
 package use_case.profile;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 public class ProfileInputData {
     private final String username;
     private final String email;
