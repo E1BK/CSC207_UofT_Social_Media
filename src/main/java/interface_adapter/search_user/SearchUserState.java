@@ -6,7 +6,8 @@ public class SearchUserState {
     private String password = "";
 
     private String message = "";
-
+    private String selectedEmail = "";
+    private String selectedBio = "";
     private String selectedUsername = "";
 
     public SearchUserState() {}
@@ -48,5 +49,18 @@ public class SearchUserState {
 
     public void setSelectedUsername(String selectedUsername) {
         this.selectedUsername = selectedUsername;
+    }
+    public String getSelectedEmail() {
+        return selectedEmail;
+    }
+    public void setSelectedEmail(String selectedEmail) {
+        this.selectedEmail = selectedEmail;
+    }
+
+    public String getSelectedBio() {
+        return selectedBio;
+    }
+    public void setSelectedBio(String selectedBio) {
+        this.selectedBio = selectedBio;
     }
 }

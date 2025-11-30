@@ -32,6 +32,8 @@ public class SearchUserPresenter implements SearchUserOutputBoundary {
         SearchUserState state = searchUserViewModel.getState();
         state.setMessage("Found user: " + outputData.getUsername());
         state.setSelectedUsername(outputData.getUsername());
+        state.setSelectedEmail(outputData.getEmail());
+        state.setSelectedBio(outputData.getBio());
         searchUserViewModel.setState(state);
         searchUserViewModel.firePropertyChange();
     }
@@ -41,10 +43,11 @@ public class SearchUserPresenter implements SearchUserOutputBoundary {
         SearchUserState state = searchUserViewModel.getState();
         state.setMessage("User Not Found");
         state.setSelectedUsername("");
+        state.setSelectedEmail("");
+        state.setSelectedBio("");
         searchUserViewModel.setState(state);
         searchUserViewModel.firePropertyChange();
     }
-
     public void switchToLandingView() {
         viewManagerModel.setState(landingViewModel.getViewName());
         viewManagerModel.firePropertyChange();

@@ -23,14 +23,15 @@ public class SearchUserInteractor implements SearchUserInputBoundary {
                     searchUserDataAccessObject.getUserInfo(searchUserInputData.getUsername());
 
             if (foundUser != null) {
-                // 在 Interactor 里把 Entity -> OutputData
-                SearchUserOutputData outputData =
-                        new SearchUserOutputData(foundUser.getUsername());
+                SearchUserOutputData outputData = new SearchUserOutputData(
+                        foundUser.getUsername(),
+                        foundUser.getEmail(),
+                        foundUser.getBio()
+                );
                 searchUserPresenter.prepareSuccessView(outputData);
             } else {
                 searchUserPresenter.prepareFailView();
             }
-
         } catch (RuntimeException ex) {
             System.out.println("SearchUserInteractor error: " + ex.getMessage());
             searchUserPresenter.prepareFailView();
