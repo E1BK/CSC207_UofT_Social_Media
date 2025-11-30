@@ -14,6 +14,7 @@ public class LandingState {
     private String password = "";
     private ArrayList<PostViewData> posts = new ArrayList<PostViewData>();
     private String passwordError = "";
+    private String getPostError = "";
     private boolean isInitialized = false;
 
 
@@ -27,6 +28,7 @@ public class LandingState {
         password = copy.password;
         posts = copy.posts;
         passwordError = copy.passwordError;
+        getPostError = copy.getPostError;
         isInitialized = copy.isInitialized;
     }
 
@@ -61,5 +63,11 @@ public class LandingState {
     public boolean isInitialized() {return isInitialized;}
 
     public void setInitialized(boolean isInitialized) { this.isInitialized = isInitialized; }
+
+    public String getGetPostError() {return getPostError;}
+
+    public void setGetPostError(String getPostError) {
+        this.getPostError = getPostError;
+    }
 
 }
