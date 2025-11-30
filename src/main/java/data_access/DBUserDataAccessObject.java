@@ -6,25 +6,32 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-import use_case.login_signup.change_passwrod.ChangePasswordUserDataAccessInterface;
+import use_case.clubs.ClubsDataAccessInterface;
+import use_case.landing.LandingDataAccessInterface;
 import use_case.login_signup.login.LoginUserDataAccessInterface;
-import use_case.login_signup.logout.LogoutUserDataAccessInterface;
+import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.login_signup.signup.SignupUserDataAccessInterface;
 import use_case.make_post.MakePostUserDataAccessInterface;
 import use_case.my_profile.MyProfileUserDataAccessInterface;
+import use_case.my_profile.profile_change_password.MyProfileChangePasswordUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
+import use_case.view_post.ViewPostDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         SearchUserDataAccessInterface,
-        ChangePasswordUserDataAccessInterface,
         LoginUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         ProfileUserDataAccessInterface,
-        SignupUserDataAccessInterface{
+        MyProfileUserDataAccessInterface,
+        SignupUserDataAccessInterface,
+        LandingDataAccessInterface,
+        MyProfileChangePasswordUserDataAccessInterface,
+        ViewPostDataAccessInterface,
+        ClubsDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
@@ -35,8 +42,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String POST_ID = "post_id";
-    private static final String POST_TITLE = "title";
-    private static final String POST_BODY = "body";
+    private static final String POST_TITLE = "post_title";
+    private static final String POST_BODY = "post_body";
     private static final String POST_DATE = "post_date";
     private static final String COMMENT_LIKES = "comment_likes";
     private static final String COMMENT_ID = "comment_id";
@@ -45,20 +52,169 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     private static final String COMMENTS = "comments";
     private static final String MESSAGE = "message";
 
+    private static final String REPO_USERNAME = "USER_REPO_CTG3";
+    private static final String REPO_PASSWORD = "CTG3CTG3";
+    private static final String CLUB_REPO_USERNAME = "CLUB_REPO_CTG3";
 
     private final UserFactory userFactory;
     private final PostFactory postFactory;
     private final CommentFactory commentFactory;
+    private final ClubFactory clubFactory;
 
     private String currentUsername;
 
-    public DBUserDataAccessObject(UserFactory userFactory, PostFactory postFactory, CommentFactory commentFactory){
+    public DBUserDataAccessObject(UserFactory userFactory, PostFactory postFactory, CommentFactory commentFactory, ClubFactory clubFactory) {
         this.userFactory = userFactory;
         this.postFactory = postFactory;
         this.commentFactory = commentFactory;
+        this.clubFactory = clubFactory;
         this.currentUsername = null;
     }
 
+    @Override
+    public void createUser(User user) {
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+
+        final JSONObject requestBody = new JSONObject()
+                .put(USERNAME, user.getUsername())
+                .put(PASSWORD, user.getPassword());
+
+        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+        final Request request = new Request.Builder()
+                .url("http://vm003.teach.cs.toronto.edu:20112/user")
+                .method("POST", body)
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+
+        try {
+            final Response response = client.newCall(request).execute();
+
+            final JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
+                // success!
+            }
+            else {
+                throw new RuntimeException(responseBody.getString(MESSAGE));
+            }
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        // Create info fields in API
+        addUserToRepository(user.getUsername(), user.getName());
+        save(user);
+    }
+
+    public void addUserToRepository(String newUsername, String newName) {
+
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+
+        try {
+            // get existing repo
+            Request getRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + REPO_USERNAME)
+                    .get()
+                    .build();
+
+            Response getResponse = client.newCall(getRequest).execute();
+            JSONObject responseJson = new JSONObject(getResponse.body().string());
+
+            if (responseJson.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to fetch repo user: " +
+                        responseJson.getString(MESSAGE));
+            }
+
+            JSONObject userJson = responseJson.getJSONObject("user");
+            JSONObject userInfoJson = userJson.getJSONObject("info");
+
+            // Ensure "users" array exists
+            JSONArray usersArray;
+            if (userInfoJson.has("users")) {
+                usersArray = userInfoJson.getJSONArray("users");
+            } else {
+                usersArray = new JSONArray();
+                userInfoJson.put("users", usersArray);
+            }
+
+            // append
+            JSONObject newEntry = new JSONObject()
+                    .put("username", newUsername)
+                    .put("name", newName);
+
+            usersArray.put(newEntry);
+
+            // put
+            JSONObject requestBodyJson = new JSONObject()
+                    .put("username", REPO_USERNAME)
+                    .put("password", REPO_PASSWORD)
+                    .put("info", userInfoJson);
+
+            RequestBody body = RequestBody.create(
+                    requestBodyJson.toString(), mediaType
+            );
+
+            Request putRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
+                    .method("PUT", body)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            Response putResponse = client.newCall(putRequest).execute();
+            JSONObject putResponseBody = new JSONObject(putResponse.body().string());
+
+            if (putResponseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to update repo user: " +
+                        putResponseBody.getString(MESSAGE));
+            }
+            // Success!
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public ArrayList<String> getExistingUsernames(){
+        ArrayList<String> usernames = new ArrayList<>();
+
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+
+        try {
+            // get existing repo
+            Request getRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + REPO_USERNAME)
+                    .get()
+                    .build();
+
+            Response getResponse = client.newCall(getRequest).execute();
+            JSONObject responseJson = new JSONObject(getResponse.body().string());
+
+            if (responseJson.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to fetch repo user: " +
+                        responseJson.getString(MESSAGE));
+            }
+
+            JSONObject userJson = responseJson.getJSONObject("user");
+            JSONObject userInfoJson = userJson.getJSONObject("info");
+
+            JSONArray usersArray;
+            usersArray = userInfoJson.getJSONArray("users");
+
+            for (int i = 0; i < usersArray.length(); i++) {
+                usernames.add(usersArray.getJSONObject(i).getString("username"));
+            }
+
+            return usernames;
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     @Override
     public void save(User user){
@@ -91,8 +247,8 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
         JSONObject JSONInfo = new JSONObject()
                 .put("bio", user.getBio())
-                .put("email", user.getEmail())
-                .put("name", user.getName())
+                .put(EMAIL, user.getEmail())
+                .put(NAME, user.getName())
                 .put("posts", JSONPostArray);
 
         final JSONObject requestBody = new JSONObject()
@@ -102,7 +258,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/user")
+                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
                 .method("PUT", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
@@ -166,7 +322,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             }
         }
         catch (IOException | JSONException ex) {
-            return null; // Or throw exception based on your error handling
+            throw new RuntimeException(ex);
         }
     }
 
@@ -178,11 +334,6 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     @Override
     public String getCurrentUsername() {
         return currentUsername;
-    }
-
-    @Override
-    public void save(User user) {
-        // TODO Implement
     }
 
     @Override
@@ -234,7 +385,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                         comments.add(comment);
                     }
                     final Post post = postFactory.create(username, post_id, post_title, post_body, post_date, comments);
-
+                    posts.add(post);
                 }
                 return userFactory.create(username, password, bio, email, name, posts);
             }
@@ -249,11 +400,161 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
 
     @Override
     public void changePassword(User user) {
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
 
+        final JSONObject requestBody = new JSONObject()
+                .put(USERNAME, user.getUsername())
+                .put(PASSWORD, user.getPassword());
+
+        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+        final Request request = new Request.Builder()
+                .url("http://vm003.teach.cs.toronto.edu:20112/user")
+                .method("PUT", body)
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+
+        try {
+            final Response response = client.newCall(request).execute();
+
+            final JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
+                // success!
+            }
+            else {
+                throw new RuntimeException(responseBody.getString(MESSAGE));
+            }
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
-    public User findUserByUsername(String username) {
+    public void changeBio(User user) {
+        save(user);
+    }
+
+    @Override
+    public Post getPost(String username, int postId) {
+        User user = getUserInfo(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        for (Post post : user.getPosts()) {
+            if (post.getPost_id() == postId) {
+                return post;
+            }
+        }
         return null;
     }
+
+    public ArrayList<Club> getClubs() {
+        ArrayList<Club> clubs = new ArrayList<>();
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+
+        try {
+            // get existing repo
+            Request getRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + CLUB_REPO_USERNAME)
+                    .get()
+                    .build();
+
+            Response getResponse = client.newCall(getRequest).execute();
+            JSONObject responseJson = new JSONObject(getResponse.body().string());
+
+            if (responseJson.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to fetch repo user: " +
+                        responseJson.getString(MESSAGE));
+            }
+
+            JSONObject userJson = responseJson.getJSONObject("user");
+            JSONObject userInfoJson = userJson.getJSONObject("info");
+
+            JSONArray clubsArray = userInfoJson.getJSONArray("clubs");
+            for (int i = 0; i < clubsArray.length(); i++) {
+                JSONObject clubJson = clubsArray.getJSONObject(i);
+                clubs.add(clubFactory.create(clubJson.getString("club_name"),
+                        clubJson.getString("club_description")));
+            }
+
+            return clubs;
+
+        } catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+
+    }
+
+    public void addClub(Club club) {
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+
+        try {
+            // get existing repo
+            Request getRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/user?username=" + CLUB_REPO_USERNAME)
+                    .get()
+                    .build();
+
+            Response getResponse = client.newCall(getRequest).execute();
+            JSONObject responseJson = new JSONObject(getResponse.body().string());
+
+            if (responseJson.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to fetch repo user: " +
+                        responseJson.getString(MESSAGE));
+            }
+
+            JSONObject userJson = responseJson.getJSONObject("user");
+            JSONObject userInfoJson = userJson.getJSONObject("info");
+
+            // Ensure "users" array exists
+            JSONArray clubsArray;
+            if (userInfoJson.has("clubs")) {
+                clubsArray = userInfoJson.getJSONArray("clubs");
+            } else {
+                clubsArray = new JSONArray();
+                userInfoJson.put("clubs", clubsArray);
+            }
+
+            // append
+            JSONObject newEntry = new JSONObject()
+                    .put("club_name", club.getName())
+                    .put("club_description", club.getStatementOfPurpose());
+
+            clubsArray.put(newEntry);
+
+            // put
+            JSONObject requestBodyJson = new JSONObject()
+                    .put("username", CLUB_REPO_USERNAME)
+                    .put("password", REPO_PASSWORD)
+                    .put("info", userInfoJson);
+
+            RequestBody body = RequestBody.create(
+                    requestBodyJson.toString(), mediaType
+            );
+
+            Request putRequest = new Request.Builder()
+                    .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
+                    .method("PUT", body)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            Response putResponse = client.newCall(putRequest).execute();
+            JSONObject putResponseBody = new JSONObject(putResponse.body().string());
+
+            if (putResponseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+                throw new RuntimeException("Failed to update repo user: " +
+                        putResponseBody.getString(MESSAGE));
+            }
+            // Success!
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
 }

@@ -1,13 +1,13 @@
 package view;
 
+import app.GradientPanel;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.login.LoginController;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.change_password.ChangePasswordController;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -35,16 +35,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
     private final JPasswordField signupPassword2InputField = new JPasswordField(15);
     private JButton signUp;
 
-    // Logout & Change Password components (shown when logged in)
-    private final JPanel loggedInPanel = new JPanel();
-    private final JLabel welcomeLabel = new JLabel("Welcome!");
-    private final JButton changePasswordButton = new JButton("Change Password");
-    private final JButton logoutButton = new JButton("Logout");
-    private final JPasswordField currentPasswordField = new JPasswordField(15);
-    private final JPasswordField newPasswordField = new JPasswordField(15);
-    private final JPasswordField confirmPasswordField = new JPasswordField(15);
-    private final JButton submitPasswordChange = new JButton("Change Password");
-
     // Tab components
     private final JTabbedPane tabbedPane = new JTabbedPane();
     private final JPanel loginPanel = new JPanel();
@@ -52,11 +42,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
     private LoginController loginController;
     private SignupController signupController;
-    private LogoutController logoutController;
-    private ChangePasswordController changePasswordController;
-
-    private boolean isLoggedIn = false;
-    private String currentUsername = "";
 
     public LoginSignupView(LoginViewModel loginViewModel, SignupViewModel signupViewModel) {
         this.loginViewModel = loginViewModel;
@@ -72,83 +57,150 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         // Continue with the rest of your setup...
         setupLoginPanel();
         setupSignupPanel();
-        setupChangePasswordPanel();
 
-        tabbedPane.addTab("Login", loginPanel);
+        tabbedPane.addTab("Log In", loginPanel);
         tabbedPane.addTab("Sign Up", signupPanel);
 
+        // top panel
+        JLabel name = new JLabel("ChatUofT");
+        name.setFont(new Font("Helvetica", Font.PLAIN, 30));
+        GradientPanel topPanel = new GradientPanel();
+        topPanel.add(name);
+        topPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
+
+        // bottom panel
+        GradientPanel bottomPanel = new GradientPanel();
+        JLabel slogan = new JLabel("Est. 2025");
+        slogan.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        bottomPanel.add(slogan);
+        bottomPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
+
+
         this.setLayout(new BorderLayout());
+        this.add(topPanel, BorderLayout.NORTH);
         this.add(tabbedPane, BorderLayout.CENTER);
+        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void setupLoginPanel() {
-        loginPanel.setLayout(new GridLayout(0, 2, 10, 10));
+        loginPanel.setLayout(new BorderLayout());
 
-        loginPanel.add(new JLabel("Username:"));
-        loginPanel.add(loginUsernameInputField);
+        // inputPanel begins
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+        inputPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
 
-        loginPanel.add(new JLabel("Password:"));
-        loginPanel.add(loginPasswordInputField);
+        JLabel usernamePrompt = new JLabel("Username: ");
+        usernamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel passwordPrompt = new JLabel("Password: ");
+        passwordPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
 
+        loginUsernameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        loginUsernameInputField.setMargin(new Insets(10, 20, 10, 20));
+        loginPasswordInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        loginPasswordInputField.setMargin(new Insets(10, 20, 10, 20));
+
+        LabelTextPanel usernameProcessingPanel = new LabelTextPanel(usernamePrompt, loginUsernameInputField);
+        inputPanel.add(usernameProcessingPanel);
+        LabelTextPanel passwordProcessingPanel = new LabelTextPanel(passwordPrompt, loginPasswordInputField);
+        inputPanel.add(passwordProcessingPanel);
+        // inputPanel ends
+
+        // sloganPanel begins
+        JPanel sloganPanel = new JPanel();
+        JLabel slogan = new JLabel("Where UofT comes to chat");
+        slogan.setFont(new Font("Helvetica", Font.BOLD, 80));
+        sloganPanel.add(slogan);
+        sloganPanel.setBorder(new EmptyBorder(130, 0, 0, 0));
+        // sloganPanel ends
+
+        // logInButtonPanel begins
+        JPanel logInButtonPanel = new JPanel();
         logIn = new JButton("Log In");
-        loginPanel.add(new JLabel()); // Empty cell for alignment
-        loginPanel.add(logIn);
+        logIn.setFont(new Font("Helvetica", Font.BOLD, 20));
+        logIn.setMargin(new Insets(10, 20, 10, 20));
+        logIn.setMaximumSize(new Dimension(80, 50));
+        logIn.setMinimumSize(new Dimension(80, 50));
+        logIn.setPreferredSize(new Dimension(140, 50));
+        logInButtonPanel.add(logIn);
+        // logInButtonPanel ends
+
+        loginPanel.add(inputPanel, BorderLayout.NORTH);
+        loginPanel.add(sloganPanel, BorderLayout.CENTER);
+        loginPanel.add(logInButtonPanel, BorderLayout.SOUTH);
 
         addLoginListeners();
         logIn.addActionListener(this);
     }
 
     private void setupSignupPanel() {
-        signupPanel.setLayout(new GridLayout(0, 2, 10, 10));
+        signupPanel.setLayout(new BorderLayout());
 
-        signupPanel.add(new JLabel("Full Name:"));
-        signupPanel.add(signupNameInputField);
+        // inputPanel begins
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+        inputPanel.setBorder(new EmptyBorder(20, 0, 0, 80));
 
-        signupPanel.add(new JLabel("UofT Email:"));
-        signupPanel.add(signupEmailInputField);
+        JLabel fullNamePrompt = new JLabel("                     Full Name: ");
+        fullNamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel emailPrompt = new JLabel("                    UofT Email: ");
+        emailPrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel usernamePrompt = new JLabel("                     Username: ");
+        usernamePrompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel password1Prompt = new JLabel("     Enter your password: ");
+        password1Prompt.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel password2Prompt = new JLabel("Re-enter your password: ");
+        password2Prompt.setFont(new Font("Helvetica", Font.BOLD, 20));
 
-        signupPanel.add(new JLabel("Username:"));
-        signupPanel.add(signupUsernameInputField);
+        signupNameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupNameInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupEmailInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupEmailInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupUsernameInputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupUsernameInputField.setMargin(new Insets(10, 20, 10, 20));
+        signupPassword1InputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupPassword1InputField.setMargin(new Insets(10, 20, 10, 20));
+        signupPassword2InputField.setFont(new Font("Helvetica", Font.PLAIN, 20));
+        signupPassword2InputField.setMargin(new Insets(10, 20, 10, 20));
 
-        signupPanel.add(new JLabel("Password1:"));
-        signupPanel.add(signupPassword1InputField);
 
-        signupPanel.add(new JLabel("Password2:"));
-        signupPanel.add(signupPassword2InputField);
+        LabelTextPanel fullNameProcessingPanel = new LabelTextPanel(fullNamePrompt, signupNameInputField);
+        inputPanel.add(fullNameProcessingPanel);
+        LabelTextPanel emailProcessingPanel = new LabelTextPanel(emailPrompt, signupEmailInputField);
+        inputPanel.add(emailProcessingPanel);
+        LabelTextPanel usernameProcessingPanel = new LabelTextPanel(usernamePrompt, signupUsernameInputField);
+        inputPanel.add(usernameProcessingPanel);
+        LabelTextPanel password1ProcessingPanel = new LabelTextPanel(password1Prompt, signupPassword1InputField);
+        inputPanel.add(password1ProcessingPanel);
+        LabelTextPanel password2ProcessingPanel = new LabelTextPanel(password2Prompt, signupPassword2InputField);
+        inputPanel.add(password2ProcessingPanel);
+        // inputPanel ends
 
+        // sloganPanel begins
+        JPanel sloganPanel = new JPanel();
+        JLabel slogan = new JLabel("Where UofT comes to chat");
+        slogan.setFont(new Font("Helvetica", Font.BOLD, 80));
+        sloganPanel.add(slogan);
+        sloganPanel.setBorder(new EmptyBorder(40, 0, 0, 0));
+        // sloganPanel ends
+
+        // signUpButtonPanel begins
+        JPanel signUpButtonPanel = new JPanel();
         signUp = new JButton("Sign Up");
-        signupPanel.add(new JLabel());
-        signupPanel.add(signUp);
+        signUp.setFont(new Font("Helvetica", Font.BOLD, 20));
+        signUp.setMargin(new Insets(10, 20, 10, 20));
+        signUp.setMaximumSize(new Dimension(80, 50));
+        signUp.setMinimumSize(new Dimension(80, 50));
+        signUp.setPreferredSize(new Dimension(140, 50));
+        signUpButtonPanel.add(signUp);
+        // signUpButtonPanel ends
+
+        signupPanel.add(inputPanel, BorderLayout.NORTH);
+        signupPanel.add(sloganPanel, BorderLayout.CENTER);
+        signupPanel.add(signUpButtonPanel, BorderLayout.SOUTH);
 
         addSignupListeners();
         signUp.addActionListener(this);
-    }
-
-    private void setupChangePasswordPanel() {
-        loggedInPanel.setLayout(new GridLayout(0, 2, 10, 10));
-
-        loggedInPanel.add(welcomeLabel);
-        loggedInPanel.add(new JLabel()); // Empty cell
-
-        // Change Password section
-        loggedInPanel.add(new JLabel("Current Password:"));
-        loggedInPanel.add(currentPasswordField);
-
-        loggedInPanel.add(new JLabel("New Password:"));
-        loggedInPanel.add(newPasswordField);
-
-        loggedInPanel.add(new JLabel("Confirm New Password:"));
-        loggedInPanel.add(confirmPasswordField);
-
-        loggedInPanel.add(submitPasswordChange);
-        loggedInPanel.add(new JLabel()); // Empty cell
-
-        // Logout button
-        loggedInPanel.add(new JLabel());
-        loggedInPanel.add(logoutButton);
-
-        submitPasswordChange.addActionListener(this);
-        logoutButton.addActionListener(this);
     }
 
     private void addLoginListeners() {
@@ -268,26 +320,15 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         this.signupController = controller;
     }
 
-    public void setLogoutController(LogoutController controller) {
-        this.logoutController = controller;
-    }
-
-    public void setChangePasswordController(ChangePasswordController controller) {
-        this.changePasswordController = controller;
-    }
-
     @Override
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == logIn) {
             onLogin();
         } else if (evt.getSource() == signUp) {
             onSignup();
-        } else if (evt.getSource() == logoutButton) {
-            onLogout();
-        } else if (evt.getSource() == submitPasswordChange) {
-            onChangePassword();
         }
     }
+
 
     private void onLogin() {
         String username = loginUsernameInputField.getText();
@@ -310,58 +351,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         }
     }
 
-    private void onLogout() {
-        if (logoutController != null) {
-            logoutController.execute();
-            switchToLoginSignupView();
-        }
-    }
-
-    private void onChangePassword() {
-        String currentPassword = new String(currentPasswordField.getPassword());
-        String newPassword = new String(newPasswordField.getPassword());
-        String confirmPassword = new String(confirmPasswordField.getPassword());
-
-        if (changePasswordController != null && !currentUsername.isEmpty()) {
-            changePasswordController.execute(
-                    currentUsername,                // username
-                    currentPassword,                // oldPassword (current password)
-                    newPassword,                    // newPassword
-                    confirmPassword                 // confirmPassword
-            );
-        } else {
-            JOptionPane.showMessageDialog(this, "Please log in first.");
-        }
-    }
-
-    private void switchToLoggedInView(String username) {
-        this.isLoggedIn = true;
-        this.currentUsername = username;
-        welcomeLabel.setText("Welcome, " + username + "!");
-
-        // Replace tabs with logged in panel
-        tabbedPane.removeAll();
-        tabbedPane.addTab("Account", loggedInPanel);
-
-        // Clear password fields
-        currentPasswordField.setText("");
-        newPasswordField.setText("");
-        confirmPasswordField.setText("");
-    }
-
-    private void switchToLoginSignupView() {
-        this.isLoggedIn = false;
-        this.currentUsername = "";
-
-        // Restore login/signup tabs
-        tabbedPane.removeAll();
-        tabbedPane.addTab("Login", loginPanel);
-        tabbedPane.addTab("Sign Up", signupPanel);
-
-        // Clear all fields
-        clearAllFields();
-    }
-
     private void clearAllFields() {
         loginUsernameInputField.setText("");
         loginPasswordInputField.setText("");
@@ -370,9 +359,6 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
         signupUsernameInputField.setText("");
         signupPassword1InputField.setText("");
         signupPassword2InputField.setText("");
-        currentPasswordField.setText("");
-        newPasswordField.setText("");
-        confirmPasswordField.setText("");
     }
 
     @Override
@@ -386,16 +372,16 @@ public class LoginSignupView extends JPanel implements ActionListener, PropertyC
 
     private void handleLoginStateChange() {
         var state = loginViewModel.getState();
-
+        loginPasswordInputField.setText(state.getPassword());
+        loginUsernameInputField.setText(state.getUsername());
         if (state.getLoginError() != null) {
             JOptionPane.showMessageDialog(this, state.getLoginError());
             state.setLoginError(null);
             loginViewModel.setState(state);
-        } else {
-            // Login successful - switch to logged in view
-            switchToLoggedInView(state.getUsername());
         }
+        // else: success; presenter has already told ViewManager to show LandingView
     }
+
 
     private void handleSignupStateChange() {
         var state = signupViewModel.getState();

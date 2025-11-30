@@ -3,10 +3,18 @@
 package view;
 
 import app.GradientPanel;
+import entity.Comment;
+import entity.Post;
+import entity.PostFactory;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.landing.LandingController;
 import interface_adapter.landing.LandingState;
-import interface_adapter.landing.MakePostController;
+import interface_adapter.make_post.MakePostController;
+import interface_adapter.make_post.MakePostState;
 import interface_adapter.landing.LandingViewModel;
+import interface_adapter.make_post.MakePostViewModel;
 import interface_adapter.my_profile.MyProfileController;
+import use_case.make_post.PostViewData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 public class LandingView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -24,8 +33,10 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     private final String viewName = "landing";
     private LandingViewModel landingViewModel;
+    private MakePostViewModel makePostViewModel;
     private MakePostController makePostController = null;
     private MyProfileController myProfileController = null;
+    private LandingController landingController = null;
 
     //    private final JTextField postBody;
     private final JTextField postTitle;
@@ -36,11 +47,20 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final JButton people;
     private final JButton home;
 
+    PostPanel post1;
+    PostPanel post2;
+    PostPanel post3;
+    JPanel displayPanel;
 
-    public LandingView(LandingViewModel landingViewModel) {
+    ArrayList<PostViewData> postsToDisplay;
+
+    public LandingView(LandingViewModel landingViewModel, MakePostViewModel makePostViewModel) {
 
         this.landingViewModel = landingViewModel;
+        this.makePostViewModel = makePostViewModel;
+
         landingViewModel.addPropertyChangeListener(this);
+        makePostViewModel.addPropertyChangeListener(this);
 
         // top panel
         JLabel name = new JLabel("ChatUofT");
@@ -67,8 +87,8 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
         postBody = new JTextArea();
         postBody.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        postBody.setMinimumSize(new Dimension(300, 200));
-        postBody.setMaximumSize(new Dimension(300, 200));
+        postBody.setMinimumSize(new Dimension(300, 150));
+        postBody.setMaximumSize(new Dimension(300, 150));
         postBody.setMargin(new Insets(5, 5, 5, 5));
 
         makePost = new JButton(LandingViewModel.MAKE_POST_BUTTON_LABEL);
@@ -82,16 +102,32 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         gapPanel.setMinimumSize(new Dimension(20, 4));
         gapPanel.setMaximumSize(new Dimension(20, 4));
 
+        // detour: clubs!
+        JButton clubsButton = new JButton("See Clubs");
+        clubsButton.setFont(new Font("Helvetica", Font.BOLD, 20));
+        clubsButton.setMargin(new Insets(10, 30, 10, 30));
+        clubsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // detour: clubs complete
+
+        // postPanel is where you can make a post:
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
         postPanel.add(postTitle);
         postPanel.add(gapPanel);
         postPanel.add(postBody);
         postPanel.add(makePost);
+        postPanel.add(clubsButton);
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
+
+        postsToDisplay = new ArrayList<PostViewData>();
+
+        displayPanel = new JPanel();
+        displayPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
+
 
         middlePanel.add(titlePanel, BorderLayout.NORTH);
         middlePanel.add(postPanel, BorderLayout.CENTER);
+        middlePanel.add(displayPanel, BorderLayout.SOUTH);
 
         // bottom panel
         GradientPanel bottomPanel = new GradientPanel();
@@ -125,7 +161,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
-                            System.out.println("CLICKED 'ME'!");
+                            System.out.println(evt.getActionCommand());
                             myProfileController.switchToMyProfileView();
                         }
                     }
@@ -136,8 +172,8 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(people)) {
-                            System.out.println("CLICKED 'PEOPLE'!");
-                            makePostController.switchToPeopleView();
+                            System.out.println(evt.getActionCommand());
+                            landingController.switchToPeopleView();
                         }
                     }
                 }
@@ -147,11 +183,23 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(makePost)) {
-                            System.out.println("CLICKED 'MAKE POST'!");
+                            System.out.println(evt.getActionCommand());
+                            final MakePostState makePostState = makePostViewModel.getState();
                             final LandingState landingState = landingViewModel.getState();
                             makePostController.execute(landingState.getUsername(),
-                                    landingState.getNewpost_title(),
-                                    landingState.getNewpost_body());
+                                    makePostState.getNewpost_title(),
+                                    makePostState.getNewpost_body());
+                        }
+                    }
+                }
+        );
+
+        clubsButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(clubsButton)) {
+                            System.out.println("CLICKED 'SEE CLUBS'!");
+                            landingController.switchToClubsView();
                         }
                     }
                 }
@@ -160,9 +208,9 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         // Document Listeners
         postBody.getDocument().addDocumentListener( new DocumentListener() {
             private void documentListenerHelper() {
-                final LandingState landingState = landingViewModel.getState();
-                landingState.setNewpost_body(postBody.getText());
-                landingViewModel.setState(landingState);
+                final MakePostState makePostState = makePostViewModel.getState();
+                makePostState.setNewpost_body(postBody.getText());
+                makePostViewModel.setState(makePostState);
             }
 
             @Override
@@ -183,9 +231,9 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
         postTitle.getDocument().addDocumentListener( new DocumentListener() {
             private void documentListenerHelper() {
-                final LandingState landingState = landingViewModel.getState();
-                landingState.setNewpost_title(postTitle.getText());
-                landingViewModel.setState(landingState);
+                final MakePostState makePostState = makePostViewModel.getState();
+                makePostState.setNewpost_title(postTitle.getText());
+                makePostViewModel.setState(makePostState);
             }
 
             @Override
@@ -216,11 +264,52 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) { final LandingState state = (LandingState) evt.getNewValue(); }
+    public void propertyChange(PropertyChangeEvent evt) {
+        Object source = evt.getSource();
+        if (source == landingViewModel) {
+            LandingState state = landingViewModel.getState();
+            // Run landing use case once when we first arrive
+            if (!state.isInitialized()) {
+                state.setInitialized(true);
+                landingController.execute(); // or whatever args you need
+                landingViewModel.setState(state);
+            }
+
+            refreshPosts(state); // your existing code to redraw posts
+        }
+        else if (source == makePostViewModel) {
+            MakePostState state = makePostViewModel.getState();
+
+            postTitle.setText(state.getNewpost_title());
+            postBody.setText(state.getNewpost_body());
+
+            String err = state.getpostError();
+            if (err != null && !err.isBlank()) {
+                JOptionPane.showMessageDialog(this, err);
+                state.setpostError("");
+                makePostViewModel.setState(state);
+            }
+        }
+    }
 
     public void setMakePostController(MakePostController controller) {
         this.makePostController = controller;
     }
 
+    public void setLandingController(LandingController controller) {this.landingController = controller;}
+
     public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
+
+    public void refreshPosts(LandingState landingState) {
+        displayPanel.removeAll();
+        postsToDisplay = landingState.getPosts();
+        post1 = new PostPanel(postsToDisplay.getFirst());
+        post2 = new PostPanel(postsToDisplay.get(1));
+        post3 = new PostPanel(postsToDisplay.get(2));
+        displayPanel.add(post1.panel);
+        displayPanel.add(post2.panel);
+        displayPanel.add(post3.panel);
+        displayPanel.revalidate();
+        displayPanel.repaint();
+    }
 }

@@ -9,18 +9,25 @@ public class Main {
         AppBuilder appBuilder = new AppBuilder();
 
         JFrame application = appBuilder
-                .addLoginSignupView()
-                .addSignupUseCase()
-                .addLoginUseCase()
-                .addChangePasswordUseCase()
+
                 .addLandingView()
                 .addSearchUserView()
                 .addProfileView()
                 .addProfileUseCase()
                 .addMyProfileView()
+                .addClubsView()
                 .addMyProfileUseCase()
+                .addMyProfileChangePasswordUseCase()
                 .addMakePostUseCase()
                 .addSearchUserUseCase()
+                .addLoginSignupView()
+                .addSignupUseCase()
+                .addLoginUseCase()
+                .addPostView()
+                .addViewPostUseCase()
+                .addClubsUseCase()
+                .addLogoutUseCase()
+                .addLandingUseCase()
                 .build();
 
         application.pack();
