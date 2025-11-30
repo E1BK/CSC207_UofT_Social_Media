@@ -38,7 +38,10 @@ public class LandingPresenter implements LandingOutputBoundary {
 
     @Override
     public void prepareFailView(String errorMessage) {
-
+        LandingState landingState = landingViewModel.getState();
+        landingState.setGetPostError(errorMessage);
+        landingViewModel.setState(landingState);
+        landingViewModel.firePropertyChange();
     }
 
     public void switchToPeopleView() {

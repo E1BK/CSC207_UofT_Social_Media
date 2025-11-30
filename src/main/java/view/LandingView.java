@@ -47,6 +47,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     PostPanel post2;
     PostPanel post3;
     JPanel displayPanel;
+    JButton refreshButton;
 
     ArrayList<PostViewData> postsToDisplay;
 
@@ -119,6 +120,16 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
         displayPanel = new JPanel();
         displayPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
+
+        refreshButton = new JButton("⟳");
+        refreshButton.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
+        refreshButton.setFocusPainted(false);
+        refreshButton.setPreferredSize(new Dimension(60, 60));
+
+        refreshButton.addActionListener(e -> {
+            landingController.execute();
+        });
+
 
 
         middlePanel.add(titlePanel, BorderLayout.NORTH);
@@ -264,14 +275,14 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         Object source = evt.getSource();
         if (source == landingViewModel) {
             LandingState state = landingViewModel.getState();
-            // Run landing use case once when we first arrive
+
             if (!state.isInitialized()) {
                 state.setInitialized(true);
-                landingController.execute(); // or whatever args you need
+                landingController.execute();
                 landingViewModel.setState(state);
             }
 
-            refreshPosts(state); // your existing code to redraw posts
+            refreshPosts(state);
         }
         else if (source == makePostViewModel) {
             MakePostState state = makePostViewModel.getState();
@@ -305,6 +316,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         displayPanel.add(post1.panel);
         displayPanel.add(post2.panel);
         displayPanel.add(post3.panel);
+        displayPanel.add(refreshButton);
         displayPanel.revalidate();
         displayPanel.repaint();
     }
