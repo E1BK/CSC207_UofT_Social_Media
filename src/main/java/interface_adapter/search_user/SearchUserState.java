@@ -1,34 +1,21 @@
 package interface_adapter.search_user;
 
-// hasan, russell
-import entity.User;
-
-import java.util.ArrayList;
-
 public class SearchUserState {
+
     private String username = "";
     private String password = "";
-    private ArrayList<User> people = new ArrayList<User>();
 
-    // Russell: new field for displaying result message in the UI
-    // eg. "Found user: gaohe" or "User Not Found"
     private String message = "";
 
-    // Russell: newly added
-    // The user found by the latest search; null if not found / on failure
-    private User selectedUser;
+    private String selectedUsername = "";
 
-    // the default no-arg constructor:
-    public SearchUserState() {
-    }
+    public SearchUserState() {}
 
-    // the second constructor:
     public SearchUserState(SearchUserState copy) {
         username = copy.username;
         password = copy.password;
-        people = copy.people;
-        message = copy.message;      // Russell: copy message as well
-        selectedUser = copy.selectedUser; // Russell: copy selectedUser too
+        message = copy.message;
+        selectedUsername = copy.selectedUsername;
     }
 
     public String getUsername() {
@@ -47,14 +34,6 @@ public class SearchUserState {
         this.password = password;
     }
 
-    public ArrayList<User> getPeople() {return people;}
-
-    public void setPeople(ArrayList<User> newPeople) {
-        people.clear();
-        people.addAll(newPeople);
-    }
-
-    // Russell: getter/setter for message
     public String getMessage() {
         return message;
     }
@@ -63,12 +42,11 @@ public class SearchUserState {
         this.message = message;
     }
 
-    // Russell: getter/setter for selectedUser
-    public User getSelectedUser() {
-        return selectedUser;
+    public String getSelectedUsername() {
+        return selectedUsername;
     }
 
-    public void setSelectedUser(User selectedUser) {
-        this.selectedUser = selectedUser;
+    public void setSelectedUsername(String selectedUsername) {
+        this.selectedUsername = selectedUsername;
     }
 }
