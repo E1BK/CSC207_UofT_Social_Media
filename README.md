@@ -228,3 +228,11 @@ post_id: String, id of post
 title: String, title of post
 
 body: String, body of post
+
+## Comment
+
+### Fields
+
+## Club
+
+### Fields

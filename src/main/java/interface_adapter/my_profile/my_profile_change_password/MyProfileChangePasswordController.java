@@ -19,10 +19,9 @@ public class MyProfileChangePasswordController {
      * @param password        the new password
      * @param username        the user whose password to change
      */
-    public void execute(String username, String password, String bio,
-                        String email, String name, String passOrBio) {
+    public void execute(String username, String password, String bio, String passOrBio) {
         final MyProfileChangePasswordInputData changePasswordInputData =
-                new MyProfileChangePasswordInputData(username, password, bio, email, name, passOrBio);
+                new MyProfileChangePasswordInputData(username, password, bio, passOrBio);
 
         userChangePasswordUseCaseInteractor.execute(changePasswordInputData);
     }

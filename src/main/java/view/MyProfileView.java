@@ -183,8 +183,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                                 state.getUsername(),
                                 passwordInputField.getText(),
                                 state.getBio(),
-                                state.getEmail(),
-                                state.getName(),
                                 "bio"
                         );
                     }
@@ -203,8 +201,6 @@ public class MyProfileView extends JPanel implements ActionListener, PropertyCha
                                 state.getUsername(),
                                 passwordInputField.getText(),
                                 state.getBio(),
-                                state.getEmail(),
-                                state.getName(),
                                 "password"
                         );
                     }
