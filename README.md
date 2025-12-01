@@ -209,22 +209,75 @@ Similarly, we further define a repository user for storing clubs:
 
 ## User
 
+### Description
+
+The Entity that represents a user. The information that a user holds is displayed on thier profile, and can be found by
+searching their usernames in `SearchView`.
+
 ### Fields
 
-username: String, username of user, must be a utorid?
+`username`: **(String)** The Username of the user. All Usernames must be a minimum of 8 characters.
 
-password: String, password of user
+`password`: **(String)** The Password of User. Can be changed in MyProfile. All passwords must be minimum of 6 letters 
+or numbers.
 
-email: String, email of user, must end with @mail.utoronto.ca
+`bio`: **(String)** The Bio fo the User. Can be changed in MyProfile.
 
-posts: ArrayList\<Post>, list of posts of user
+`email`: **(String)** The Email of User. The email must end with @mail.utoronto.ca.
+
+`name`: **(String)** The Name of the User.
+
+`posts`: **(ArrayList\<Post>)** A list of posts made by the user.
 
 ## Post
 
+### Description
+
+An Entity representing a Post. These posts can be seen on a user's profile, and 3 random Posts are displayed on the 
+Landing Page. Each Post holds comments, which are made in response to posts.
+
 ### Fields
 
-post_id: String, id of post
+`username`: **(String)** The Username related to the creator of the post.
 
-title: String, title of post
+`post_id`: **(int)** The unique Identifier of post.
 
-body: String, body of post
+`title`: **(String)** The Title of the Post. Cannot be left blank.
+
+`body`: **(String)** The body of the post. Cannot be left blank.
+
+`post_date`: **(String)** A string containing the time the posts was created, displayed in the format YYYY/MM/DD.
+
+`comments`: **(ArrayList\<Comment>)** A List of Comments on the post. Each of these Comments are represented by a 
+Comment Entity.
+
+## Comment
+
+### Description
+
+An Entity representing a comment. Holds the Comment information, and a number of likes. These likes can be left by users
+when viewing a post. All Comments are left anonymously.
+
+### Fields
+
+`comment_id`: **(int)**  The unique identifier of the comment.
+
+`comment_body`: **(String)** The response of the comment.
+
+`comment_date`: **(String)** The time a comment was created, displayed in YYYY/MM/DD.
+
+`likes`: **(int)** The number of likes a comment gains. A like can be left on a comment when viewing the post a comment 
+is attacthed to, by pressing the "Like" Button.
+
+## Club
+
+### Description
+
+This is an Entity that represents a club. This is used in `ClubsView`, and holds a description of the club.
+
+### Fields
+
+`name`: **(String)** The name of the club. This is what you search for in `ClubsView`.
+
+`statementOfPurpose`: **(String)** This is the description of the club. This explains what the club is and all relevant 
+information related to the club.

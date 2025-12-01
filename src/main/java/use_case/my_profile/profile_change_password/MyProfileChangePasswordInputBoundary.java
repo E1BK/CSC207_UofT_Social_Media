@@ -1,7 +1,5 @@
 package use_case.my_profile.profile_change_password;
 
-import use_case.my_profile.profile_change_password.MyProfileChangePasswordInputData;
-
 public interface MyProfileChangePasswordInputBoundary {
 
     /**
