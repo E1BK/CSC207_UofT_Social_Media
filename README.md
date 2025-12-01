@@ -2,20 +2,28 @@
 A social media app for the UofT community that allows students to login, make posts, see others’ posts, and communicate.
 
 # Use Stories
-1. I would like to sign up with my username, password, and UofT Email.
-2. I would like to log in with my username and password.
-3. On the Landing Page, I would like to see:
-   - 3 recent posts
-   - a button for “People”
-   - a button for “Me”
-   - a button to “Make a Post”
-4. By clicking on the “Me” button on the Landing Page, I would like to be able to go to my Profile Page, where I can update my profile and bio.
-5. By clicking the “Make a Post” button on the Landing Page, I would like to be able to create a post.
-6. By clicking the “People” button on the Landing Page, I would like to be taken to a Find People page, where I can search for users by their username.
-7. On the Find People Page, I would like to search for a user: if the user exists, I would like to see their profile; otherwise, I would like to see a “User Not Found” display.
-8. If I click on a user’s profile after searching for them, I would like to see all their posts and their bio.
-9. By clicking on a post I would like to view that post and the comments under it.
-10. I would like to leave comments on the post and like other comments.
+1. I would like to sign up with my utorID, password, and UofT Email.
+2. I would like to log in with my utorID and password.
+3. As a logged-in user, I would like to make a post.
+4. As a logged-in user, I would like to view recent posts.
+5. As a logged-in user, I would like to search and get information about a particular club at UofT.
+6. As a logged-in user, I would like to see my own posts.
+7. As a logged-in user, I would like to see my profile and modify my password and/or bio.
+8. As a logged-in user, I would like to search for a particular user and see their profile and posts.
+9. As a logged-in user, I would like to like a post.
+10. As a logged-in user, I would like to comment on a post.
+
+
+# Minimum Viable Product Table:
+
+| Use Case                 | User Story          | Lead Developer |
+|--------------------------|---------------------|----------------|
+| Login, Signup, Sign out  | User Story 1 and 2  | Mike           |
+| Landing Page, Clubs      | User Story 3 and 5  | Hasan          |
+| Profile and Bio          | User Story 6 and 7  | Julian         |
+| Make a Post              | User Story 3 and 4  | Hayden         |
+| Search system for people | User Story 8        | Russell        |
+| Like Post/Comment        | User Story 9 and 10 | Ioane          |
 
 # Use Cases:
 
@@ -24,7 +32,7 @@ Use Case 1: Log-in/sign-up
   - User Opens log-in page
   - User presses log in
   - User fills out all necessary details
-    - Username
+    - UtorID
     - Password
   - User is sent to the home page
 - Log-in Alternate Flow:
@@ -47,26 +55,21 @@ Use Case 1: Log-in/sign-up
 
 Use Case 2: Landing Page
 - Main Flow:
-  - User sees a "search" button to search for people
-  - User sees a "me" button for profile page of him/herself
-  - User sees 3 random posts
+  - User sees a "People" button to search for people
+  - User sees a "Me" button for profile page of him/herself
+  - User sees 3 recent posts
   - User sees a "Make Post" Button to start a new post
-- Alternate Flow:
-  - filler
+  - User sees a "See Clubs" button to search for clubs
 
 Use Case 3: Profile and Bio
 - Main Flow:
   - User clicks on the “me” button in landing page
   - User sets his/her Name
   - User sets his/her Bio
-- Alternate Flow:
-  - filler
-
-Use Case 4: Making Posts
-- Main Flow:
-  - filler
-- Alternate Flow:
-  - filler
+  - User can change his/her password
+  - User sees his/her posts
+  - User can like posts
+  - User can comment on posts
 
 Use Case 5: Search for People
 - Main Flow:
@@ -75,25 +78,13 @@ Use Case 5: Search for People
   - User presses search
   - List of users whose name matches or partially matches the name searched
   - User clicks on a user and is sent to their profile page
-- Alternate Flow:
-  - filler
 
-Use Case 6: view Post/Comment
+Use Case 6: Search for Clubs
 - Main Flow:
-  - filler
-- Alternate Flow:
-  - filler
+   - User types in a club name
+   - If the club exists, a description of the club is shown
+   - Otherwise an error message is shown
 
-# Minimum Viable Product Table:
-
-| Use Case                 | User Story          | Lead Developer |
-|--------------------------|---------------------|----------------|
-| Login, Signup, Sign out  | User Story 1 and 2  | Mike           |
-| Landing Page             | User Story 3        | Hasan          |
-| Profile and Bio          | User Story 4 and 8  | Julian         |
-| Make a Post              | User Story 5        | Hayden         |
-| Search system for people | User Story 6 and 7  | Russell        |
-| view Post/Comment        | User Story 9 and 10 | Ioane          |
 
 # API Specification
 
