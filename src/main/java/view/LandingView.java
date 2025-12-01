@@ -45,9 +45,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final JButton people;
     private final JButton home;
 
-    PostPanel post1;
-    PostPanel post2;
-    PostPanel post3;
+    ArrayList<JPanel> postPanels;
     JPanel displayPanel;
     JButton refreshButton;
 
@@ -88,6 +86,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postBody.setFont(new Font("Helvetica", Font.PLAIN, 20));
         postBody.setMinimumSize(new Dimension(300, 150));
         postBody.setMaximumSize(new Dimension(300, 150));
+        postBody.setLineWrap(true);
         postBody.setMargin(new Insets(5, 5, 5, 5));
 
         makePost = new JButton(LandingViewModel.MAKE_POST_BUTTON_LABEL);
@@ -119,6 +118,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
         postsToDisplay = new ArrayList<PostViewData>();
+        postPanels = new ArrayList<JPanel>();
 
         displayPanel = new JPanel();
         displayPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
@@ -131,8 +131,6 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         refreshButton.addActionListener(e -> {
             landingController.execute();
         });
-
-
 
         middlePanel.add(titlePanel, BorderLayout.NORTH);
         middlePanel.add(postPanel, BorderLayout.CENTER);
@@ -283,8 +281,20 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                 landingController.execute();
                 landingViewModel.setState(state);
             }
-
-            refreshPosts(state);
+            String err = state.getGetPostError();
+            if (err != null && !err.isBlank() && err.equals("Failed to fetch repo user: Too many requests! Please check your code to make sure you are not sending more than 50 requests per minutes. Or wait a little bit for the server to come up.")) {
+                JOptionPane.showMessageDialog(this, "Woah there, rate limit reached! Please retry in a moment.");
+                state.setGetPostError("");
+                landingViewModel.setState(state);
+            }
+            else if (err != null && !err.isBlank()) {
+                JOptionPane.showMessageDialog(this, err);
+                state.setGetPostError("");
+                landingViewModel.setState(state);
+            }
+            else {
+                refreshPosts(state);
+            }
         }
         else if (source == makePostViewModel) {
             MakePostState state = makePostViewModel.getState();
@@ -315,23 +325,21 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     public void refreshPosts(LandingState landingState) {
         displayPanel.removeAll();
+        postPanels.clear();
         postsToDisplay = landingState.getPosts();
 
-        post1 = new PostPanel(postsToDisplay.getFirst());
-        post2 = new PostPanel(postsToDisplay.get(1));
-        post3 = new PostPanel(postsToDisplay.get(2));
-
-        if (viewPostController != null) {
-            post1.setViewPostController(viewPostController);
-            post2.setViewPostController(viewPostController);
-            post3.setViewPostController(viewPostController);
+        for (PostViewData post : postsToDisplay) {
+            PostPanel newPostPanel = new PostPanel(post);
+            postPanels.add(newPostPanel.panel);
+            if (viewPostController != null) {
+                newPostPanel.setViewPostController(viewPostController);
+            }
+            displayPanel.add(newPostPanel.panel);
         }
 
-        displayPanel.add(post1.panel);
-        displayPanel.add(post2.panel);
-        displayPanel.add(post3.panel);
         displayPanel.add(refreshButton);
         displayPanel.revalidate();
         displayPanel.repaint();
     }
 }
+
