@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * - state updates the UI
  * - Home button calls controller.goHome()
  * - Like button increments like count
- * - Post Comment calls controller.addComment(...)
+ * - Post Comment obeys validation and calls controller.addComment(...) only on valid input
  */
 public class PostViewTest {
 
@@ -177,7 +177,7 @@ public class PostViewTest {
     }
 
     @Test
-    public void testPostCommentCallsAddComment() throws Exception {
+    public void testPostCommentValidCallsAddComment() throws Exception {
         PostViewFixture fx = new PostViewFixture();
         JTextArea newCommentArea = getNewCommentArea(fx.postView);
         JButton postCommentButton = getPostCommentButton(fx.postView);
@@ -191,5 +191,39 @@ public class PostViewTest {
         assertEquals("E1", fx.controller.lastAddCommentUsername);
         assertEquals(42, fx.controller.lastAddCommentPostId);
         assertEquals("Nice post!", fx.controller.lastAddCommentBody);
+    }
+
+    @Test
+    public void testPostCommentEmptyDoesNotCallAddComment() throws Exception {
+        PostViewFixture fx = new PostViewFixture();
+        JTextArea newCommentArea = getNewCommentArea(fx.postView);
+        JButton postCommentButton = getPostCommentButton(fx.postView);
+
+        // empty / whitespace only
+        newCommentArea.setText("   ");
+
+        postCommentButton.doClick();
+
+        assertFalse("addComment should NOT be called for empty comment",
+                fx.controller.addCommentCalled);
+    }
+
+    @Test
+    public void testPostCommentTooLongDoesNotCallAddComment() throws Exception {
+        PostViewFixture fx = new PostViewFixture();
+        JTextArea newCommentArea = getNewCommentArea(fx.postView);
+        JButton postCommentButton = getPostCommentButton(fx.postView);
+
+        // create a 501-character string
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 501; i++) {
+            sb.append('x');
+        }
+        newCommentArea.setText(sb.toString());
+
+        postCommentButton.doClick();
+
+        assertFalse("addComment should NOT be called for >500 characters",
+                fx.controller.addCommentCalled);
     }
 }
