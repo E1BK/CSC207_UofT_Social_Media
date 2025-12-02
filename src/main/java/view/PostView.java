@@ -147,6 +147,8 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
     @Override
     public void actionPerformed(ActionEvent e) {
 
+
+
         if (e.getSource() == homeButton) {
             if (controller != null) {
                 controller.goHome();
@@ -156,14 +158,13 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
         if (e.getSource() == postCommentButton) {
             String text = newCommentArea.getText().trim();
-            if (!text.isEmpty() && controller != null && currentPostId != -1) {
+            if (!text.isEmpty() && text.length()<=500 && controller != null && currentPostId != -1) {
                 controller.addComment(currentUsername, currentPostId, text);
                 newCommentArea.setText("");
             }
             return;
         }
 
-        // like buttons: for now just local UI increment
         for (int i = 0; i < likeButtons.length; i++) {
             if (e.getSource() == likeButtons[i] && commentIds[i] != -1) {
                 int currentLikes;
