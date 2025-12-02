@@ -36,11 +36,14 @@ public class SignupInteractor implements SignupInputBoundary {
         else if ("".equals(signupInputData.getName())) {
             userPresenter.prepareFailView("Name cannot be empty");
         }
-        else if (!signupInputData.getEmail().contains("@mail.utoronto.ca")) {
-            userPresenter.prepareFailView("Must use UofT email (@mail.utoronto.ca)");
+        else if (!(signupInputData.getUsername().length() > 7)){
+            userPresenter.prepareFailView("Username must be at least 8 characters or digits");
         }
-        else if (!signupInputData.getPassword().equals(signupInputData.getRepeatPassword())) {
-            userPresenter.prepareFailView("Passwords don't match.");
+        else if (!(signupInputData.getPassword().length() > 5)){
+            userPresenter.prepareFailView("Password must be at least 6 characters or digits");
+        }
+        else if (signupInputData.getUsername().contains(" ")) {
+            userPresenter.prepareFailView("Username cannot contain spaces");
         }
         else {
             final User user = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword(), signupInputData.getEmail(), signupInputData.getName());

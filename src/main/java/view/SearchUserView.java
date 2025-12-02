@@ -20,15 +20,10 @@ package view;
 
 import app.GradientPanel;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.my_profile.MyProfileController;
 import interface_adapter.search_user.SearchUserController;
 import interface_adapter.search_user.SearchUserViewModel;
 import interface_adapter.search_user.SearchUserState;
-import entity.User;
 import interface_adapter.profile.ProfileController;
-
-
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -199,25 +194,30 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
         });
 
         // Russell: viewProfileButton listener
-        // Later can call controller to show this user's profile
+        // Show this user's profile using only primitive/String data from the state
         viewProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                if (searchUserController != null) {
-                    // get the selected user from state, just for logging
+                if (profileController != null) {
                     SearchUserState state = searchUserViewModel.getState();
-                    User selected = state.getSelectedUser();
-                    if (selected != null) {
-                        System.out.println("View Profile clicked for: " + selected.getUsername());
-                        // to Profile use case
-                        profileController.execute(selected);
-                        // to ProfileView
+                    String selectedUsername = state.getSelectedUsername();
+                    String selectedEmail = state.getSelectedEmail();
+                    String selectedBio = state.getSelectedBio();
+
+                    if (selectedUsername != null && !selectedUsername.isEmpty()) {
+                        System.out.println("View Profile clicked for: " + selectedUsername);
+                        profileController.execute(
+                                selectedUsername,
+                                selectedEmail,
+                                selectedBio,
+                                state.getUsername()
+                        );
                         profileController.switchToProfileView();
                     } else {
-                        System.out.println("View Profile clicked but no selectedUser in state");
+                        System.out.println("View Profile clicked but no selectedUsername in state");
                     }
                 } else {
-                    System.out.println("SearchUserController is null (not set yet)");
+                    System.out.println("View Profile clicked but profileController is null");
                 }
             }
         });
@@ -236,13 +236,11 @@ public class SearchUserView extends JPanel implements ActionListener, PropertyCh
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Russell: whenever SearchUserViewModel fires a change,
-        // read the latest state and update the result label on the UI.
         SearchUserState state = searchUserViewModel.getState();
         String message = state.getMessage();
         resultLabel.setText(message);
-        // Russell: enable "View Profile" button only when a user was found
-        if (state.getSelectedUser() != null) {
+
+        if (state.getSelectedUsername() != null && !state.getSelectedUsername().isEmpty()) {
             viewProfileButton.setEnabled(true);
         } else {
             viewProfileButton.setEnabled(false);

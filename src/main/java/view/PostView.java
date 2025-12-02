@@ -29,28 +29,43 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
     private final JLabel[] likeCountLabels = new JLabel[3];
     private final int[] commentIds = new int[3];
 
+    private JTextArea newCommentArea;
+    private JButton postCommentButton;
+    private JButton homeButton;
+
+    private String currentUsername = "";
+    private int currentPostId = -1;
+
     public PostView(ViewPostViewModel viewModel) {
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
-
         setupUI();
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setViewPostController(ViewPostController controller) {
+        this.controller = controller;
     }
 
     private void setupUI() {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Post title
         GradientPanel topPanel = new GradientPanel();
         topPanel.setLayout(new BorderLayout());
+
+        homeButton = new JButton("Home");
+        homeButton.addActionListener(this);
+        topPanel.add(homeButton, BorderLayout.WEST);
 
         titleLabel = new JLabel("Post Title");
         titleLabel.setFont(new Font("Helvetica", Font.BOLD, 24));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
         topPanel.add(titleLabel, BorderLayout.CENTER);
 
-        // Post body + comments
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setOpaque(false);
@@ -84,19 +99,31 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
             centerPanel.add(commentRow);
         }
 
+        centerPanel.add(Box.createVerticalStrut(20));
+
+        JPanel addCommentPanel = new JPanel(new BorderLayout());
+        addCommentPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
+
+        newCommentArea = new JTextArea(3, 40);
+        newCommentArea.setLineWrap(true);
+        newCommentArea.setWrapStyleWord(true);
+
+        postCommentButton = new JButton("Post Comment");
+        postCommentButton.addActionListener(this);
+
+        addCommentPanel.add(new JScrollPane(newCommentArea), BorderLayout.CENTER);
+        addCommentPanel.add(postCommentButton, BorderLayout.EAST);
+
+        centerPanel.add(addCommentPanel);
+
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    public void setViewPostController(ViewPostController controller) {
-        this.controller = controller;
-    }
-
-    public String getViewName() {
-        return viewName;
-    }
-
     private void updateFromState(ViewPostState state) {
+        currentUsername = state.getUsername();
+        currentPostId = state.getPostId();
+
         titleLabel.setText(state.getPostTitle());
         bodyArea.setText(state.getPostBody());
 
@@ -119,9 +146,27 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+
+
+        if (e.getSource() == homeButton) {
+            if (controller != null) {
+                controller.goHome();
+            }
+            return;
+        }
+
+        if (e.getSource() == postCommentButton) {
+            String text = newCommentArea.getText().trim();
+            if (!text.isEmpty() && text.length()<=500 && controller != null && currentPostId != -1) {
+                controller.addComment(currentUsername, currentPostId, text);
+                newCommentArea.setText("");
+            }
+            return;
+        }
+
         for (int i = 0; i < likeButtons.length; i++) {
             if (e.getSource() == likeButtons[i] && commentIds[i] != -1) {
-
                 int currentLikes;
                 try {
                     currentLikes = Integer.parseInt(likeCountLabels[i].getText());
@@ -136,7 +181,8 @@ public class PostView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("state".equals(evt.getPropertyName()) && evt.getNewValue() instanceof ViewPostState) {
+        if ("state".equals(evt.getPropertyName())
+                && evt.getNewValue() instanceof ViewPostState) {
             ViewPostState state = (ViewPostState) evt.getNewValue();
             updateFromState(state);
         }

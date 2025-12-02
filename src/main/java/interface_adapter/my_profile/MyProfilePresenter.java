@@ -2,20 +2,15 @@ package interface_adapter.my_profile;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
-import interface_adapter.login.LoginViewModel;
 import interface_adapter.search_user.SearchUserViewModel;
 import use_case.my_profile.MyProfileOutputBoundary;
 import use_case.my_profile.MyProfileOutputData;
-import view.LoginSignupView;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 public class MyProfilePresenter implements MyProfileOutputBoundary {
 
     private final MyProfileViewModel myProfileViewModel;
     private final SearchUserViewModel searchUserViewModel;
-    // To implement
+    // TODO implement
 //    private final PostViewModel postViewModel;
 //    private final MyProfileModel myMyProfileModel;
     private final ViewManagerModel viewManagerModel;
@@ -23,9 +18,9 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
     private final String loginSignupViewName = "login signup";
 
     public MyProfilePresenter(ViewManagerModel viewManagerModel,
-                            LandingViewModel landingViewModel,
-                            SearchUserViewModel searchUserViewModel,
-                            MyProfileViewModel myProfileViewModel) {
+                              LandingViewModel landingViewModel,
+                              SearchUserViewModel searchUserViewModel,
+                              MyProfileViewModel myProfileViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.myProfileViewModel = myProfileViewModel;
         this.searchUserViewModel = searchUserViewModel;
@@ -33,10 +28,21 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(MyProfileOutputData makePostOutputData) { myProfileViewModel.firePropertyChange(); }
+    public void prepareSuccessView(MyProfileOutputData myProfileOutputData) {
+        MyProfileState state = myProfileViewModel.getState();
+        state.setUsername(myProfileOutputData.getUsername());
+        state.setPassword(myProfileOutputData.getPassword());
+        state.setEmail(myProfileOutputData.getEmail());
+        state.setBio(myProfileOutputData.getBio());
+        state.setPosts(myProfileOutputData.getPosts());
+        myProfileViewModel.setState(state);
+        myProfileViewModel.firePropertyChange();
+    }
 
     @Override
-    public void prepareFailView(String errorMessage) { myProfileViewModel.firePropertyChange(); }
+    public void prepareFailView(String errorMessage) {
+        myProfileViewModel.firePropertyChange();
+    }
 
     public void switchToSearchView() {
         viewManagerModel.setState(searchUserViewModel.getViewName());
@@ -63,10 +69,5 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
     public void switchToLoginSignupView() {
         viewManagerModel.setState(loginSignupViewName);
         viewManagerModel.firePropertyChange();
-    }
-
-    public void refreshPosts(ArrayList<Map> posts) {
-        MyProfileState state = myProfileViewModel.getState();
-        state.setPosts(posts);
     }
 }

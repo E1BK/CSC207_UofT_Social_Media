@@ -17,6 +17,7 @@ import use_case.my_profile.profile_change_password.MyProfileChangePasswordUserDa
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.view_post.ViewPostDataAccessInterface;
+import use_case.add_comment.AddCommentDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,14 +32,20 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         LandingDataAccessInterface,
         MyProfileChangePasswordUserDataAccessInterface,
         ViewPostDataAccessInterface,
+        AddCommentDataAccessInterface,
         ClubsDataAccessInterface {
 
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final int SUCCESS_CODE = 200;
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
+    private static final String BIO = "bio";
+    private static final String POSTS = "posts";
+    private static final String USER =  "user";
+    private static final String INFO = "info";
     private static final String EMAIL = "email";
     private static final String NAME = "name";
+    private static final String USERS = "users";
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String POST_ID = "post_id";
@@ -51,6 +58,9 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
     private static final String COMMENT_DATE = "comment_date";
     private static final String COMMENTS = "comments";
     private static final String MESSAGE = "message";
+    private static final String CLUBS = "clubs";
+    private static final String CLUB_NAME =  "club_name";
+    private static final String CLUB_DESCRIPTION = "club_description";
 
     private static final String REPO_USERNAME = "USER_REPO_CTG3";
     private static final String REPO_PASSWORD = "CTG3CTG3";
@@ -128,30 +138,30 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                         responseJson.getString(MESSAGE));
             }
 
-            JSONObject userJson = responseJson.getJSONObject("user");
-            JSONObject userInfoJson = userJson.getJSONObject("info");
+            JSONObject userJson = responseJson.getJSONObject(USER);
+            JSONObject userInfoJson = userJson.getJSONObject(INFO);
 
             // Ensure "users" array exists
             JSONArray usersArray;
-            if (userInfoJson.has("users")) {
-                usersArray = userInfoJson.getJSONArray("users");
+            if (userInfoJson.has(USERS)) {
+                usersArray = userInfoJson.getJSONArray(USERS);
             } else {
                 usersArray = new JSONArray();
-                userInfoJson.put("users", usersArray);
+                userInfoJson.put(USERS, usersArray);
             }
 
             // append
             JSONObject newEntry = new JSONObject()
-                    .put("username", newUsername)
-                    .put("name", newName);
+                    .put(USERNAME, newUsername)
+                    .put(NAME, newName);
 
             usersArray.put(newEntry);
 
             // put
             JSONObject requestBodyJson = new JSONObject()
-                    .put("username", REPO_USERNAME)
-                    .put("password", REPO_PASSWORD)
-                    .put("info", userInfoJson);
+                    .put(USERNAME, REPO_USERNAME)
+                    .put(USERNAME, REPO_PASSWORD)
+                    .put(INFO, userInfoJson);
 
             RequestBody body = RequestBody.create(
                     requestBodyJson.toString(), mediaType
@@ -199,14 +209,14 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                         responseJson.getString(MESSAGE));
             }
 
-            JSONObject userJson = responseJson.getJSONObject("user");
-            JSONObject userInfoJson = userJson.getJSONObject("info");
+            JSONObject userJson = responseJson.getJSONObject(USER);
+            JSONObject userInfoJson = userJson.getJSONObject(INFO);
 
             JSONArray usersArray;
-            usersArray = userInfoJson.getJSONArray("users");
+            usersArray = userInfoJson.getJSONArray(USERS);
 
             for (int i = 0; i < usersArray.length(); i++) {
-                usernames.add(usersArray.getJSONObject(i).getString("username"));
+                usernames.add(usersArray.getJSONObject(i).getString(USERNAME));
             }
 
             return usernames;
@@ -241,20 +251,20 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                     .put(POST_TITLE, post.getTitle())
                     .put(POST_BODY, post.getBody())
                     .put(POST_DATE, post.getPost_date())
-                    .put("comments", JSONCommentArray);
+                    .put(COMMENTS, JSONCommentArray);
             JSONPostArray.put(JSONPost);
         }
 
         JSONObject JSONInfo = new JSONObject()
-                .put("bio", user.getBio())
+                .put(BIO, user.getBio())
                 .put(EMAIL, user.getEmail())
                 .put(NAME, user.getName())
-                .put("posts", JSONPostArray);
+                .put(POSTS, JSONPostArray);
 
         final JSONObject requestBody = new JSONObject()
                 .put(USERNAME, user.getUsername())
                 .put(PASSWORD, user.getPassword())
-                .put("info", JSONInfo);
+                .put(INFO, JSONInfo);
 
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
@@ -311,7 +321,7 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             final JSONObject responseBody = new JSONObject(response.body().string());
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                final JSONObject userJSONObject = responseBody.getJSONObject("user");
+                final JSONObject userJSONObject = responseBody.getJSONObject(USER);
                 final String name = userJSONObject.getString(USERNAME);
                 final String password = userJSONObject.getString(PASSWORD);
 
@@ -352,16 +362,16 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
             final JSONObject responseBody = new JSONObject(response.body().string());
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                final JSONObject userJSONObject = responseBody.getJSONObject("user");
+                final JSONObject userJSONObject = responseBody.getJSONObject(USER);
                 final String username = userJSONObject.getString(USERNAME);
                 final String password = userJSONObject.getString(PASSWORD);
 
-                final JSONObject infoJSONObject = userJSONObject.getJSONObject("info");
-                final String bio = infoJSONObject.getString("bio");
-                final String email = infoJSONObject.getString("email");
-                final String name = infoJSONObject.getString("name");
+                final JSONObject infoJSONObject = userJSONObject.getJSONObject(INFO);
+                final String bio = infoJSONObject.getString(BIO);
+                final String email = infoJSONObject.getString(EMAIL);
+                final String name = infoJSONObject.getString(NAME);
 
-                final JSONArray postsJSONArray = infoJSONObject.getJSONArray("posts");
+                final JSONArray postsJSONArray = infoJSONObject.getJSONArray(POSTS);
                 final ArrayList<Post> posts = new ArrayList<>();
 
                 for  (int i = 0; i < postsJSONArray.length(); i++) {
@@ -471,14 +481,14 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                         responseJson.getString(MESSAGE));
             }
 
-            JSONObject userJson = responseJson.getJSONObject("user");
-            JSONObject userInfoJson = userJson.getJSONObject("info");
+            JSONObject userJson = responseJson.getJSONObject(USER);
+            JSONObject userInfoJson = userJson.getJSONObject(INFO);
 
-            JSONArray clubsArray = userInfoJson.getJSONArray("clubs");
+            JSONArray clubsArray = userInfoJson.getJSONArray(CLUBS);
             for (int i = 0; i < clubsArray.length(); i++) {
                 JSONObject clubJson = clubsArray.getJSONObject(i);
-                clubs.add(clubFactory.create(clubJson.getString("club_name"),
-                        clubJson.getString("club_description")));
+                clubs.add(clubFactory.create(clubJson.getString(CLUB_NAME),
+                        clubJson.getString(CLUB_DESCRIPTION)));
             }
 
             return clubs;
@@ -508,30 +518,30 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
                         responseJson.getString(MESSAGE));
             }
 
-            JSONObject userJson = responseJson.getJSONObject("user");
-            JSONObject userInfoJson = userJson.getJSONObject("info");
+            JSONObject userJson = responseJson.getJSONObject(USER);
+            JSONObject userInfoJson = userJson.getJSONObject(INFO);
 
             // Ensure "users" array exists
             JSONArray clubsArray;
-            if (userInfoJson.has("clubs")) {
-                clubsArray = userInfoJson.getJSONArray("clubs");
+            if (userInfoJson.has(CLUBS)) {
+                clubsArray = userInfoJson.getJSONArray(CLUBS);
             } else {
                 clubsArray = new JSONArray();
-                userInfoJson.put("clubs", clubsArray);
+                userInfoJson.put(CLUBS, clubsArray);
             }
 
             // append
             JSONObject newEntry = new JSONObject()
-                    .put("club_name", club.getName())
-                    .put("club_description", club.getStatementOfPurpose());
+                    .put(CLUB_NAME, club.getName())
+                    .put(CLUB_DESCRIPTION, club.getStatementOfPurpose());
 
             clubsArray.put(newEntry);
 
             // put
             JSONObject requestBodyJson = new JSONObject()
-                    .put("username", CLUB_REPO_USERNAME)
-                    .put("password", REPO_PASSWORD)
-                    .put("info", userInfoJson);
+                    .put(USERNAME, CLUB_REPO_USERNAME)
+                    .put(PASSWORD, REPO_PASSWORD)
+                    .put(INFO, userInfoJson);
 
             RequestBody body = RequestBody.create(
                     requestBodyJson.toString(), mediaType
@@ -555,6 +565,28 @@ public class DBUserDataAccessObject implements MakePostUserDataAccessInterface,
         catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public void addCommentToPost(String username, int postId, Comment comment) {
+        User user = getUserInfo(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        Post targetPost = null;
+        for (Post p : user.getPosts()) {
+            if (p.getPost_id() == postId) {
+                targetPost = p;
+                break;
+            }
+        }
+        if (targetPost == null) {
+            throw new RuntimeException("Post not found: id=" + postId);
+        }
+
+        targetPost.getComments().add(comment);
+        save(user);
     }
 
 }

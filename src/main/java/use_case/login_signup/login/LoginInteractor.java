@@ -1,6 +1,10 @@
 package use_case.login_signup.login;
 
+import entity.Post;
 import entity.User;
+import use_case.make_post.PostViewData;
+
+import java.util.ArrayList;
 
 /**
  * The Login Interactor.
@@ -32,12 +36,22 @@ public class LoginInteractor implements LoginInputBoundary {
                 final User user = userDataAccessObject.getUserInfo(loginInputData.getUsername());
 
                 userDataAccessObject.setCurrentUsername(username);
+                ArrayList<PostViewData> postData = new ArrayList<> ();
+
+                for  (Post post : user.getPosts()) {
+                    postData.add(new PostViewData(post.getUsername(),
+                            post.getPost_id(),
+                            post.getTitle(),
+                            post.getBody(),
+                            post.getPost_date(),
+                            post.getComments()));
+                }
 
                 final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(),
                                                                             user.getPassword(),
                                                                             user.getBio(),
                                                                             user.getEmail(),
-                                                                            user.getPosts());
+                                                                            postData);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }

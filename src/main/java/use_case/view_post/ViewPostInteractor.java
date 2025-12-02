@@ -44,6 +44,8 @@ public class ViewPostInteractor implements ViewPostInputBoundary {
             }
 
             ViewPostOutputData output = new ViewPostOutputData(
+                    inputData.getUsername(),
+                    inputData.getPostId(),
                     post.getTitle(),
                     post.getBody(),
                     ids,

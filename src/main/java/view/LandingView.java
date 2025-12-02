@@ -3,10 +3,6 @@
 package view;
 
 import app.GradientPanel;
-import entity.Comment;
-import entity.Post;
-import entity.PostFactory;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingController;
 import interface_adapter.landing.LandingState;
 import interface_adapter.make_post.MakePostController;
@@ -14,6 +10,7 @@ import interface_adapter.make_post.MakePostState;
 import interface_adapter.landing.LandingViewModel;
 import interface_adapter.make_post.MakePostViewModel;
 import interface_adapter.my_profile.MyProfileController;
+import interface_adapter.view_post.ViewPostController;
 import use_case.make_post.PostViewData;
 
 import javax.swing.*;
@@ -34,6 +31,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final String viewName = "landing";
     private LandingViewModel landingViewModel;
     private MakePostViewModel makePostViewModel;
+    private ViewPostController viewPostController;
     private MakePostController makePostController = null;
     private MyProfileController myProfileController = null;
     private LandingController landingController = null;
@@ -47,10 +45,9 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
     private final JButton people;
     private final JButton home;
 
-    PostPanel post1;
-    PostPanel post2;
-    PostPanel post3;
+    ArrayList<JPanel> postPanels;
     JPanel displayPanel;
+    JButton refreshButton;
 
     ArrayList<PostViewData> postsToDisplay;
 
@@ -89,6 +86,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postBody.setFont(new Font("Helvetica", Font.PLAIN, 20));
         postBody.setMinimumSize(new Dimension(300, 150));
         postBody.setMaximumSize(new Dimension(300, 150));
+        postBody.setLineWrap(true);
         postBody.setMargin(new Insets(5, 5, 5, 5));
 
         makePost = new JButton(LandingViewModel.MAKE_POST_BUTTON_LABEL);
@@ -120,10 +118,19 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         postPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
         postsToDisplay = new ArrayList<PostViewData>();
+        postPanels = new ArrayList<JPanel>();
 
         displayPanel = new JPanel();
         displayPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
 
+        refreshButton = new JButton("⟳");
+        refreshButton.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
+        refreshButton.setFocusPainted(false);
+        refreshButton.setPreferredSize(new Dimension(60, 60));
+
+        refreshButton.addActionListener(e -> {
+            landingController.execute();
+        });
 
         middlePanel.add(titlePanel, BorderLayout.NORTH);
         middlePanel.add(postPanel, BorderLayout.CENTER);
@@ -162,7 +169,7 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profile)) {
                             System.out.println(evt.getActionCommand());
-                            myProfileController.switchToMyProfileView();
+                            landingController.switchToProfileView();
                         }
                     }
                 }
@@ -268,14 +275,26 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
         Object source = evt.getSource();
         if (source == landingViewModel) {
             LandingState state = landingViewModel.getState();
-            // Run landing use case once when we first arrive
+
             if (!state.isInitialized()) {
                 state.setInitialized(true);
-                landingController.execute(); // or whatever args you need
+                landingController.execute();
                 landingViewModel.setState(state);
             }
-
-            refreshPosts(state); // your existing code to redraw posts
+            String err = state.getGetPostError();
+            if (err != null && !err.isBlank() && err.equals("Failed to fetch repo user: Too many requests! Please check your code to make sure you are not sending more than 50 requests per minutes. Or wait a little bit for the server to come up.")) {
+                JOptionPane.showMessageDialog(this, "Woah there, rate limit reached! Please retry in a moment.");
+                state.setGetPostError("");
+                landingViewModel.setState(state);
+            }
+            else if (err != null && !err.isBlank()) {
+                JOptionPane.showMessageDialog(this, err);
+                state.setGetPostError("");
+                landingViewModel.setState(state);
+            }
+            else {
+                refreshPosts(state);
+            }
         }
         else if (source == makePostViewModel) {
             MakePostState state = makePostViewModel.getState();
@@ -300,16 +319,27 @@ public class LandingView extends JPanel implements ActionListener, PropertyChang
 
     public void setMyProfileController(MyProfileController controller) { this.myProfileController = controller; }
 
+    public void setViewPostController(ViewPostController controller){
+        this.viewPostController = controller;
+    }
+
     public void refreshPosts(LandingState landingState) {
         displayPanel.removeAll();
+        postPanels.clear();
         postsToDisplay = landingState.getPosts();
-        post1 = new PostPanel(postsToDisplay.getFirst());
-        post2 = new PostPanel(postsToDisplay.get(1));
-        post3 = new PostPanel(postsToDisplay.get(2));
-        displayPanel.add(post1.panel);
-        displayPanel.add(post2.panel);
-        displayPanel.add(post3.panel);
+
+        for (PostViewData post : postsToDisplay) {
+            PostPanel newPostPanel = new PostPanel(post);
+            postPanels.add(newPostPanel.panel);
+            if (viewPostController != null) {
+                newPostPanel.setViewPostController(viewPostController);
+            }
+            displayPanel.add(newPostPanel.panel);
+        }
+
+        displayPanel.add(refreshButton);
         displayPanel.revalidate();
         displayPanel.repaint();
     }
 }
+

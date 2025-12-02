@@ -63,12 +63,10 @@ import use_case.login_signup.signup.SignupInputBoundary;
 import use_case.login_signup.signup.SignupInteractor;
 import use_case.login_signup.signup.SignupOutputBoundary;
 import view.LoginSignupView;
-import interface_adapter.view_post.ViewPostController;
-import interface_adapter.view_post.ViewPostPresenter;
-import interface_adapter.view_post.ViewPostViewModel;
-import use_case.view_post.ViewPostInputBoundary;
-import use_case.view_post.ViewPostInteractor;
-import use_case.view_post.ViewPostOutputBoundary;
+import interface_adapter.view_post.*;
+import use_case.view_post.*;
+import use_case.add_comment.AddCommentInputBoundary;
+import use_case.add_comment.AddCommentInteractor;
 
 
 import javax.swing.*;
@@ -83,7 +81,6 @@ public class AppBuilder {
     final ClubFactory clubFactory = new ClubFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     public ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
 
     final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, postFactory, commentFactory, clubFactory);
 
@@ -138,8 +135,7 @@ public class AppBuilder {
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
                                                                            landingViewModel,
-                                                                           loginViewModel,
-                                                                           myProfileViewModel);
+                                                                           loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -163,13 +159,6 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addProfileView() {
-        profileViewModel = new ProfileViewModel();
-        profileView = new ProfileView(profileViewModel);
-        cardPanel.add(profileView, profileView.getViewName());
-        return this;
-    }
-
     public AppBuilder addClubsView() {
         clubsViewModel = new ClubsViewModel();
         clubsView = new ClubsView(clubsViewModel);
@@ -177,23 +166,27 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addProfileView() {
+        profileViewModel = new ProfileViewModel();
+        profileView = new ProfileView(profileViewModel);
+        cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
     public AppBuilder addProfileUseCase() {
-        final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel,
-                                                                                 landingViewModel,
-                                                                                 searchUserViewModel,
-                                                                                 profileViewModel);
-        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
-                                                                                   profileOutputBoundary,
-                                                                                   userFactory,
-                                                                                   postFactory);
+        final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(
+                viewManagerModel,
+                landingViewModel,
+                searchUserViewModel,
+                myProfileViewModel,
+                profileViewModel);
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor(
+                userDataAccessObject,
+                profileOutputBoundary);
         ProfileController controller = new ProfileController(profileInteractor);
         profileView.setProfileController(controller);
-        // Change to my profile
-
-        // Russell newly added:
         searchUserView.setProfileController(controller);
         return this;
-
     }
 
     public AppBuilder addMyProfileView() {
@@ -212,7 +205,7 @@ public class AppBuilder {
         final MyProfileInputBoundary myProfileInteractor = new MyProfileInteractor(
                 userDataAccessObject,
                 myProfileOutputBoundary);
-        MyProfileController controller = new MyProfileController(myProfileInteractor, userDataAccessObject);
+        MyProfileController controller = new MyProfileController(myProfileInteractor);
         myProfileView.setMyProfileController(controller);
         landingView.setMyProfileController(controller);
         return this;
@@ -252,8 +245,21 @@ public class AppBuilder {
         final ViewPostInputBoundary viewPostInteractor =
                 new ViewPostInteractor(userDataAccessObject, viewPostOutputBoundary);
 
-        ViewPostController viewPostController = new ViewPostController(viewPostInteractor);
-        postView.setViewPostController(viewPostController);
+        final AddCommentInputBoundary addCommentInteractor =
+                new AddCommentInteractor(userDataAccessObject, commentFactory, viewPostOutputBoundary);
+
+        ViewPostController controller =
+                new ViewPostController(
+                        viewPostInteractor,
+                        addCommentInteractor,
+                        viewManagerModel,
+                        landingViewModel
+                );
+
+        postView.setViewPostController(controller);
+        landingView.setViewPostController(controller);
+        myProfileView.setViewPostController(controller);
+        profileView.setViewPostController(controller);
 
         return this;
     }

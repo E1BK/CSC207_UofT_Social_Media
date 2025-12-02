@@ -4,7 +4,7 @@ package use_case.search_user;
 import entity.User;
 import interface_adapter.search_user.SearchUserPresenter;
 
-public class SearchUserInteractor implements SearchUserInputBoundary{
+public class SearchUserInteractor implements SearchUserInputBoundary {
 
     private final SearchUserDataAccessInterface searchUserDataAccessObject;
     private final SearchUserOutputBoundary searchUserPresenter;
@@ -14,16 +14,24 @@ public class SearchUserInteractor implements SearchUserInputBoundary{
 
         this.searchUserDataAccessObject = searchUserDataAccessObject;
         this.searchUserPresenter = searchUserPresenter;
-
     }
 
-    // Russel: new execute method
     @Override
     public void execute(SearchUserInputData searchUserInputData) {
         try {
             User foundUser =
                     searchUserDataAccessObject.getUserInfo(searchUserInputData.getUsername());
-            searchUserPresenter.prepareSuccessView(foundUser);
+
+            if (foundUser != null) {
+                SearchUserOutputData outputData = new SearchUserOutputData(
+                        foundUser.getUsername(),
+                        foundUser.getEmail(),
+                        foundUser.getBio()
+                );
+                searchUserPresenter.prepareSuccessView(outputData);
+            } else {
+                searchUserPresenter.prepareFailView();
+            }
         } catch (RuntimeException ex) {
             System.out.println("SearchUserInteractor error: " + ex.getMessage());
             searchUserPresenter.prepareFailView();
@@ -39,5 +47,4 @@ public class SearchUserInteractor implements SearchUserInputBoundary{
         SearchUserPresenter temp = (SearchUserPresenter) searchUserPresenter;
         temp.switchToMeView();
     }
-
 }

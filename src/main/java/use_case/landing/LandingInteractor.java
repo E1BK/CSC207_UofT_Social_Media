@@ -2,13 +2,8 @@ package use_case.landing;
 
 import entity.Post;
 import entity.User;
-import interface_adapter.make_post.MakePostPresenter;
-import use_case.make_post.MakePostInputBoundary;
-import use_case.make_post.MakePostInteractor;
 import use_case.make_post.PostViewData;
-import view.PostView;
 
-import java.time.Instant;
 import java.util.*;
 
 public class LandingInteractor implements LandingInputBoundary{
@@ -23,37 +18,45 @@ public class LandingInteractor implements LandingInputBoundary{
 
     @Override
     public void execute() {
-        ArrayList<String> usernames = landingDataAccess.getExistingUsernames();
-
-        ArrayList<PostViewData> posts = new ArrayList<>();
-        while(posts.size() < 3){
+        try {
+            ArrayList<String> usernames = landingDataAccess.getExistingUsernames();
             Random random = new Random();
-            String username = usernames.get(random.nextInt(usernames.size()));
-//            String username = "zhaohayd";
-            User currUser = landingDataAccess.getUserInfo(username);
-            if (currUser.getPosts().isEmpty()) {
-                continue;
+            ArrayList<PostViewData> posts = new ArrayList<>();
+            ArrayList<String> addedUsers = new ArrayList<>();
+            int attemps = 0;
+            while (posts.size() < 3 && attemps < 30) {
+                attemps++;
+                String username = usernames.get(random.nextInt(usernames.size()));
+                if (addedUsers.contains(username)) {
+                    continue;
+                }
+                User currUser = landingDataAccess.getUserInfo(username);
+                if (currUser.getPosts().isEmpty()) {
+                    continue;
+                }
+                Post newestPost = currUser.getPosts().getLast();
+                PostViewData newestPostData = new PostViewData(newestPost.getUsername(),
+                        newestPost.getPost_id(),
+                        newestPost.getTitle(),
+                        newestPost.getBody(),
+                        newestPost.getPost_date(),
+                        newestPost.getComments());
+                posts.add(newestPostData);
+                addedUsers.add(username);
             }
-            Post newestPost = currUser.getPosts().getLast();
-            PostViewData newestPostData = new PostViewData(newestPost.getUsername(),
-                    newestPost.getPost_id(),
-                    newestPost.getTitle(),
-                    newestPost.getBody(),
-                    newestPost.getPost_date(),
-                    newestPost.getComments());
-            posts.add(newestPostData);
+            LandingOutputData output = new LandingOutputData(posts);
+            landingPresenter.prepareSuccessView(output);
         }
-        LandingOutputData output = new LandingOutputData(posts);
-        landingPresenter.prepareSuccessView(output);
+        catch (Exception e) {
+            landingPresenter.prepareFailView(e.getMessage());
+        }
     }
 
     public void switchToPeopleView() {
         landingPresenter.switchToPeopleView();
     }
 
-    public void switchToMeView() {
-        landingPresenter.switchToMeView();
-    }
+    public void switchToProfileView() {landingPresenter.switchToProfileView();}
 
     public void switchToClubsView() {
         landingPresenter.switchToClubsView();

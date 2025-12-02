@@ -2,13 +2,12 @@ package interface_adapter.landing;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.clubs.ClubsViewModel;
-import interface_adapter.make_post.MakePostViewModel;
+import interface_adapter.my_profile.MyProfileState;
 import interface_adapter.my_profile.MyProfileViewModel;
+import interface_adapter.search_user.SearchUserState;
 import interface_adapter.search_user.SearchUserViewModel;
 import use_case.landing.LandingOutputBoundary;
 import use_case.landing.LandingOutputData;
-import interface_adapter.landing.LandingState;
-import use_case.make_post.MakePostOutputData;
 
 public class LandingPresenter implements LandingOutputBoundary {
     private final LandingViewModel landingViewModel;
@@ -35,20 +34,30 @@ public class LandingPresenter implements LandingOutputBoundary {
         landingState.setPosts(landingOutputData.getPosts());
         landingViewModel.setState(landingState);
         landingViewModel.firePropertyChange();
-        myProfileViewModel.firePropertyChange();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-
+        LandingState landingState = landingViewModel.getState();
+        landingState.setGetPostError(errorMessage);
+        landingViewModel.setState(landingState);
+        landingViewModel.firePropertyChange();
     }
 
     public void switchToPeopleView() {
+        final LandingState landingState = landingViewModel.getState();
+        final SearchUserState searchUserState = searchUserViewModel.getState();
+        searchUserState.setUsername(landingState.getUsername());
+        searchUserViewModel.firePropertyChange();
         viewManagerModel.setState(searchUserViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
 
-    public void switchToMeView() {
+    public void switchToProfileView() {
+        final LandingState landingState = landingViewModel.getState();
+        final MyProfileState myProfileState = myProfileViewModel.getState();
+        myProfileState.setUsername(landingState.getUsername());
+        myProfileViewModel.firePropertyChange();
         viewManagerModel.setState(myProfileViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }

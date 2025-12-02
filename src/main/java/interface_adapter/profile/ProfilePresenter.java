@@ -2,32 +2,47 @@ package interface_adapter.profile;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.landing.LandingViewModel;
+import interface_adapter.my_profile.MyProfileState;
+import interface_adapter.my_profile.MyProfileViewModel;
 import interface_adapter.search_user.SearchUserViewModel;
-import use_case.profile.ProfileOutputBoundary;
 import use_case.profile.ProfileOutputData;
+import use_case.profile.ProfileOutputBoundary;
+import view.ProfileView;
 
 public class ProfilePresenter implements ProfileOutputBoundary {
 
+    private final MyProfileViewModel myProfileViewModel;
     private final ProfileViewModel profileViewModel;
     private final SearchUserViewModel searchUserViewModel;
-    // To implement
+    // TODO implement
 //    private final PostViewModel postViewModel;
-//    private final MyProfileModel myProfileModel;
+//    private final MyProfileModel myMyProfileModel;
     private final ViewManagerModel viewManagerModel;
     private final LandingViewModel landingViewModel;
 
     public ProfilePresenter(ViewManagerModel viewManagerModel,
-                            LandingViewModel landingViewModel,
-                            SearchUserViewModel searchUserViewModel,
-                            ProfileViewModel profileViewModel) {
+                              LandingViewModel landingViewModel,
+                              SearchUserViewModel searchUserViewModel,
+                              MyProfileViewModel myProfileViewModel,
+                              ProfileViewModel profileViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.profileViewModel = profileViewModel; //TODO change this to myprofile
+        this.myProfileViewModel = myProfileViewModel;
+        this.profileViewModel = profileViewModel;
         this.searchUserViewModel = searchUserViewModel;
         this.landingViewModel = landingViewModel;
     }
 
     @Override
-    public void prepareSuccessView(ProfileOutputData makePostOutputData) { profileViewModel.firePropertyChange(); }
+    public void prepareSuccessView(ProfileOutputData outputData) {
+        ProfileState state = profileViewModel.getState();
+        state.setUsername(outputData.getUsername());
+        state.setEmail(outputData.getEmail());
+        state.setBio(outputData.getBio());
+        state.setPosts(outputData.getPosts());
+        state.setUser(outputData.getUser());
+
+        profileViewModel.firePropertyChange();
+    }
 
     @Override
     public void prepareFailView(String errorMessage) { profileViewModel.firePropertyChange(); }
@@ -50,7 +65,11 @@ public class ProfilePresenter implements ProfileOutputBoundary {
 
     @Override
     public void switchToMyProfileView() {
-        viewManagerModel.setState(profileViewModel.getViewName());
+        ProfileState profileState = profileViewModel.getState();
+        MyProfileState myProfileState = myProfileViewModel.getState();
+        myProfileState.setUsername(profileState.getUser());
+        myProfileViewModel.firePropertyChange();
+        viewManagerModel.setState(myProfileViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
 

@@ -2,7 +2,6 @@ package entity;
 
 import java.util.ArrayList;
 
-
 public class Post{
     private final String username;
     private final int post_id;
