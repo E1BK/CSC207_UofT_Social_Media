@@ -28,13 +28,13 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(MyProfileOutputData makePostOutputData) {
+    public void prepareSuccessView(MyProfileOutputData myProfileOutputData) {
         MyProfileState state = myProfileViewModel.getState();
-        state.setUsername(makePostOutputData.getUsername());
-        state.setPassword(makePostOutputData.getPassword());
-        state.setEmail(makePostOutputData.getEmail());
-        state.setBio(makePostOutputData.getBio());
-        state.setPosts(makePostOutputData.getPosts());
+        state.setUsername(myProfileOutputData.getUsername());
+        state.setPassword(myProfileOutputData.getPassword());
+        state.setEmail(myProfileOutputData.getEmail());
+        state.setBio(myProfileOutputData.getBio());
+        state.setPosts(myProfileOutputData.getPosts());
         myProfileViewModel.setState(state);
         myProfileViewModel.firePropertyChange();
     }
