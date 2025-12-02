@@ -134,4 +134,28 @@ public class LandingTests {
             assertTrue("duplicate username in posts", names.add(p.getUsername()));
         }
     }
+
+    @Test
+    public void switchToPeopleView_callsPresenter() {
+        interactor.switchToPeopleView();
+
+        Mockito.verify(landingPresenter).switchToPeopleView();
+        Mockito.verifyNoMoreInteractions(landingPresenter);
+    }
+
+    @Test
+    public void switchToProfileView_callsPresenter() {
+        interactor.switchToProfileView();
+
+        Mockito.verify(landingPresenter).switchToProfileView();
+        Mockito.verifyNoMoreInteractions(landingPresenter);
+    }
+
+    @Test
+    public void switchToClubsView_callsPresenter() {
+        interactor.switchToClubsView();
+
+        Mockito.verify(landingPresenter).switchToClubsView();
+        Mockito.verifyNoMoreInteractions(landingPresenter);
+    }
 }
