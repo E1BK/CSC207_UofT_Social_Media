@@ -19,6 +19,11 @@ public class MyProfileChangePasswordInteractor implements MyProfileChangePasswor
         this.userFactory = userFactory;
     }
 
+    /**
+     * This method changes the users password or bio from the <bio> and <password> from
+     * <MyProfileChangePasswordInputData>
+     * @param inputData the input data for this use case
+     */
     @Override
     public void execute(MyProfileChangePasswordInputData inputData) {
         if ("".equals(inputData.getPassword())) {

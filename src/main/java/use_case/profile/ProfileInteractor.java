@@ -16,6 +16,11 @@ public class ProfileInteractor implements ProfileInputBoundary {
         this.profilePresenter = profilePresenter;
     }
 
+    /**
+     * Creates the searched <user>'s profile from <ProfileInputData> using <username>.
+     * It also creates a list of posts creates from getting the <user>'s <Post>s
+     * @param inputData
+     */
     @Override
     public void execute(ProfileInputData inputData) {
         ArrayList<Post> posts = profileUserDataAccess.getUserInfo(inputData.getUsername()).getPosts();

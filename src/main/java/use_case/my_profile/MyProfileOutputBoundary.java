@@ -11,6 +11,5 @@ public interface MyProfileOutputBoundary {
     void switchToLandingView();
     void switchToSearchView();
     void switchToPostView();
-    void switchToMyProfileView();
     void switchToLoginSignupView();
 }
