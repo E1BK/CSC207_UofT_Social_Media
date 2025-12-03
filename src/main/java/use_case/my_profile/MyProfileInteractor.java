@@ -17,6 +17,11 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
         this.myProfilePresenter = myProfilePresenter;
     }
 
+    /**
+     * Creates/Updates the current <user>'s profile from <MyProfileInputData> using <username>.
+     * It also creates a list of posts creates from getting the <user>'s <Post>s
+     * @param inputData
+     */
     @Override
     public void execute(MyProfileInputData inputData) {
         try {
@@ -45,11 +50,6 @@ public class MyProfileInteractor implements MyProfileInputBoundary {
             System.out.println("SearchUserInteractor error: " + ex.getMessage());
             myProfilePresenter.prepareFailView(ex.getMessage());
         }
-    }
-
-    // Switches between views
-    public void switchToMyProfileView() {
-        myProfilePresenter.switchToMyProfileView();
     }
 
     public void switchToLandingView() {

@@ -28,6 +28,19 @@ public class AddCommentInteractor implements AddCommentInputBoundary {
 
     @Override
     public void execute(AddCommentInputData inputData) {
+
+        String body = inputData.getCommentBody();
+
+        if (body == null || body.trim().isEmpty()) {
+            presenter.prepareFailView("Comment cannot be empty.");
+            return;
+        }
+
+        if (body.length() > 500) {
+            presenter.prepareFailView("Comment cannot exceed 500 characters.");
+            return;
+        }
+
         try {
             Post post = dataAccess.getPost(inputData.getUsername(), inputData.getPostId());
             if (post == null) {
