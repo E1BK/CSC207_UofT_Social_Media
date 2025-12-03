@@ -11,6 +11,8 @@ import interface_adapter.search_user.SearchUserViewModel;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class MyProfileTests {
     @NotNull
     private MyProfileInteractor setUpInteractor() {
@@ -24,6 +26,9 @@ public class MyProfileTests {
                 postFactory, commentFactory, clubFactory);
 
         User user = userFactory.create("tstUser0", "tsttst", "tst@mail.utoronto.ca", "tst");
+        Post post = new Post(010101, "tstUser0", "tstTitle",
+                "This is a test", "12/02/25", new ArrayList<Comment>());
+        user.addPost(post);
         dataAccess.save(user);
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
@@ -44,6 +49,13 @@ public class MyProfileTests {
     }
 
     @Test
+    public void testBadUser() {
+        MyProfileInputData inputData = new MyProfileInputData("badUser");
+        MyProfileInteractor interactor = setUpInteractor();
+        interactor.execute(inputData);
+    }
+
+    @Test
     public void testSwitchToLoginSignupView() {
         MyProfileInteractor interactor = setUpInteractor();
         interactor.switchToLoginSignupView();
@@ -59,5 +71,11 @@ public class MyProfileTests {
     public void testSwitchToSearchUserView() {
         MyProfileInteractor interactor = setUpInteractor();
         interactor.switchToSearchView();
+    }
+
+    @Test
+    public void testSwitchToPostView() {
+        MyProfileInteractor interactor = setUpInteractor();
+        interactor.switchToPostView();
     }
 }

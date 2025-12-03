@@ -55,12 +55,6 @@ public class MyProfilePresenter implements MyProfileOutputBoundary {
 //        viewManagerModel.firePropertyChange();
     }
 
-    @Override
-    public void switchToMyProfileView() {
-        viewManagerModel.setState(myProfileViewModel.getViewName());
-        viewManagerModel.firePropertyChange();
-    }
-
     public void switchToLandingView() {
         viewManagerModel.setState(landingViewModel.getViewName());
         viewManagerModel.firePropertyChange();
